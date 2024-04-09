@@ -13,5 +13,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "music_application"
-include ':app'
+
+rootProject.name = "music-app"
+
+include("jetpack-compose-frontend")
+include("xml-frontend")
