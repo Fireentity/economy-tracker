@@ -1,0 +1,35 @@
+name: Telegram notify
+
+on:
+  push:
+    branches:
+    - '**'
+    tags-ignore:
+    - '**'
+jobs:
+  build:
+    name: Notify
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the master branch
+      uses: actions/checkout@master
+    - name: Sanitize the commit message
+      env: 
+        COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+      run: |
+        COMMIT_MESSAGE="${COMMIT_MESSAGE//$'&'/'&amp;'}"
+        COMMIT_MESSAGE="${COMMIT_MESSAGE//$'<'/'&lt;'}"
+        COMMIT_MESSAGE="${COMMIT_MESSAGE//$'>'/'&gt;'}"
+        COMMIT_MESSAGE="${COMMIT_MESSAGE//$'&'/'&amp;'}"
+        echo "COMMIT_MESSAGE<<EOF" >> $GITHUB_ENV
+        echo "$COMMIT_MESSAGE" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+    - name: Send the telegram message
+      uses: appleboy/telegram-action@master
+      with:
+        to: "${{ secrets.TELEGRAM_TO }}"
+        token: "${{ secrets.TELEGRAM_TOKEN }}"
+        format: "html"
+        message: |- # https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context
+          <strong>${{ github.actor }}</strong> <a href="https://github.com/${{ github.repository }}/commits/${{ github.sha }}">pushed</a> to <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+          ${{ env.COMMIT_MESSAGE }}
