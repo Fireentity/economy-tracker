@@ -18,37 +18,62 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/standard_bottom_sheet"
+        style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:maxHeight="5dp"
-        android:orientation="horizontal"
-        android:background="@color/teal_200"
-        android:layout_margin="30px"
-        android:padding="30px"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintCircleRadius="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight="100dp"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <Button
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:id="@+id/drag_handle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTintMode="src_in"
-            android:text="ciao" />
+            android:layout_margin="20dp"
+            android:maxHeight="20dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintCircleRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight="100dp"
+            app:layout_constraintStart_toStartOf="parent">
+            <Button
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/baseline_skip_previous_24" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="ciao" />
+            <Button
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/baseline_play_arrow_24" />
 
-        <Button
+            <Button
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/baseline_skip_next_24" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="ciao" />
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_navigation_menu" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
