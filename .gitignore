@@ -8,3 +8,4 @@ out/
 .idea/
 build/
 target/
+local.properties
