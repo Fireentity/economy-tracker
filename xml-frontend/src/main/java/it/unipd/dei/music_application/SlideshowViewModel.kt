@@ -1,4 +1,4 @@
-package com.example.music_application.ui.slideshow
+package it.unipd.dei.music_application
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

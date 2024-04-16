@@ -1,4 +1,4 @@
-package com.example.music_application
+package it.unipd.dei.music_application
 
 import org.junit.Test
 
