@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.music_application'
+    namespace 'it.unipd.dei.music_application'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.music_application"
+        applicationId "it.unipd.dei.music_application"
         minSdk 24
         targetSdk 34
         versionCode 1

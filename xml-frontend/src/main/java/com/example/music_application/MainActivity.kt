@@ -1,11 +1,11 @@
 package com.example.music_application
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.music_application.databinding.ContentMainBinding
+import it.unipd.dei.music_application.R
+
+//import com.example.music_application.databinding.ContentMainBinding
 
 
 class MainActivity : AppCompatActivity() {
