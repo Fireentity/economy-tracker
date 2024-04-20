@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include android:id="@+id/card_1" layout="@layout/fragment_summary_card"/>
+    <include android:id="@+id/card_2" layout="@layout/fragment_summary_card"/>
+    <include android:id="@+id/card_3" layout="@layout/fragment_summary_card"/>
+    <include android:id="@+id/card_4" layout="@layout/fragment_summary_card"/>
+    <androidx.constraintlayout.helper.widget.Flow
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/socialsButtonsFlow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        app:flow_horizontalGap="4dp"
+        app:flow_verticalGap="2dp"
+        app:flow_wrapMode="aligned"
+        app:flow_horizontalStyle="spread_inside"
+        app:constraint_referenced_ids="card_1, card_2, card_3, card_4"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

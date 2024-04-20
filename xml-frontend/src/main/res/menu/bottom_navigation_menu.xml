@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/home_nav_button" />
+    <item
+        android:id="@+id/favouritesFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_music_note_24"
+        android:title="@string/favourites_nav_button" />
+    <item
+        android:id="@+id/searchFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_search_24"
+        android:title="@string/search_nav_bottom" />
+    <item
+        android:id="@+id/playlistsFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_playlist_play_24"
+        android:title="@string/playlists_nav_button"/>
+</menu>
