@@ -6,18 +6,13 @@
         android:icon="@drawable/baseline_home_24"
         android:title="@string/home_nav_button" />
     <item
-        android:id="@+id/favouritesFragment"
+        android:id="@+id/registerFragment"
         android:enabled="true"
         android:icon="@drawable/baseline_music_note_24"
-        android:title="@string/favourites_nav_button" />
+        android:title="@string/register_nav_button" />
     <item
-        android:id="@+id/searchFragment"
+        android:id="@+id/recurrencesFragment"
         android:enabled="true"
         android:icon="@drawable/baseline_search_24"
-        android:title="@string/search_nav_bottom" />
-    <item
-        android:id="@+id/playlistsFragment"
-        android:enabled="true"
-        android:icon="@drawable/baseline_playlist_play_24"
-        android:title="@string/playlists_nav_button"/>
+        android:title="@string/recurrences_nav_bottom" />
 </menu>
