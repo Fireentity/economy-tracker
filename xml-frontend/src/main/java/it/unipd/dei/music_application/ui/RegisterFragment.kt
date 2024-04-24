@@ -10,21 +10,18 @@ import it.unipd.dei.music_application.R
 
 
 class RegisterFragment : Fragment() {
-    private val items = arrayOf("Option 1", "Option 2", "Option 3")
-    private val selectedItems = BooleanArray(items.size) { false }
-    private val dialog = MaterialAlertDialogBuilder(requireContext())
-        .setMultiChoiceItems(items, selectedItems)  { _, which, isChecked ->
-            selectedItems[which] = isChecked
-        }
-        .create()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_register, container, false);
         val topBarButton: View? = view.findViewById(R.id.filter)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(R.layout.fragment_filter_dialog)
+            .create()
 
         topBarButton?.setOnClickListener {
             dialog.show()
