@@ -3,10 +3,4 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="it.unipd.dei.music_application.ui.RegisterFragment">
-        <item
-            android:id="@+id/filter"
-            android:contentDescription="aaaaa"
-            android:icon="@drawable/baseline_filter_alt_off_24"
-            android:title="aaaa"
-            app:showAsAction="ifRoom" />
 </menu>
