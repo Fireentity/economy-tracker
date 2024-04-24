@@ -18,48 +18,57 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+                <ImageView
+                    android:id="@+id/image"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:clickable="false"
-                    android:text="+11.00$"
-                    android:textColor="#15803d"
-                    app:chipBackgroundColor="#dcfce7"
-                    app:chipIcon="@drawable/baseline_arrow_upward_24"
-                    app:chipIconEnabled="true" />
+                    android:backgroundTint="#dcfce7"
+                    android:background="@drawable/circle"
+                    android:padding="10dp"
+                    android:src="@drawable/baseline_trending_up_24"
+                    android:contentDescription="TODO">
+
+                </ImageView>
 
                 <TextView
+                    android:id="@+id/date"
+                    app:layout_constraintLeft_toRightOf="@id/image"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="20dp"
                     android:text="20/04/2024 "
+                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <TextView
+                    app:layout_constraintTop_toBottomOf="@id/date"
+                    app:layout_constraintLeft_toRightOf="@id/image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Lorem ipsum "
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Categoria: Lorem ipsum "
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:layout_marginStart="10dp"
+                    android:text="- 30 $ "
+                    android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="?android:attr/textColorSecondary" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Descrizione: Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?android:attr/textColorSecondary" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
         <com.google.android.material.divider.MaterialDivider
