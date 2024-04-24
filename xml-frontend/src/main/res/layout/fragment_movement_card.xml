@@ -65,7 +65,8 @@
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/card_5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"/>
     </LinearLayout>
 
 

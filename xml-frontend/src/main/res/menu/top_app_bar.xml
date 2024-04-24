@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.unipd.dei.music_application.ui.RegisterFragment">
         <item
-            android:id="@+id/edit"
+            android:id="@+id/filter"
+            android:contentDescription="aaaaa"
+            android:icon="@drawable/baseline_filter_alt_off_24"
             android:title="aaaa"
-            android:contentDescription="aaa"
             app:showAsAction="ifRoom" />
-
-        <item
-            android:id="@+id/favorite"
-            android:icon="@drawable/baseline_arrow_downward_24"
-            android:title="aaaa"
-            android:contentDescription="aaa"
-            app:showAsAction="ifRoom" />
-
-        <item
-            android:id="@+id/more"
-            android:title="aaaa"
-            android:contentDescription="aaa"
-            app:showAsAction="never" />
-
 </menu>
