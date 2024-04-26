@@ -70,7 +70,18 @@ fun RegisterScreen(modifier: Modifier = Modifier) {
             Column(
                 modifier.padding(paddingValues)
             ) {
-
+                var selectedTabIndex by rememberSaveable {
+                    mutableIntStateOf(0)
+                }
+                TabRow(selectedTabIndex = selectedTabIndex) {
+                    tabItems.forEachIndexed { index, item ->
+                        Tab(
+                            selected = index == selectedTabIndex,
+                            onClick = { selectedTabIndex = index },
+                            text = { Text(text = item.title) }
+                        )
+                    }
+                }
             }
         }
     }
