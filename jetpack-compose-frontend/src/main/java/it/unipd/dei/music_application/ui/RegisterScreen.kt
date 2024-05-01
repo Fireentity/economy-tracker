@@ -64,6 +64,13 @@ fun RegisterScreen(modifier: Modifier = Modifier) {
                     //scrollBehavior = scrollBehavior,
                 )
             },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "")
+                }
+            }
         ) {
             paddingValues ->
             Column(
