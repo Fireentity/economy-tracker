@@ -2,12 +2,12 @@ package it.unipd.dei.music_application.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import it.unipd.dei.music_application.MyLazyColumn
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
@@ -16,6 +16,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Home")
+        MyLazyColumn(modifier = Modifier.fillMaxSize())
     }
 }
