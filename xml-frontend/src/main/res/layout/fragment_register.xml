@@ -63,6 +63,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movements_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <include
                 android:id="@+id/card_1"
                 layout="@layout/fragment_movement_card" />
@@ -92,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
-                app:constraint_referenced_ids="card_1, card_2, card_3, card_4, card_5, card_6"
+                app:constraint_referenced_ids="pie_chart, card_1, card_2, card_3, card_4, card_5, card_6"
                 app:flow_horizontalGap="4dp"
                 app:flow_horizontalStyle="spread_inside"
                 app:flow_verticalGap="2dp"
