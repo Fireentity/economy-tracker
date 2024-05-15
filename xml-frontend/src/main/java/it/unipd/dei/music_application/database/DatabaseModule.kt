@@ -20,7 +20,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             application.applicationContext,
             BalanceDatabase::class.java, "balance-database"
-        ).build();
+        ).allowMainThreadQueries().build();
     }
 
     @Provides

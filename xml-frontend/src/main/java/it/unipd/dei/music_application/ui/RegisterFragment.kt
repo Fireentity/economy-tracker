@@ -26,14 +26,14 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_register, container, false)
-        val chart = view.findViewById<PieChart>(R.id.pie_chart);
+        /*val chart = view.findViewById<PieChart>(R.id.pie_chart);
         val movements = database.getMovementDao().getAllMovements();
         val recycler = view.findViewById<RecyclerView>(R.id.movements_recycler_view);
 
         val visitors: ArrayList<PieEntry> = arrayListOf(
             PieEntry(500F,"value2")
         )
-        chart.data = PieData(PieDataSet(visitors, "test"))
+        chart.data = PieData(PieDataSet(visitors, "test"))*/
 
         return view;
     }

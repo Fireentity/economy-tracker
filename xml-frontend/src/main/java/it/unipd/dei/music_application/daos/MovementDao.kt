@@ -13,16 +13,16 @@ import java.util.UUID
 interface MovementDao {
 
     @Upsert
-    fun insertMovement(movement: Movement)
+    suspend fun insertMovement(movement: Movement)
 
     @Delete
-    fun deleteMovement(movement: Movement)
+    suspend fun deleteMovement(movement: Movement)
 
     @Transaction
     @Query("SELECT * FROM movements WHERE categoryId = :categoryId ORDER BY createdAt")
-    fun getMovementsByCategoryOrderedByCreatedAt(categoryId: UUID): List<MovementWithCategory>
+    suspend fun getMovementsByCategoryOrderedByCreatedAt(categoryId: UUID): List<MovementWithCategory>
 
     @Transaction
     @Query("SELECT * FROM movements")
-    fun getAllMovements(): List<MovementWithCategory>
+    suspend fun getAllMovements(): List<MovementWithCategory>
 }

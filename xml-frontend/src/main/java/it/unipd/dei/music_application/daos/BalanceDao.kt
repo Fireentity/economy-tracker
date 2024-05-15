@@ -9,11 +9,11 @@ import it.unipd.dei.music_application.models.Balance
 @Dao
 interface BalanceDao {
     @Upsert
-    fun insertBalance(balance: Balance)
+    suspend fun insertBalance(balance: Balance)
 
     @Delete
-    fun deleteBalance(balance: Balance)
+    suspend fun deleteBalance(balance: Balance)
 
     @Query("SELECT * FROM balances")
-    fun getBalances(): List<Balance>
+    suspend fun getBalances(): List<Balance>
 }
