@@ -1,9 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id "com.google.devtools.ksp" version "1.9.23-1.0.20" //TODO try to understand with the latest version does not work
-    id 'com.google.dagger.hilt.android' version '2.44' apply false
-
+    id "com.google.devtools.ksp"
+    id 'com.google.dagger.hilt.android' apply true
 }
 
 android {
@@ -55,10 +54,13 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.room:room-runtime:2.6.1'
 
+    implementation 'com.google.dagger:dagger:2.49'
+    ksp "com.google.dagger:dagger-compiler:2.49" // Dagger compiler
+
     implementation 'androidx.room:room-ktx:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
     ksp 'androidx.room:room-compiler:2.6.1'
 
     implementation "com.google.dagger:hilt-android:2.49"
-    ksp "com.google.dagger:hilt-compiler:2.44"
+    ksp "com.google.dagger:hilt-compiler:2.49"
 }

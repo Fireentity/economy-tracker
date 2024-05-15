@@ -15,6 +15,7 @@ import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.database.BalanceDatabase
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
     @Inject
     lateinit var database: BalanceDatabase
