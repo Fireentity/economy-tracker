@@ -39,8 +39,8 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
         private val dateTextView: TextView = itemView.findViewById(R.id.movement_card_date)
         fun bind(movementWithCategory: MovementWithCategory) {
 
-            //Setto la quantità
-            amountTextView.text = movementWithCategory.movement.amount.toString()
+            //Setto la quantità che va formattata come number.##
+            amountTextView.text = String.format("%.2f", movementWithCategory.movement.amount)
             //Setto la categoria
             categoryTextView.text = movementWithCategory.category.identifier
             //Setto la data TODO created_at or updated_at?

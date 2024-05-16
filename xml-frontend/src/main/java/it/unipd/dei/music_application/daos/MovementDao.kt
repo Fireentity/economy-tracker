@@ -18,6 +18,8 @@ interface MovementDao {
     @Delete
     suspend fun deleteMovement(movement: Movement)
 
+    @Query("DELETE FROM movements")
+    suspend fun deleteAllMovements()
     @Transaction
     @Query("SELECT * FROM movements WHERE categoryId = :categoryId ORDER BY createdAt")
     suspend fun getMovementsByCategoryOrderedByCreatedAt(categoryId: UUID): List<MovementWithCategory>
@@ -28,4 +30,5 @@ interface MovementDao {
 
     @Query("SElECT COUNT(uuid) FROM movements")
     suspend fun getMovementsCount(): Int
+
 }

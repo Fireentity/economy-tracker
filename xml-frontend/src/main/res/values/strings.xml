@@ -18,4 +18,5 @@
     <string name="lorem_ipsum">Lorem ipsum</string>
     <string name="default_movement_date">default_movement_date</string>
     <string name="default_movement_category">default_movement_category</string>
+    <string name="euro">€</string>
 </resources>
