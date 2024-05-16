@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
-import it.unipd.dei.music_application.models.MovementWithCategory
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -30,8 +28,9 @@ class RegisterFragment : Fragment() {
         testViewModel.createDummyDataIfNoMovement()
         val view = inflater.inflate(R.layout.fragment_register, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.movements_recycler_view)
+        val tabLayout = view.findViewById<TabLayout>(R.id.register_tab_layout)
         // Create the adapter with an empty list
-        adapter = MovementCardAdapter(emptyList())
+        adapter = MovementCardAdapter(emptyList(), emptyList())
 
         // Set the adapter to the RecyclerView
         recyclerView.adapter = adapter
@@ -45,14 +44,28 @@ class RegisterFragment : Fragment() {
             // Update the adapter with the new data
             adapter.updateMovements(movements)
         })
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                    adapter.filterMovements(tab?.text.toString())
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Azione quando un tab viene deselezionato
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Azione quando un tab viene nuovamente selezionato
+            }
+        })
+
+
+        //TODO mettere un observer ai cambiamenti di stato di tabview
+        /*
+               val view = recyclerView.findViewHolderForAdapterPosition()
+
+         */
         return view;
     }
 }
-/*val chart = view.findViewById<PieChart>(R.id.pie_chart);
-        val movements = database.getMovementDao().getAllMovements();
-        val recycler = view.findViewById<RecyclerView>(R.id.movements_recycler_view);
 
-        val visitors: ArrayList<PieEntry> = arrayListOf(
-            PieEntry(500F,"value2")
-        )
-        chart.data = PieData(PieDataSet(visitors, "test"))*/

@@ -23,10 +23,17 @@ interface MovementDao {
     @Transaction
     @Query("SELECT * FROM movements WHERE categoryId = :categoryId ORDER BY createdAt")
     suspend fun getMovementsByCategoryOrderedByCreatedAt(categoryId: UUID): List<MovementWithCategory>
-
     @Transaction
     @Query("SELECT * FROM movements")
     suspend fun getAllMovements(): List<MovementWithCategory>
+
+    @Transaction
+    @Query("SELECT * FROM movements WHERE amount > 0")
+    suspend fun getAllPositiveMovements(): List<MovementWithCategory>
+
+    @Transaction
+    @Query("SELECT * FROM movements WHERE amount < 0")
+    suspend fun getAllNegativeMovements(): List<MovementWithCategory>
 
     @Query("SElECT COUNT(uuid) FROM movements")
     suspend fun getMovementsCount(): Int
