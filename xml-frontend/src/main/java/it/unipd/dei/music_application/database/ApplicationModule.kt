@@ -10,7 +10,7 @@ import it.unipd.dei.music_application.App
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MyApplicationModule {
+object ApplicationModule {
 
     @Provides
     fun providesMainApplicationInstance(@ApplicationContext context: Context): App {

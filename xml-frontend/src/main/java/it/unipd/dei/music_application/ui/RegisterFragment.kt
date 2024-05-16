@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.MovementWithCategory
@@ -16,14 +17,22 @@ import it.unipd.dei.music_application.models.MovementWithCategory
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private val viewModel : MovementWithCategoryViewModel by viewModels()
+    private val testViewModel : TestViewModel by viewModels()
+    private lateinit var adapter: MovementCardAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        testViewModel.createDummyDataIfNoMovement()
         val view = inflater.inflate(R.layout.fragment_register, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.movements_recycler_view)
+        // Create the adapter with an empty list
+        adapter = MovementCardAdapter(emptyList())
+
+        // Set the adapter to the RecyclerView
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         // Chiamare il metodo del ViewModel per caricare i dati
@@ -31,15 +40,10 @@ class RegisterFragment : Fragment() {
 
         // Osservare i dati e aggiornare la UI
         viewModel.data.observe(viewLifecycleOwner, Observer { movements ->
-            updateRecyclerView(movements)
+            // Update the adapter with the new data
+            adapter.updateMovements(movements)
         })
-
         return view;
-    }
-
-    private fun updateRecyclerView(movementsWithCategory: List<MovementWithCategory>?) {
-        //TODO("Not yet implemented")
-        // creare un Adapter per RecyclerView
     }
 }
 /*val chart = view.findViewById<PieChart>(R.id.pie_chart);

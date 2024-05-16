@@ -13,4 +13,9 @@
     <string name="home_nav_button">Home</string>
     <string name="register_nav_button">Registro</string>
     <string name="recurrences_nav_bottom">Ricorrenze</string>
+    <string name="movimento_di_default">Movimento di default</string>
+    <string name="default_movement_amount">default movement amount</string>
+    <string name="lorem_ipsum">Lorem ipsum</string>
+    <string name="default_movement_date">default_movement_date</string>
+    <string name="default_movement_category">default_movement_category</string>
 </resources>

@@ -10,10 +10,10 @@ import it.unipd.dei.music_application.models.Movement
 @Dao
 interface CategoryDao {
     @Upsert
-    suspend fun insertMovement(movement: Movement)
+    suspend fun insertCategory(category: Category)
 
     @Delete
-    suspend fun deleteMovement(movement: Movement)
+    suspend fun deleteCategory(category: Category)
 
     @Query("SELECT * FROM categories")
     suspend fun getCategories(): List<Category>

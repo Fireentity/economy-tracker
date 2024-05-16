@@ -25,4 +25,7 @@ interface MovementDao {
     @Transaction
     @Query("SELECT * FROM movements")
     suspend fun getAllMovements(): List<MovementWithCategory>
+
+    @Query("SElECT COUNT(uuid) FROM movements")
+    suspend fun getMovementsCount(): Int
 }
