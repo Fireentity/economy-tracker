@@ -19,7 +19,9 @@ class TestViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun createDummyDataIfNoMovement() {
+
         viewModelScope.launch {
+
             if (movementDao.getMovementsCount() == 0) {
                 // Crea una categoria fittizia
                 val categoryId = UUID.randomUUID()

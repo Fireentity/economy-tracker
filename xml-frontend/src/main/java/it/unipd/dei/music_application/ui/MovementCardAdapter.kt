@@ -12,8 +12,8 @@ import it.unipd.dei.music_application.models.MovementWithCategory
 
 class MovementCardAdapter(
     private var movements: List<MovementWithCategory>,
-    private var filteredMovements: List<MovementWithCategory>
 ) :
+
     RecyclerView.Adapter<MovementCardAdapter.MovementViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovementViewHolder {
@@ -23,11 +23,11 @@ class MovementCardAdapter(
     }
 
     override fun onBindViewHolder(holder: MovementViewHolder, position: Int) {
-        val movementWithCategory = filteredMovements[position]
+        val movementWithCategory = movements[position]
         holder.bind(movementWithCategory)
     }
 
-    override fun getItemCount(): Int = filteredMovements.size
+    override fun getItemCount(): Int = movements.size
     // Metodo per aggiornare i movimenti e notificare i cambiamenti
 
     fun updateMovements(newMovements: List<MovementWithCategory>) {
@@ -36,17 +36,6 @@ class MovementCardAdapter(
         notifyDataSetChanged() // Notifica che i dati sono cambiati
     }
 
-    fun filterMovements(filterType: String){
-        filteredMovements = when (filterType) {
-            "Tutti" -> {
-                movements
-                //TODO notifica i cambiamenti
-            }
-            "Uscite" -> movements.filter { it.movement.amount < 0 }
-            "Entrate" -> movements.filter { it.movement.amount > 0 }
-            else -> movements
-        }
-    }
     fun getPositiveMovementsPositions(): List<Int> {
         val positionsList = mutableListOf<Int>()
         for ((index, movementWithCategory) in movements.withIndex()) {
@@ -67,7 +56,7 @@ class MovementCardAdapter(
         return positionsList;
     }
 
-    fun getMovementsPositions(): List<Int> {
+    fun getAllMovementsPositions(): List<Int> {
         val positionsList = mutableListOf<Int>()
         for ((index, movementWithCategory) in movements.withIndex()) {
 

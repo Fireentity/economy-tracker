@@ -19,4 +19,7 @@
     <string name="default_movement_date">default_movement_date</string>
     <string name="default_movement_category">default_movement_category</string>
     <string name="euro">€</string>
+    <string name="tutti">Tutti</string>
+    <string name="uscite">Uscite</string>
+    <string name="entrate">Entrate</string>
 </resources>
