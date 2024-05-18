@@ -14,11 +14,24 @@ import it.unipd.dei.music_application.R
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
-    private val viewModel: MovementWithCategoryViewModel by viewModels()
+    //test
     private val testViewModel: TestViewModel by viewModels()
+
+    //viewModel for accessing movements and their category
+    private val viewModel: MovementWithCategoryViewModel by viewModels()
+
+    //adapters for every RecycleView
     private lateinit var allAdapter: MovementCardAdapter
     private lateinit var positiveAdapter: MovementCardAdapter
     private lateinit var negativeAdapter: MovementCardAdapter
+
+    //RecycleViews in fragment_register
+    private lateinit var allRecyclerView: RecyclerView
+    private lateinit var positiveRecyclerView: RecyclerView
+    private lateinit var negativeRecyclerView: RecyclerView
+
+    //TabItem in fragment_register
+    private lateinit var tabLayout: TabLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,14 +41,14 @@ class RegisterFragment : Fragment() {
         //testViewModel.deleteAllMovements()
         testViewModel.createDummyDataIfNoMovement()
         val view = inflater.inflate(R.layout.fragment_register, container, false)
-        val allRecyclerView =
-            view.findViewById<RecyclerView>(R.id.all_movements_recycler_view)
-        val positiveRecyclerView =
-            view.findViewById<RecyclerView>(R.id.positive_movements_recycler_view)
-        val negativeRecyclerView =
-            view.findViewById<RecyclerView>(R.id.negative_movements_recycler_view)
 
-        val tabLayout = view.findViewById<TabLayout>(R.id.register_tab_layout)
+        //RecycleView initialization
+        allRecyclerView = view.findViewById(R.id.all_movements_recycler_view)
+        positiveRecyclerView = view.findViewById(R.id.positive_movements_recycler_view)
+        negativeRecyclerView = view.findViewById(R.id.negative_movements_recycler_view)
+
+        //tabLayout initialization
+        tabLayout = view.findViewById<TabLayout>(R.id.register_tab_layout)
 
         // Create the adapter with an empty list
         allAdapter = MovementCardAdapter(emptyList())
@@ -67,7 +80,11 @@ class RegisterFragment : Fragment() {
             // Update the adapter with the new data
             negativeAdapter.updateMovements(movements)
         }
+        this.addTabItemListener()
+        return view;
+    }
 
+    private fun addTabItemListener(){
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.text) {
@@ -88,7 +105,6 @@ class RegisterFragment : Fragment() {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-        return view;
     }
 }
 
