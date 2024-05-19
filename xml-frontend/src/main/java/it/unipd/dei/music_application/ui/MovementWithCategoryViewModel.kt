@@ -100,7 +100,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     // Initial loading of movements
-    fun getMovements() {
+    fun loadInitialMovements() {
         loadSomeMovements()
         loadSomePositiveMovements()
         loadSomeNegativeMovements()

@@ -48,5 +48,4 @@ interface MovementDao {
     suspend fun getSomeNegativeMovements(limit: Int, offset: Int): List<MovementWithCategory>
     @Query("SElECT COUNT(uuid) FROM movements")
     suspend fun getMovementsCount(): Int
-
 }

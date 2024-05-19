@@ -1,20 +1,23 @@
 package it.unipd.dei.music_application.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
+import it.unipd.dei.music_application.models.CategoryTotal
 import it.unipd.dei.music_application.models.MovementWithCategory
-import kotlin.math.abs
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -22,6 +25,7 @@ class RegisterFragment : Fragment() {
     // ViewModels
     private val testViewModel: TestViewModel by viewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
+    private val categoryTotalViewModel: CategoryTotalViewModel by viewModels()
 
     // Adapters for RecyclerViews
     private lateinit var allAdapter: MovementCardAdapter
@@ -33,8 +37,8 @@ class RegisterFragment : Fragment() {
     private lateinit var positiveRecyclerView: RecyclerView
     private lateinit var negativeRecyclerView: RecyclerView
 
-    //
-    private lateinit var nestedScrollView: NestedScrollView
+    //PieChart in fragment_register layout
+    private lateinit var pieChart: PieChart
 
     // TabLayout in fragment_register layout
     private lateinit var tabLayout: TabLayout
@@ -44,6 +48,8 @@ class RegisterFragment : Fragment() {
 
     //How many card we can see until it load more movements
     private val visibleThreshold = 3
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +61,9 @@ class RegisterFragment : Fragment() {
 
         // Inflate the layout
         val view = inflater.inflate(R.layout.fragment_register, container, false)
+
+        // Initialize PieChart
+        pieChart = view.findViewById(R.id.pie_chart)
 
         // Initialize RecyclerViews
         initializeRecyclerViews(view)
@@ -69,7 +78,8 @@ class RegisterFragment : Fragment() {
         setupRecyclerViews()
 
         // Call the ViewModel method to load initial data
-        movementWithCategoryViewModel.getMovements()
+        movementWithCategoryViewModel.loadInitialMovements()
+        categoryTotalViewModel.loadCategoryTotal()
 
         // Observe data changes and update the UI
         observeViewModelData()
@@ -119,6 +129,9 @@ class RegisterFragment : Fragment() {
         }
         movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
             updateAdapter(negativeAdapter, movements)
+        }
+        categoryTotalViewModel.allData.observe(viewLifecycleOwner){ categories ->
+            updatePieChart(categories)
         }
     }
 
@@ -214,7 +227,6 @@ class RegisterFragment : Fragment() {
     }
 
     /*Call the more optimized adapter function that loads only the new movements into the recycleView*/
-
     private fun updateAdapter(
         adapter: MovementCardAdapter,
         newMovements: List<MovementWithCategory>
@@ -222,5 +234,26 @@ class RegisterFragment : Fragment() {
         val startChangePosition = adapter.getMovementsCount()
         val itemCount = newMovements.size - startChangePosition
         adapter.updateMovements(newMovements, startChangePosition, itemCount)
+    }
+
+    private fun updatePieChart(categoryTotals: List<CategoryTotal>) {
+        val entries = ArrayList<PieEntry>()
+        val colors = ArrayList<Int>()
+
+        for (categoryTotal in categoryTotals) {
+            entries.add(PieEntry(categoryTotal.totalAmount.toFloat(), categoryTotal.identifier))
+            if (categoryTotal.totalAmount >= 0) {
+                colors.add(Color.GREEN) // Colore per valori positivi
+            } else {
+                colors.add(Color.RED) // Colore per valori negativi
+            }
+        }
+
+        val dataSet = PieDataSet(entries, "Movements by Category")
+        dataSet.colors = colors
+
+        val data = PieData(dataSet)
+        pieChart.data = data
+        pieChart.invalidate() // refresh
     }
 }

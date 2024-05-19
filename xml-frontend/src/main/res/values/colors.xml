@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background_trending_up">#DCFCE7</color>
     <color name="background_trending_down">#FEE2E2</color>
+    <color name="red">#B91C1C</color>
+    <color name="green">#15803D</color>
 </resources>
