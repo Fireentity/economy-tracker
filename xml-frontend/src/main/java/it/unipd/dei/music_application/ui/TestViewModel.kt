@@ -16,12 +16,12 @@ import kotlin.random.Random
 class TestViewModel @Inject constructor(
     private val categoryDao: CategoryDao,
     private val movementDao: MovementDao
+
 ) : ViewModel() {
-
+    var movementsCount = -1
     fun createDummyDataIfNoMovement() {
-
         viewModelScope.launch {
-
+            movementsCount = movementDao.getMovementsCount()
             if (movementDao.getMovementsCount() == 0) {
                 // Crea una categoria fittizia
                 val categoryId = UUID.randomUUID()
@@ -37,13 +37,13 @@ class TestViewModel @Inject constructor(
                 categoryDao.insertCategory(category)
 
                 // Crea 5 movimenti fittizi associati alla categoria
-                val movements = List(10) { index ->
+                val movements = List(500) { index ->
                     Movement(
                         uuid = UUID.randomUUID(),
                         amount = Random.nextInt(-1000, 1000) + Random.nextInt(0, 100) * 0.01,
                         categoryId = categoryId,
-                        createdAt = currentTime + index * 1000L, // Tempi leggermente diversi per ogni movimento
-                        updatedAt = currentTime + index * 1000L
+                        createdAt = currentTime + index * 10000L, // Tempi leggermente diversi per ogni movimento
+                        updatedAt = currentTime + index * 10000L
                     )
                 }
 

@@ -10,10 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.MovementWithCategory
 
-class MovementCardAdapter(
-    private var movements: List<MovementWithCategory>,
-) :
-
+class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
     RecyclerView.Adapter<MovementCardAdapter.MovementViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovementViewHolder {
@@ -34,36 +31,6 @@ class MovementCardAdapter(
         this.movements = newMovements
         //TODO trova un modo per vedere l'ultimo filtro applicato (variabile??) e riapplicalo
         notifyDataSetChanged() // Notifica che i dati sono cambiati
-    }
-
-    fun getPositiveMovementsPositions(): List<Int> {
-        val positionsList = mutableListOf<Int>()
-        for ((index, movementWithCategory) in movements.withIndex()) {
-            if (movementWithCategory.movement.amount > 0) {
-                positionsList.add(index)
-            }
-        }
-        return positionsList;
-    }
-
-    fun getNegativeMovementsPositions(): List<Int> {
-        val positionsList = mutableListOf<Int>()
-        for ((index, movementWithCategory) in movements.withIndex()) {
-            if (movementWithCategory.movement.amount < 0) {
-                positionsList.add(index)
-            }
-        }
-        return positionsList;
-    }
-
-    fun getAllMovementsPositions(): List<Int> {
-        val positionsList = mutableListOf<Int>()
-        for ((index, movementWithCategory) in movements.withIndex()) {
-
-            positionsList.add(index)
-
-        }
-        return positionsList;
     }
 
     class MovementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
