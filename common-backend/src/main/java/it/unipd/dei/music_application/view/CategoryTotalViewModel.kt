@@ -1,12 +1,12 @@
-package it.unipd.dei.music_application.ui
+package it.unipd.dei.music_application.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.models.CategoryTotal
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

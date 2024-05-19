@@ -5,7 +5,6 @@ import androidx.room.DatabaseConfiguration
 import androidx.room.InvalidationTracker
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
-import dagger.Module
 import it.unipd.dei.music_application.daos.BalanceDao
 import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.daos.MovementDao

@@ -1,4 +1,4 @@
-package it.unipd.dei.music_application.database
+package it.unipd.dei.music_application.modules
 
 import android.app.Application
 import androidx.room.Room
@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.daos.MovementDao
+import it.unipd.dei.music_application.database.BalanceDatabase
 import javax.inject.Singleton
 
 @Module

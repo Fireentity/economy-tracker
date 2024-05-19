@@ -18,6 +18,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.CategoryTotal
 import it.unipd.dei.music_application.models.MovementWithCategory
+import it.unipd.dei.music_application.view.CategoryTotalViewModel
+import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
+import it.unipd.dei.music_application.view.TestViewModel
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {

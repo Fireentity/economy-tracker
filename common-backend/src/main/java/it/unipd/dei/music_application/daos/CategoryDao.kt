@@ -7,7 +7,6 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.CategoryTotal
-import it.unipd.dei.music_application.models.Movement
 
 @Dao
 interface CategoryDao {

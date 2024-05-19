@@ -1,4 +1,4 @@
-package it.unipd.dei.music_application.ui
+package it.unipd.dei.music_application.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
