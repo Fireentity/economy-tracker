@@ -29,8 +29,20 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
 
     fun updateMovements(newMovements: List<MovementWithCategory>) {
         this.movements = newMovements
-        //TODO trova un modo per vedere l'ultimo filtro applicato (variabile??) e riapplicalo
         notifyDataSetChanged() // Notifica che i dati sono cambiati
+    }
+
+    fun updateMovements(
+        newMovements: List<MovementWithCategory>,
+        startChangePosition: Int,
+        itemCount: Int
+    ) {
+        this.movements = newMovements
+        notifyItemRangeInserted(startChangePosition, itemCount) // Notifica che i dati sono cambiati
+    }
+
+    fun getMovements(): List<MovementWithCategory> {
+        return movements
     }
 
     class MovementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

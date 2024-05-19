@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
+import it.unipd.dei.music_application.models.MovementWithCategory
 import kotlin.math.abs
 
 @AndroidEntryPoint
@@ -111,7 +112,7 @@ class RegisterFragment : Fragment() {
 
     private fun observeViewModelData() {
         movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) { movements ->
-            allAdapter.updateMovements(movements)
+            updateAdapter(allAdapter, movements)
         }
         movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) { movements ->
             positiveAdapter.updateMovements(movements)
@@ -210,5 +211,18 @@ class RegisterFragment : Fragment() {
                 }
             }
         })
+    }
+
+    /*Call the more optimized adapter function that loads only the new movements into the recycleView*/
+
+    private fun updateAdapter(
+        adapter: MovementCardAdapter,
+        newMovements: List<MovementWithCategory>
+    ) {
+        val oldMovements =
+            adapter.getMovements()
+        val startChangePosition = oldMovements.size
+        val itemCount = newMovements.size - oldMovements.size
+        adapter.updateMovements(newMovements, startChangePosition, itemCount)
     }
 }
