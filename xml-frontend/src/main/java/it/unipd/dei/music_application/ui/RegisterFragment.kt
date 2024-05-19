@@ -115,10 +115,10 @@ class RegisterFragment : Fragment() {
             updateAdapter(allAdapter, movements)
         }
         movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) { movements ->
-            positiveAdapter.updateMovements(movements)
+            updateAdapter(positiveAdapter, movements)
         }
         movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
-            negativeAdapter.updateMovements(movements)
+            updateAdapter(negativeAdapter, movements)
         }
     }
 
@@ -219,10 +219,8 @@ class RegisterFragment : Fragment() {
         adapter: MovementCardAdapter,
         newMovements: List<MovementWithCategory>
     ) {
-        val oldMovements =
-            adapter.getMovements()
-        val startChangePosition = oldMovements.size
-        val itemCount = newMovements.size - oldMovements.size
+        val startChangePosition = adapter.getMovementsCount()
+        val itemCount = newMovements.size - startChangePosition
         adapter.updateMovements(newMovements, startChangePosition, itemCount)
     }
 }

@@ -41,8 +41,8 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
         notifyItemRangeInserted(startChangePosition, itemCount) // Notifica che i dati sono cambiati
     }
 
-    fun getMovements(): List<MovementWithCategory> {
-        return movements
+    fun getMovementsCount(): Int {
+        return movements.size
     }
 
     class MovementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
