@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -18,3 +19,4 @@ rootProject.name = "music-app"
 
 include "jetpack-compose-frontend"
 include "xml-frontend"
+include "common-backend"
