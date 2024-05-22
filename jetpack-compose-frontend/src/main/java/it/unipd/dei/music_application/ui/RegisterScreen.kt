@@ -28,7 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.RoomDatabase
 import it.unipd.dei.music_application.MyLazyColumn
+import it.unipd.dei.music_application.database.BalanceDatabase
+import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 
 data class TabItem(
     val title: String
@@ -36,7 +40,10 @@ data class TabItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(modifier: Modifier = Modifier) {
+fun RegisterScreen(
+    db: BalanceDatabase,
+    modifier: Modifier = Modifier
+) {
     //val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val tabItems = listOf(
         TabItem(title = "Tutti"),
@@ -105,6 +112,9 @@ fun RegisterScreen(modifier: Modifier = Modifier) {
                 }
 
                 MyLazyColumn(modifier = Modifier.fillMaxSize())
+
+                //val myViewModel: MovementWithCategoryViewModel = viewModel()
+                //myViewModel.loadSomeMovements()
             }
         }
     }
