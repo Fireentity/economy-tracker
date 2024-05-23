@@ -22,6 +22,43 @@ class MainActivity : ComponentActivity() {
         ).build()
     }
 
+    /*
+    val db = Room.databaseBuilder(
+        applicationContext,
+        BalanceDatabase::class.java, "balance.db"
+    ).build()
+    */
+
+    private val categoryViewModel by viewModels<CategoryTotalViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                fun <CategoryTotalViewModel : ViewModel?> create(modelClass: Class<it.unipd.dei.music_application.view.CategoryTotalViewModel>): it.unipd.dei.music_application.view.CategoryTotalViewModel {
+                    return CategoryTotalViewModel(db.getCategoryDao())
+                }
+            }
+        }
+    )
+
+    private val movementViewModel by viewModels<MovementWithCategoryViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                fun <MovementWithCategoryViewModel : ViewModel?> create(modelClass: Class<it.unipd.dei.music_application.view.MovementWithCategoryViewModel>): it.unipd.dei.music_application.view.MovementWithCategoryViewModel {
+                    return MovementWithCategoryViewModel(db.getMovementDao())
+                }
+            }
+        }
+    )
+
+    /*private val testViewModel by viewModels<TestViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                fun <TestViewModel : ViewModel?> create(modelClass: Class<it.unipd.dei.music_application.view.TestViewModel>): it.unipd.dei.music_application.view.TestViewModel {
+                    return TestViewModel(db.getBalanceDao())
+                }
+            }
+        }
+    )*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
