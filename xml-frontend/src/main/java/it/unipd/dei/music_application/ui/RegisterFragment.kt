@@ -309,7 +309,7 @@ class RegisterFragment : Fragment() {
                 totalAllTextView.text = String.format("%.2f", amount)
                 val euroView = view?.findViewById<TextView>(R.id.euro_symbol_center)
                 if (euroView != null) {
-                    val colorRes = if (amount > 0) R.color.green else R.color.red
+                    val colorRes = if (amount > 0) R.color.green_600 else R.color.rose_600
                     val color = ContextCompat.getColor(requireContext(), colorRes)
                     euroView.setTextColor(color)
                     totalAllTextView.setTextColor(color)

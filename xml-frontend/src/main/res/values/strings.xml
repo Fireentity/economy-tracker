@@ -23,4 +23,6 @@
     <string name="uscite">Uscite</string>
     <string name="entrate">Entrate</string>
     <string name="no_movements">No movements</string>
+    <string name="bilancio">Bilancio:</string>
+    <string name="categoria">Categoria:</string>
 </resources>
