@@ -36,6 +36,19 @@ interface MovementDao {
     suspend fun getAllNegativeMovements(): List<MovementWithCategory>
 
     @Transaction
+    @Query("SELECT SUM(amount) FROM movements")
+    suspend fun getTotalAmount(): Double
+
+    @Transaction
+    @Query("SELECT SUM(amount) FROM movements WHERE amount > 0")
+    suspend fun getTotalPositiveAmount(): Double
+
+    @Transaction
+    @Query("SELECT SUM(amount) FROM movements WHERE amount < 0")
+    suspend fun getTotalNegativeAmount(): Double
+
+
+    @Transaction
     @Query("SELECT * FROM movements ORDER BY createdAt DESC LIMIT :limit OFFSET :offset")
     suspend fun getSomeMovements(limit: Int, offset: Int): List<MovementWithCategory>
 

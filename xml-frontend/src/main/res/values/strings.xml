@@ -22,4 +22,5 @@
     <string name="tutti">Tutti</string>
     <string name="uscite">Uscite</string>
     <string name="entrate">Entrate</string>
+    <string name="no_movements">No movements</string>
 </resources>

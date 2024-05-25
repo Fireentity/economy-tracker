@@ -25,6 +25,16 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val _negativeMovementsWithCategory = MutableLiveData<List<MovementWithCategory>>()
     val negativeData: LiveData<List<MovementWithCategory>> = _negativeMovementsWithCategory
 
+    // LiveData for movementsAmount
+    private val _sumAllMovementsAmount = MutableLiveData<Double>()
+    val totalAllAmount: LiveData<Double> = _sumAllMovementsAmount
+
+    private val _sumPositiveMovementsAmount = MutableLiveData<Double>()
+    val totalPositiveAmount: LiveData<Double> = _sumPositiveMovementsAmount
+
+    private val _sumNegativeMovementsAmount = MutableLiveData<Double>()
+    val totalNegativeAmount: LiveData<Double> = _sumNegativeMovementsAmount
+
     // Offset for pagination
     private var currentAllOffset = 0
     private var currentPositiveOffset = 0
@@ -77,27 +87,59 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     // Load all movements (without pagination)
-    private fun loadAllMovements(dataLoader: suspend () -> List<MovementWithCategory>, liveData: MutableLiveData<List<MovementWithCategory>>) {
+    private fun loadAllMovements(
+        dataLoader: suspend () -> List<MovementWithCategory>,
+        liveData: MutableLiveData<List<MovementWithCategory>>
+    ) {
         viewModelScope.launch {
             val loadedData = dataLoader()
             liveData.postValue(loadedData)
         }
     }
 
-    // Load all movements
     private fun getAllMovements() {
         loadAllMovements(movementDao::getAllMovements, _allMovementsWithCategory)
     }
 
-    // Load all positive movements
     private fun getAllPositiveMovements() {
         loadAllMovements(movementDao::getAllPositiveMovements, _positiveMovementsWithCategory)
     }
 
-    // Load all negative movements
     private fun getAllNegativeMovements() {
         loadAllMovements(movementDao::getAllNegativeMovements, _negativeMovementsWithCategory)
     }
+
+    private fun loadTotalAllAmount() {
+        viewModelScope.launch {
+
+            val totalAmount = movementDao.getTotalAmount()
+            _sumAllMovementsAmount.postValue(totalAmount)
+        }
+    }
+
+    private fun loadTotalPositiveAmount() {
+        viewModelScope.launch {
+
+            val totalPositive = movementDao.getTotalPositiveAmount()
+            _sumPositiveMovementsAmount.postValue(totalPositive)
+        }
+    }
+
+    private fun loadTotalNegativeAmount() {
+        viewModelScope.launch {
+
+            val totalNegative = movementDao.getTotalNegativeAmount()
+            _sumNegativeMovementsAmount.postValue(totalNegative)
+
+        }
+    }
+
+    fun loadTotalAmounts() {
+        loadTotalAllAmount()
+        loadTotalPositiveAmount()
+        loadTotalNegativeAmount()
+    }
+
 
     // Initial loading of movements
     fun loadInitialMovements() {
@@ -105,4 +147,5 @@ class MovementWithCategoryViewModel @Inject constructor(
         loadSomePositiveMovements()
         loadSomeNegativeMovements()
     }
+
 }

@@ -1,10 +1,13 @@
 package it.unipd.dei.music_application.ui
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,11 +43,14 @@ class RegisterFragment : Fragment() {
     private lateinit var positiveRecyclerView: RecyclerView
     private lateinit var negativeRecyclerView: RecyclerView
 
-    //PieChart in fragment_register layout
-    private lateinit var pieChart: PieChart
+    //TextView for displaying amounts in fragment_register layout
+    private lateinit var totalAllTextView: TextView
+    private lateinit var totalPositiveTextView: TextView
+    private lateinit var totalNegativeTextView: TextView
 
     // TabLayout in fragment_register layout
     private lateinit var tabLayout: TabLayout
+    private var defaultSelectedTabLayoutPosition: Int = 1
 
     // Loading state to prevent multiple loading
     private var loading = false
@@ -52,12 +58,14 @@ class RegisterFragment : Fragment() {
     //How many card we can see until it load more movements
     private val visibleThreshold = 3
 
+    //PieChart in fragment_register
+    private lateinit var pieChart: PieChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         // Create dummy data if no movement exists
         testViewModel.createDummyDataIfNoMovement()
@@ -66,7 +74,8 @@ class RegisterFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_register, container, false)
 
         // Initialize PieChart
-        pieChart = view.findViewById(R.id.pie_chart)
+        //TODO RIMUOVERE PIECHART SE NON SERVE anche dal fragment xml
+        pieChart = view.findViewById<PieChart>(R.id.pie_chart)
 
         // Initialize RecyclerViews
         initializeRecyclerViews(view)
@@ -74,19 +83,41 @@ class RegisterFragment : Fragment() {
         // Initialize TabLayout
         initializeTabLayout(view)
 
+        // Initialize TextView
+        initializeTextView(view)
+
         // Create the adapters with an empty list
         initializeAdapters()
 
         // Set the adapters and layout managers to the RecyclerViews
         setupRecyclerViews()
 
-        // Call the ViewModel method to load initial data
-        movementWithCategoryViewModel.loadInitialMovements()
-        categoryTotalViewModel.loadCategoryTotal()
-
         // Observe data changes and update the UI
         observeViewModelData()
+
+        // Call the ViewModel method to load initial data
+        movementWithCategoryViewModel.loadInitialMovements()
+        movementWithCategoryViewModel.loadTotalAmounts()
+        categoryTotalViewModel.loadCategoryTotal()
+
         return view
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //TODO salva in datastore o sharedpreference
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //TODO leggi da datastore o sharedpreference
+        //tabLayout.getTabAt(defaultSelectedTabLayoutPosition)?.select()
+    }
+
+    private fun initializeTextView(view: View) {
+        totalPositiveTextView = view.findViewById(R.id.text_top_left_recycler_view)
+        totalNegativeTextView = view.findViewById(R.id.text_top_right_recycler_view)
+        totalAllTextView = view.findViewById(R.id.text_top_center_recycler_view)
     }
 
     private fun initializeRecyclerViews(view: View) {
@@ -98,6 +129,7 @@ class RegisterFragment : Fragment() {
 
     private fun initializeTabLayout(view: View) {
         tabLayout = view.findViewById(R.id.register_tab_layout)
+        tabLayout.getTabAt(defaultSelectedTabLayoutPosition)?.select();
         addTabItemListener()
     }
 
@@ -133,8 +165,17 @@ class RegisterFragment : Fragment() {
         movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
             updateAdapter(negativeAdapter, movements)
         }
-        categoryTotalViewModel.allData.observe(viewLifecycleOwner){ categories ->
+        categoryTotalViewModel.allData.observe(viewLifecycleOwner) { categories ->
             updatePieChart(categories)
+        }
+        movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) { amount ->
+            updateTextContainer(amount, "totalAll")
+        }
+        movementWithCategoryViewModel.totalPositiveAmount.observe(viewLifecycleOwner) { amount ->
+            updateTextContainer(amount, "totalPositive")
+        }
+        movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) { amount ->
+            updateTextContainer(amount, "totalNegative")
         }
     }
 
@@ -240,6 +281,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun updatePieChart(categoryTotals: List<CategoryTotal>) {
+
         val entries = ArrayList<PieEntry>()
         val colors = ArrayList<Int>()
 
@@ -259,4 +301,30 @@ class RegisterFragment : Fragment() {
         pieChart.data = data
         pieChart.invalidate() // refresh
     }
+
+    private fun updateTextContainer(amount: Double, type: String) {
+
+        when (type) {
+            "totalAll" -> {
+                totalAllTextView.text = String.format("%.2f", amount)
+                val euroView = view?.findViewById<TextView>(R.id.euro_symbol_center)
+                if (euroView != null) {
+                    val colorRes = if (amount > 0) R.color.green else R.color.red
+                    val color = ContextCompat.getColor(requireContext(), colorRes)
+                    euroView.setTextColor(color)
+                    totalAllTextView.setTextColor(color)
+                }
+            }
+
+            "totalPositive" -> {
+                totalPositiveTextView.text = String.format("%.2f", amount)
+            }
+
+            "totalNegative" -> {
+                totalNegativeTextView.text = String.format("%.2f", amount)
+            }
+        }
+    }
+
+
 }
