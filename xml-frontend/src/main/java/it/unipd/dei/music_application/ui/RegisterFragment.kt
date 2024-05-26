@@ -26,6 +26,7 @@ import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
+import java.util.UUID
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -155,10 +156,21 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initializeAutoCompleteTextView(view: View) {
+        selectedCategory = Category(UUID.randomUUID(), "Tutte", System.currentTimeMillis(), System.currentTimeMillis())
         autoCompleteTextView = view.findViewById(R.id.menu)
         autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
-            selectedCategory = parent.getItemAtPosition(position) as Category}
-        //TODO mettere la categoria TUTTI
+            autoCompleteTextView.clearFocus()
+            // Ottieni il riferimento all'InputMethodManager
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            // Nascondi la tastiera virtuale
+            inputMethodManager.hideSoftInputFromWindow(autoCompleteTextView.windowToken, 0)
+            val temp = selectedCategory
+            selectedCategory = parent.getItemAtPosition(position) as Category
+            if(selectedCategory != temp) {
+                //TODO cambia le recyclerView
+            }
+        }
     }
 
     private fun setupRecyclerViews() {
@@ -353,9 +365,24 @@ class RegisterFragment : Fragment() {
 
     private fun updateDropdownMenu(categories: List<Category>) {
         arrayAdapter =
-            context?.let { ArrayAdapter(it, android.R.layout.simple_dropdown_item_1line, categories) }!!
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    android.R.layout.simple_dropdown_item_1line,
+                    listOf(
+                        Category(
+                            UUID.randomUUID(),
+                            "Tutte",
+                            System.currentTimeMillis(),
+                            System.currentTimeMillis()
+                        )
+                    ) + categories
+                )
+            }!!
         autoCompleteTextView.setAdapter(arrayAdapter)
 
+        // Di default sono tutte le categorie
+        autoCompleteTextView.setText("Tutte", false)
+        autoCompleteTextView.setSelection(0)
     }
-
 }

@@ -8,11 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.music_application.R
+import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
 
 class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
     RecyclerView.Adapter<MovementCardAdapter.MovementViewHolder>() {
-
+        //private lateinit var previousFilteredCategory: Category
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovementViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_movement_card, parent, false)
@@ -32,6 +33,9 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
         notifyDataSetChanged() // Notifica che i dati sono cambiati
     }
 
+    fun filterCategory(){
+
+    }
     fun updateMovements(
         newMovements: List<MovementWithCategory>,
         startChangePosition: Int,
