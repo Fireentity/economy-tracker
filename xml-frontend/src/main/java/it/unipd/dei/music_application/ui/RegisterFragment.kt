@@ -1,11 +1,12 @@
 package it.unipd.dei.music_application.ui
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,9 +20,10 @@ import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
+import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.CategoryTotal
 import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.view.CategoryTotalViewModel
+import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
 
@@ -31,12 +33,12 @@ class RegisterFragment : Fragment() {
     // ViewModels
     private val testViewModel: TestViewModel by viewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
-    private val categoryTotalViewModel: CategoryTotalViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by viewModels()
 
     // Adapters for RecyclerViews
-    private lateinit var allAdapter: MovementCardAdapter
-    private lateinit var positiveAdapter: MovementCardAdapter
-    private lateinit var negativeAdapter: MovementCardAdapter
+    private lateinit var allRecyclerViewAdapter: MovementCardAdapter
+    private lateinit var positiveRecyclerViewAdapter: MovementCardAdapter
+    private lateinit var negativeRecyclerViewAdapter: MovementCardAdapter
 
     // RecyclerViews in fragment_register layout
     private lateinit var allRecyclerView: RecyclerView
@@ -52,11 +54,20 @@ class RegisterFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private var defaultSelectedTabLayoutPosition: Int = 1
 
+    // AutoCompleteTextView in fragment_register layout
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
+
+    // Adapter for the dropdown menù
+    private lateinit var arrayAdapter: ArrayAdapter<Category>
+
     // Loading state to prevent multiple loading
     private var loading = false
 
     //How many card we can see until it load more movements
     private val visibleThreshold = 3
+
+    //
+    private lateinit var selectedCategory: Category
 
     //PieChart in fragment_register
     private lateinit var pieChart: PieChart
@@ -86,6 +97,9 @@ class RegisterFragment : Fragment() {
         // Initialize TextView
         initializeTextView(view)
 
+        // Initialize AutoCompleteTextView
+        initializeAutoCompleteTextView(view)
+
         // Create the adapters with an empty list
         initializeAdapters()
 
@@ -98,7 +112,8 @@ class RegisterFragment : Fragment() {
         // Call the ViewModel method to load initial data
         movementWithCategoryViewModel.loadInitialMovements()
         movementWithCategoryViewModel.loadTotalAmounts()
-        categoryTotalViewModel.loadCategoryTotal()
+        categoryViewModel.loadCategoryTotal()
+        categoryViewModel.getAllCategories()
 
         return view
     }
@@ -134,38 +149,45 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initializeAdapters() {
-        allAdapter = MovementCardAdapter(emptyList())
-        positiveAdapter = MovementCardAdapter(emptyList())
-        negativeAdapter = MovementCardAdapter(emptyList())
+        allRecyclerViewAdapter = MovementCardAdapter(emptyList())
+        positiveRecyclerViewAdapter = MovementCardAdapter(emptyList())
+        negativeRecyclerViewAdapter = MovementCardAdapter(emptyList())
+    }
+
+    private fun initializeAutoCompleteTextView(view: View) {
+        autoCompleteTextView = view.findViewById(R.id.menu)
+        autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
+            selectedCategory = parent.getItemAtPosition(position) as Category}
+        //TODO mettere la categoria TUTTI
     }
 
     private fun setupRecyclerViews() {
 
         allRecyclerView.apply {
-            adapter = allAdapter
+            adapter = allRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
         }
         positiveRecyclerView.apply {
-            adapter = positiveAdapter
+            adapter = positiveRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
         }
         negativeRecyclerView.apply {
-            adapter = negativeAdapter
+            adapter = negativeRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
 
     private fun observeViewModelData() {
         movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(allAdapter, movements)
+            updateAdapter(allRecyclerViewAdapter, movements)
         }
         movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(positiveAdapter, movements)
+            updateAdapter(positiveRecyclerViewAdapter, movements)
         }
         movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(negativeAdapter, movements)
+            updateAdapter(negativeRecyclerViewAdapter, movements)
         }
-        categoryTotalViewModel.allData.observe(viewLifecycleOwner) { categories ->
+        categoryViewModel.allData.observe(viewLifecycleOwner) { categories ->
             updatePieChart(categories)
         }
         movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) { amount ->
@@ -176,6 +198,9 @@ class RegisterFragment : Fragment() {
         }
         movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) { amount ->
             updateTextContainer(amount, "totalNegative")
+        }
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
+            updateDropdownMenu(categories)
         }
     }
 
@@ -249,19 +274,19 @@ class RegisterFragment : Fragment() {
                 // On tab reselected it scroll himself to the first element (if present)
                 when (tab?.text) {
                     "Tutti" -> {
-                        if (allAdapter.itemCount > 0) {
+                        if (allRecyclerViewAdapter.itemCount > 0) {
                             allRecyclerView.scrollToPosition(0)
                         }
                     }
 
                     "Uscite" -> {
-                        if (negativeAdapter.itemCount > 0) {
+                        if (negativeRecyclerViewAdapter.itemCount > 0) {
                             negativeRecyclerView.scrollToPosition(0)
                         }
                     }
 
                     "Entrate" -> {
-                        if (positiveAdapter.itemCount > 0) {
+                        if (positiveRecyclerViewAdapter.itemCount > 0) {
                             positiveRecyclerView.scrollToPosition(0)
                         }
                     }
@@ -326,5 +351,11 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    private fun updateDropdownMenu(categories: List<Category>) {
+        arrayAdapter =
+            context?.let { ArrayAdapter(it, android.R.layout.simple_dropdown_item_1line, categories) }!!
+        autoCompleteTextView.setAdapter(arrayAdapter)
+
+    }
 
 }

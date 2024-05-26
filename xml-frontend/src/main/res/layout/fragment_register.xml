@@ -28,17 +28,19 @@
                 app:title="Registro" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/menu"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/categoria">
+                android:hint="@string/categoria"
+                android:background="@color/white">
 
                 <AutoCompleteTextView
+                    android:id="@+id/menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/categoria"
-                    android:inputType="none"/>
+                    android:text="Tutti"
+                    android:inputType="none"
+                    android:background="@color/white"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

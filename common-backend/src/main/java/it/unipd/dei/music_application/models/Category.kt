@@ -11,4 +11,8 @@ data class Category(
     val identifier: String,
     val createdAt: Long,
     val updatedAt: Long
-)
+){
+    override fun toString(): String {
+        return identifier
+    }
+}
