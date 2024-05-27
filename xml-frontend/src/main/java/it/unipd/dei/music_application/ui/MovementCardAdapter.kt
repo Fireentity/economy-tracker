@@ -1,5 +1,6 @@
 package it.unipd.dei.music_application.ui
 
+import android.annotation.SuppressLint
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.music_application.R
-import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
 
 class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
     RecyclerView.Adapter<MovementCardAdapter.MovementViewHolder>() {
-        //private lateinit var previousFilteredCategory: Category
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovementViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_movement_card, parent, false)
@@ -26,31 +25,33 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
     }
 
     override fun getItemCount(): Int = movements.size
-    // Metodo per aggiornare i movimenti e notificare i cambiamenti
 
     fun updateMovements(newMovements: List<MovementWithCategory>) {
         this.movements = newMovements
-        notifyDataSetChanged() // Notifica che i dati sono cambiati
+        notifyDataSetChanged()
     }
 
-    fun filterCategory(){
-
-    }
     fun updateMovements(
         newMovements: List<MovementWithCategory>,
         startChangePosition: Int,
         itemCount: Int
     ) {
         this.movements = newMovements
-        notifyItemRangeInserted(startChangePosition, itemCount) // Notifica che i dati sono cambiati
+        notifyItemRangeInserted(startChangePosition, itemCount)
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear() {
+        this.movements = emptyList()
+        notifyDataSetChanged()
+    }
+
 
     fun getMovementsCount(): Int {
         return movements.size
     }
 
     class MovementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //private val nameTextView: TextView = itemView.findViewById(R.id.image)
         private val categoryTextView: TextView = itemView.findViewById(R.id.movement_card_category)
         private val amountTextView: TextView = itemView.findViewById(R.id.movement_card_amount)
         private val dateTextView: TextView = itemView.findViewById(R.id.movement_card_date)

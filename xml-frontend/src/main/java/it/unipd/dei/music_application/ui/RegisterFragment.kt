@@ -13,16 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.CategoryTotal
 import it.unipd.dei.music_application.models.MovementWithCategory
+import it.unipd.dei.music_application.utils.Constants.TUTTE_CATEGORY_IDENTIFIER
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
@@ -64,14 +61,19 @@ class RegisterFragment : Fragment() {
     // Loading state to prevent multiple loading
     private var loading = false
 
-    //How many card we can see until it load more movements
+    // How many card we can see until it load more movements
     private val visibleThreshold = 3
 
-    //
-    private lateinit var selectedCategory: Category
+    // Utils for latest view Category and the default Category with all movements
+    private var tutteCategory =
+        Category(
+            UUID.randomUUID(),
+            TUTTE_CATEGORY_IDENTIFIER,
+            System.currentTimeMillis(),
+            System.currentTimeMillis()
+        )
+    private var selectedCategory = tutteCategory
 
-    //PieChart in fragment_register
-    private lateinit var pieChart: PieChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,10 +86,6 @@ class RegisterFragment : Fragment() {
 
         // Inflate the layout
         val view = inflater.inflate(R.layout.fragment_register, container, false)
-
-        // Initialize PieChart
-        //TODO RIMUOVERE PIECHART SE NON SERVE anche dal fragment xml
-        pieChart = view.findViewById<PieChart>(R.id.pie_chart)
 
         // Initialize RecyclerViews
         initializeRecyclerViews(view)
@@ -111,17 +109,17 @@ class RegisterFragment : Fragment() {
         observeViewModelData()
 
         // Call the ViewModel method to load initial data
-        movementWithCategoryViewModel.loadInitialMovements()
-        movementWithCategoryViewModel.loadTotalAmounts()
-        categoryViewModel.loadCategoryTotal()
+        movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
+        movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
         categoryViewModel.getAllCategories()
-
         return view
     }
 
     override fun onPause() {
         super.onPause()
-        //TODO salva in datastore o sharedpreference
+        //TODO salva in datastore o sharedpreference:
+        //ultima categoria vista? cambia anche updateDropdownMenu
+        //ultimo pannello visto (entrate/uscite/tutti)
     }
 
     override fun onResume() {
@@ -156,19 +154,23 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initializeAutoCompleteTextView(view: View) {
-        selectedCategory = Category(UUID.randomUUID(), "Tutte", System.currentTimeMillis(), System.currentTimeMillis())
         autoCompleteTextView = view.findViewById(R.id.menu)
         autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
             autoCompleteTextView.clearFocus()
-            // Ottieni il riferimento all'InputMethodManager
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val temp = parent.getItemAtPosition(position) as Category
+            if (selectedCategory != temp) {
 
-            // Nascondi la tastiera virtuale
-            inputMethodManager.hideSoftInputFromWindow(autoCompleteTextView.windowToken, 0)
-            val temp = selectedCategory
-            selectedCategory = parent.getItemAtPosition(position) as Category
-            if(selectedCategory != temp) {
-                //TODO cambia le recyclerView
+                loading = true
+                selectedCategory = temp
+
+                allRecyclerViewAdapter.clear()
+                positiveRecyclerViewAdapter.clear()
+                negativeRecyclerViewAdapter.clear()
+
+                movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
+                movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
+
+                loading = false
             }
         }
     }
@@ -199,9 +201,6 @@ class RegisterFragment : Fragment() {
         movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
             updateAdapter(negativeRecyclerViewAdapter, movements)
         }
-        categoryViewModel.allData.observe(viewLifecycleOwner) { categories ->
-            updatePieChart(categories)
-        }
         movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) { amount ->
             updateTextContainer(amount, "totalAll")
         }
@@ -218,13 +217,13 @@ class RegisterFragment : Fragment() {
 
     private fun addScrollListenerForAllRecycleViews() {
         addScrollListener(allRecyclerView) {
-            movementWithCategoryViewModel.loadSomeMovements()
+            movementWithCategoryViewModel.loadSomeMovementsByCategory(selectedCategory)
         }
         addScrollListener(positiveRecyclerView) {
-            movementWithCategoryViewModel.loadSomePositiveMovements()
+            movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(selectedCategory)
         }
         addScrollListener(negativeRecyclerView) {
-            movementWithCategoryViewModel.loadSomeNegativeMovements()
+            movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(selectedCategory)
         }
 
     }
@@ -235,7 +234,7 @@ class RegisterFragment : Fragment() {
     ) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!loading && recyclerView.visibility == View.VISIBLE) {
+                if (dy > 0 && !loading && recyclerView.visibility == View.VISIBLE) {
                     super.onScrolled(recyclerView, dx, dy)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val totalItemCount = layoutManager.itemCount
@@ -314,29 +313,9 @@ class RegisterFragment : Fragment() {
     ) {
         val startChangePosition = adapter.getMovementsCount()
         val itemCount = newMovements.size - startChangePosition
-        adapter.updateMovements(newMovements, startChangePosition, itemCount)
-    }
-
-    private fun updatePieChart(categoryTotals: List<CategoryTotal>) {
-
-        val entries = ArrayList<PieEntry>()
-        val colors = ArrayList<Int>()
-
-        for (categoryTotal in categoryTotals) {
-            entries.add(PieEntry(categoryTotal.totalAmount.toFloat(), categoryTotal.identifier))
-            if (categoryTotal.totalAmount >= 0) {
-                colors.add(Color.GREEN) // Colore per valori positivi
-            } else {
-                colors.add(Color.RED) // Colore per valori negativi
-            }
+        if (itemCount > 0) {
+            adapter.updateMovements(newMovements, startChangePosition, itemCount)
         }
-
-        val dataSet = PieDataSet(entries, "Movements by Category")
-        dataSet.colors = colors
-
-        val data = PieData(dataSet)
-        pieChart.data = data
-        pieChart.invalidate() // refresh
     }
 
     private fun updateTextContainer(amount: Double, type: String) {
@@ -370,19 +349,14 @@ class RegisterFragment : Fragment() {
                     it,
                     android.R.layout.simple_dropdown_item_1line,
                     listOf(
-                        Category(
-                            UUID.randomUUID(),
-                            "Tutte",
-                            System.currentTimeMillis(),
-                            System.currentTimeMillis()
-                        )
+                        tutteCategory
                     ) + categories
                 )
             }!!
         autoCompleteTextView.setAdapter(arrayAdapter)
 
         // Di default sono tutte le categorie
-        autoCompleteTextView.setText("Tutte", false)
+        autoCompleteTextView.setText(TUTTE_CATEGORY_IDENTIFIER, false)
         autoCompleteTextView.setSelection(0)
     }
 }

@@ -33,7 +33,7 @@ class TestViewModel @Inject constructor(
     )
 
     fun createDummyDataIfNoMovement() {
-        //deleteAllMovements()
+        //deleteAll()
         viewModelScope.launch {
             movementsCount = movementDao.getMovementsCount()
             if (movementDao.getMovementsCount() == 0) {
@@ -53,7 +53,7 @@ class TestViewModel @Inject constructor(
                     categoryDao.insertCategory(category)
 
                     // Crea 50 movimenti fittizi associati alla categoria
-                    val movements = List(10) { index ->
+                    val movements = List(100) { index ->
                         Movement(
                             uuid = UUID.randomUUID(),
                             amount = Random.nextInt(-100, 100) + Random.nextInt(0, 10) * 0.01,
@@ -72,10 +72,20 @@ class TestViewModel @Inject constructor(
         }
     }
 
-    fun deleteAllMovements() {
+    private fun deleteAllCategories() {
+        viewModelScope.launch {
+            categoryDao.deleteAllCategories()
+        }
+    }
+
+    private fun deleteAllMovements() {
         viewModelScope.launch {
             movementDao.deleteAllMovements()
         }
+    }
+    private fun deleteAll(){
+        deleteAllCategories()
+        deleteAllMovements()
     }
 }
 

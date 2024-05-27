@@ -23,13 +23,6 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     private val _allCategories = MutableLiveData<List<Category>>()
     val allCategories: LiveData<List<Category>> = _allCategories
 
-    //TODO mostrare grafici diversi in base alle pagine?
-    fun loadCategoryTotal() {
-        viewModelScope.launch {
-            val loadedData = categoryDao.getTotalAmountByCategory()
-            _allCategoryTotal.postValue(loadedData)
-        }
-    }
 
     fun getAllCategories() {
         viewModelScope.launch {

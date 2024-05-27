@@ -22,4 +22,7 @@ interface CategoryDao {
     @Transaction
     @Query("SELECT categories.identifier, SUM(amount) as totalAmount FROM movements JOIN categories ON movements.categoryId = categories.uuid GROUP BY categoryId")
     suspend fun getTotalAmountByCategory(): List<CategoryTotal>
+    @Transaction
+    @Query("DELETE FROM categories")
+    fun deleteAllCategories()
 }

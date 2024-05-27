@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.music_application.daos.MovementDao
+import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
+import it.unipd.dei.music_application.utils.Constants.TUTTE_CATEGORY_IDENTIFIER
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,7 +18,6 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val movementDao: MovementDao
 ) : ViewModel() {
 
-    // LiveData for movements with categories
     private val _allMovementsWithCategory = MutableLiveData<List<MovementWithCategory>>()
     val allData: LiveData<List<MovementWithCategory>> = _allMovementsWithCategory
 
@@ -25,7 +27,6 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val _negativeMovementsWithCategory = MutableLiveData<List<MovementWithCategory>>()
     val negativeData: LiveData<List<MovementWithCategory>> = _negativeMovementsWithCategory
 
-    // LiveData for movementsAmount
     private val _sumAllMovementsAmount = MutableLiveData<Double>()
     val totalAllAmount: LiveData<Double> = _sumAllMovementsAmount
 
@@ -35,20 +36,34 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val _sumNegativeMovementsAmount = MutableLiveData<Double>()
     val totalNegativeAmount: LiveData<Double> = _sumNegativeMovementsAmount
 
-    // Offset for pagination
     private var currentAllOffset = 0
     private var currentPositiveOffset = 0
     private var currentNegativeOffset = 0
 
-    // Page size for pagination
-    private val pageSize = 7
+    private val pageSize = 10
 
-    // Load a specific type of movements with pagination
+
     private fun loadMovements(
         offset: Int,
-        dataLoader: suspend (Int, Int) -> List<MovementWithCategory>,
+        updateOffset: (Int) -> Unit,
+        dataLoader: suspend (UUID, Int, Int) -> List<MovementWithCategory>,
         liveData: MutableLiveData<List<MovementWithCategory>>,
-        updateOffset: (Int) -> Unit
+        category: Category
+    ) {
+        viewModelScope.launch {
+            val loadedData = dataLoader(category.uuid, pageSize, offset)
+            if (loadedData.isNotEmpty()) {
+                liveData.postValue((liveData.value ?: emptyList()) + loadedData)
+                updateOffset(offset + loadedData.size)
+            }
+        }
+    }
+
+    private fun loadMovements(
+        offset: Int,
+        updateOffset: (Int) -> Unit,
+        dataLoader: suspend (Int, Int) -> List<MovementWithCategory>,
+        liveData: MutableLiveData<List<MovementWithCategory>>
     ) {
         viewModelScope.launch {
             val loadedData = dataLoader(pageSize, offset)
@@ -59,34 +74,114 @@ class MovementWithCategoryViewModel @Inject constructor(
         }
     }
 
-    // Load some movements
-    fun loadSomeMovements() {
-        loadMovements(
-            currentAllOffset,
-            movementDao::getSomeMovements,
-            _allMovementsWithCategory
-        ) { newOffset -> currentAllOffset = newOffset }
+
+    fun loadSomeMovementsByCategory(category: Category) {
+        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+            loadMovements(currentAllOffset, {
+                currentAllOffset = it
+            }, movementDao::getSomeMovements, _allMovementsWithCategory)
+        } else {
+            loadMovements(currentAllOffset, {
+                currentAllOffset = it
+            }, movementDao::getSomeMovementsByCategory, _allMovementsWithCategory, category)
+        }
     }
 
-    // Load some positive movements
-    fun loadSomePositiveMovements() {
-        loadMovements(
-            currentPositiveOffset,
-            movementDao::getSomePositiveMovements,
-            _positiveMovementsWithCategory
-        ) { newOffset -> currentPositiveOffset = newOffset }
+    fun loadSomePositiveMovementsByCategory(category: Category) {
+        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+            loadMovements(currentPositiveOffset, {
+                currentPositiveOffset = it
+            }, movementDao::getSomePositiveMovements, _positiveMovementsWithCategory)
+        } else {
+            loadMovements(
+                currentPositiveOffset,
+                {
+                    currentPositiveOffset = it
+                },
+                movementDao::getSomePositiveMovementsByCategory,
+                _positiveMovementsWithCategory,
+                category
+            )
+        }
     }
 
-    // Load some negative movements
-    fun loadSomeNegativeMovements() {
-        loadMovements(
-            currentNegativeOffset,
-            movementDao::getSomeNegativeMovements,
-            _negativeMovementsWithCategory
-        ) { newOffset -> currentNegativeOffset = newOffset }
+    fun loadSomeNegativeMovementsByCategory(category: Category) {
+        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+            loadMovements(currentNegativeOffset, {
+                currentNegativeOffset = it
+            }, movementDao::getSomeNegativeMovements, _negativeMovementsWithCategory)
+        } else {
+            loadMovements(
+                currentNegativeOffset,
+                {
+                    currentNegativeOffset = it
+                },
+                movementDao::getSomeNegativeMovementsByCategory,
+                _negativeMovementsWithCategory,
+                category
+            )
+        }
     }
 
-    // Load all movements (without pagination)
+    private fun loadTotalAmount(
+        amountLoader: suspend () -> Double,
+        liveData: MutableLiveData<Double>
+    ) {
+        viewModelScope.launch {
+            val totalAmount = amountLoader()
+            liveData.postValue(totalAmount)
+        }
+    }
+
+    private fun loadTotalAmount(
+        amountLoader: suspend (UUID) -> Double,
+        liveData: MutableLiveData<Double>,
+        category: Category
+    ) {
+        viewModelScope.launch {
+            val totalAmount = amountLoader(category.uuid)
+            liveData.postValue(totalAmount)
+        }
+    }
+
+    fun loadTotalAmountsByCategory(category: Category) {
+        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+            loadTotalAmount(movementDao::getTotalAmount, _sumAllMovementsAmount)
+            loadTotalAmount(movementDao::getTotalPositiveAmount, _sumPositiveMovementsAmount)
+            loadTotalAmount(movementDao::getTotalNegativeAmount, _sumNegativeMovementsAmount)
+        } else {
+            loadTotalAmount(
+                movementDao::getTotalAmountByCategory,
+                _sumAllMovementsAmount,
+                category
+            )
+            loadTotalAmount(
+                movementDao::getTotalPositiveAmountByCategory,
+                _sumPositiveMovementsAmount,
+                category
+            )
+            loadTotalAmount(
+                movementDao::getTotalNegativeAmountByCategory,
+                _sumNegativeMovementsAmount,
+                category
+            )
+        }
+    }
+
+    fun loadInitialMovementsByCategory(category: Category) {
+        currentAllOffset = 0
+        currentPositiveOffset = 0
+        currentNegativeOffset = 0
+
+        _allMovementsWithCategory.postValue(emptyList())
+        _positiveMovementsWithCategory.postValue(emptyList())
+        _negativeMovementsWithCategory.postValue(emptyList())
+
+        loadSomeMovementsByCategory(category)
+        loadSomePositiveMovementsByCategory(category)
+        loadSomeNegativeMovementsByCategory(category)
+    }
+
     private fun loadAllMovements(
         dataLoader: suspend () -> List<MovementWithCategory>,
         liveData: MutableLiveData<List<MovementWithCategory>>
@@ -96,56 +191,17 @@ class MovementWithCategoryViewModel @Inject constructor(
             liveData.postValue(loadedData)
         }
     }
-
-    private fun getAllMovements() {
+    /*
+    fun getAllMovements() {
         loadAllMovements(movementDao::getAllMovements, _allMovementsWithCategory)
     }
 
-    private fun getAllPositiveMovements() {
+    fun getAllPositiveMovements() {
         loadAllMovements(movementDao::getAllPositiveMovements, _positiveMovementsWithCategory)
     }
 
-    private fun getAllNegativeMovements() {
+    fun getAllNegativeMovements() {
         loadAllMovements(movementDao::getAllNegativeMovements, _negativeMovementsWithCategory)
     }
-
-    private fun loadTotalAllAmount() {
-        viewModelScope.launch {
-
-            val totalAmount = movementDao.getTotalAmount()
-            _sumAllMovementsAmount.postValue(totalAmount)
-        }
-    }
-
-    private fun loadTotalPositiveAmount() {
-        viewModelScope.launch {
-
-            val totalPositive = movementDao.getTotalPositiveAmount()
-            _sumPositiveMovementsAmount.postValue(totalPositive)
-        }
-    }
-
-    private fun loadTotalNegativeAmount() {
-        viewModelScope.launch {
-
-            val totalNegative = movementDao.getTotalNegativeAmount()
-            _sumNegativeMovementsAmount.postValue(totalNegative)
-
-        }
-    }
-
-    fun loadTotalAmounts() {
-        loadTotalAllAmount()
-        loadTotalPositiveAmount()
-        loadTotalNegativeAmount()
-    }
-
-
-    // Initial loading of movements
-    fun loadInitialMovements() {
-        loadSomeMovements()
-        loadSomePositiveMovements()
-        loadSomeNegativeMovements()
-    }
-
+    */
 }
