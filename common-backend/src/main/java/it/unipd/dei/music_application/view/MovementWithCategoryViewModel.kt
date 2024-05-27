@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.music_application.daos.MovementDao
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.utils.Constants.TUTTE_CATEGORY_IDENTIFIER
+import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
@@ -76,7 +76,7 @@ class MovementWithCategoryViewModel @Inject constructor(
 
 
     fun loadSomeMovementsByCategory(category: Category) {
-        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
             loadMovements(currentAllOffset, {
                 currentAllOffset = it
             }, movementDao::getSomeMovements, _allMovementsWithCategory)
@@ -88,7 +88,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     fun loadSomePositiveMovementsByCategory(category: Category) {
-        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
             loadMovements(currentPositiveOffset, {
                 currentPositiveOffset = it
             }, movementDao::getSomePositiveMovements, _positiveMovementsWithCategory)
@@ -106,7 +106,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     fun loadSomeNegativeMovementsByCategory(category: Category) {
-        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
             loadMovements(currentNegativeOffset, {
                 currentNegativeOffset = it
             }, movementDao::getSomeNegativeMovements, _negativeMovementsWithCategory)
@@ -145,7 +145,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     fun loadTotalAmountsByCategory(category: Category) {
-        if (category.identifier == TUTTE_CATEGORY_IDENTIFIER) {
+        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
             loadTotalAmount(movementDao::getTotalAmount, _sumAllMovementsAmount)
             loadTotalAmount(movementDao::getTotalPositiveAmount, _sumPositiveMovementsAmount)
             loadTotalAmount(movementDao::getTotalNegativeAmount, _sumNegativeMovementsAmount)

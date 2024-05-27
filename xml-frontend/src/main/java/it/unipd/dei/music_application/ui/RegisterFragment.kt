@@ -1,6 +1,5 @@
 package it.unipd.dei.music_application.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +16,8 @@ import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
-import it.unipd.dei.music_application.models.CategoryTotal
 import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.utils.Constants.TUTTE_CATEGORY_IDENTIFIER
+import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
@@ -68,7 +66,7 @@ class RegisterFragment : Fragment() {
     private var tutteCategory =
         Category(
             UUID.randomUUID(),
-            TUTTE_CATEGORY_IDENTIFIER,
+            ALL_CATEGORIES_IDENTIFIER,
             System.currentTimeMillis(),
             System.currentTimeMillis()
         )
@@ -356,7 +354,7 @@ class RegisterFragment : Fragment() {
         autoCompleteTextView.setAdapter(arrayAdapter)
 
         // Di default sono tutte le categorie
-        autoCompleteTextView.setText(TUTTE_CATEGORY_IDENTIFIER, false)
+        autoCompleteTextView.setText(ALL_CATEGORIES_IDENTIFIER, false)
         autoCompleteTextView.setSelection(0)
     }
 }

@@ -1,5 +1,5 @@
 package it.unipd.dei.music_application.utils
 
 object Constants{
-    const val TUTTE_CATEGORY_IDENTIFIER = "Tutte"
+    const val ALL_CATEGORIES_IDENTIFIER = "Tutte"
 }
