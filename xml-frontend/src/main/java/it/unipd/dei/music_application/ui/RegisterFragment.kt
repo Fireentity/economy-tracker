@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
@@ -52,6 +53,9 @@ class RegisterFragment : Fragment() {
 
     // AutoCompleteTextView in fragment_register layout
     private lateinit var autoCompleteTextView: AutoCompleteTextView
+
+    // FloatingActionButton in fragment_register layout
+    private lateinit var floatingActionButton: FloatingActionButton
 
     // Adapter for the dropdown menù
     private lateinit var arrayAdapter: ArrayAdapter<Category>
@@ -97,6 +101,9 @@ class RegisterFragment : Fragment() {
         // Initialize AutoCompleteTextView
         initializeAutoCompleteTextView(view)
 
+        // Initialize FloatingActionButton
+        initializeFloatingActionButton(view)
+
         // Create the adapters with an empty list
         initializeAdapters()
 
@@ -111,6 +118,18 @@ class RegisterFragment : Fragment() {
         movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
         categoryViewModel.getAllCategories()
         return view
+    }
+
+    private fun initializeFloatingActionButton(view: View) {
+        floatingActionButton = view.findViewById(R.id.floating_action_button)
+        floatingActionButton.setOnClickListener {
+            showDialogFragment()
+        }
+    }
+
+    private fun showDialogFragment() {
+        val dialogFragment = DialogInputFragment()
+        dialogFragment.show(parentFragmentManager, "DialogInputFragment")
     }
 
     override fun onPause() {

@@ -15,10 +15,6 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
     ViewModel() {
 
-    // LiveData for category total
-    private val _allCategoryTotal = MutableLiveData<List<CategoryTotal>>()
-    val allData: LiveData<List<CategoryTotal>> = _allCategoryTotal
-
     // LiveData for categories
     private val _allCategories = MutableLiveData<List<Category>>()
     val allCategories: LiveData<List<Category>> = _allCategories

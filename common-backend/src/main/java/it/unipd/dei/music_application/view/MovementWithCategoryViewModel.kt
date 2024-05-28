@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.music_application.daos.MovementDao
 import it.unipd.dei.music_application.models.Category
+import it.unipd.dei.music_application.models.Movement
 import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
 import kotlinx.coroutines.launch
@@ -191,17 +192,19 @@ class MovementWithCategoryViewModel @Inject constructor(
             liveData.postValue(loadedData)
         }
     }
-    /*
-    fun getAllMovements() {
-        loadAllMovements(movementDao::getAllMovements, _allMovementsWithCategory)
+
+    private val _insertResult = MutableLiveData<Boolean>()
+    val insertResult: LiveData<Boolean> get() = _insertResult
+
+    fun insertMovement(movement: Movement) {
+        viewModelScope.launch {
+            try {
+                movementDao.insertMovement(movement)
+                _insertResult.postValue(true)
+            } catch (e: Exception) {
+                _insertResult.postValue(false)
+            }
+        }
     }
 
-    fun getAllPositiveMovements() {
-        loadAllMovements(movementDao::getAllPositiveMovements, _positiveMovementsWithCategory)
-    }
-
-    fun getAllNegativeMovements() {
-        loadAllMovements(movementDao::getAllNegativeMovements, _negativeMovementsWithCategory)
-    }
-    */
 }
