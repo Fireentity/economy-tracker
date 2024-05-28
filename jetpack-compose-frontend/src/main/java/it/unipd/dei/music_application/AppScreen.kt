@@ -49,7 +49,6 @@ data class BottomNavigationItem(
 
 @Composable
 fun AppScreen(
-    //viewModel: OrderViewModel = viewModel(),
     db: BalanceDatabase,
     navController: NavHostController = rememberNavController()
 ) {

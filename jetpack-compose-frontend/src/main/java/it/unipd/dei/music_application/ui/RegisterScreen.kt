@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -38,11 +39,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.room.RoomDatabase
 import it.unipd.dei.music_application.MyLazyColumn
 import it.unipd.dei.music_application.database.BalanceDatabase
+import it.unipd.dei.music_application.view.CategoryTotalViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
+import it.unipd.dei.music_application.view.TestViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import it.unipd.dei.music_application.MyDivider
+import it.unipd.dei.music_application.daos.BalanceDao
+import it.unipd.dei.music_application.daos.CategoryDao
+import it.unipd.dei.music_application.daos.MovementDao
+import it.unipd.dei.music_application.models.MovementWithCategory
+import it.unipd.dei.music_application.models.CategoryTotal
 
 data class TabItem(
     val title: String
@@ -88,6 +100,45 @@ fun RegisterScreen(
     modifier: Modifier = Modifier
 ) {
     //val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    val balanceDao: BalanceDao = db.getBalanceDao()
+    val movementDao: MovementDao = db.getMovementDao()
+    val categoryDao: CategoryDao = db.getCategoryDao()
+
+    val categoryTotalViewModel = viewModel<CategoryTotalViewModel>(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return CategoryTotalViewModel(
+                    categoryDao
+                ) as T
+            }
+        }
+    )
+
+    val movementWithCategoryViewModel = viewModel<MovementWithCategoryViewModel>(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return MovementWithCategoryViewModel(
+                    movementDao
+                ) as T
+            }
+        }
+    )
+
+    val testViewModel = viewModel<TestViewModel>(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return TestViewModel(
+                    categoryDao,
+                    movementDao
+                ) as T
+            }
+        }
+    )
+
+    //testViewModel.createDummyDataIfNoMovement()
+
+
     val tabItems = listOf(
         TabItem(title = "Tutti"),
         TabItem(title = "Uscite"),
@@ -175,8 +226,10 @@ fun RegisterScreen(
 
                 MyLazyColumn(modifier = Modifier.fillMaxSize())
 
-                //val myViewModel: MovementWithCategoryViewModel = viewModel()
-                //myViewModel.loadSomeMovements()
+                //testViewModel.createDummyDataIfNoMovement()
+                //movementWithCategoryViewModel.loadInitialMovements()
+                //categoryTotalViewModel.loadCategoryTotal()
+                //val lista = movementWithCategoryViewModel.allData.value?.get(0)?.movement?.amount
             }
         }
     }

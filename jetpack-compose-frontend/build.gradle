@@ -68,6 +68,7 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3' //Coroutines
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0' //ViewModel ktx
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0'
 
     implementation 'androidx.room:room-ktx:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'

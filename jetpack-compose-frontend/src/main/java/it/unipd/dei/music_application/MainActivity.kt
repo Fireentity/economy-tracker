@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
     ).build()
     */
 
-    private val categoryViewModel by viewModels<CategoryTotalViewModel>(
+    /*private val categoryViewModel by viewModels<CategoryTotalViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
                 fun <CategoryTotalViewModel : ViewModel?> create(modelClass: Class<it.unipd.dei.music_application.view.CategoryTotalViewModel>): it.unipd.dei.music_application.view.CategoryTotalViewModel {
@@ -37,17 +37,17 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    )
+    )*/
 
-    private val movementViewModel by viewModels<MovementWithCategoryViewModel>(
+    /*private val movementViewModel by viewModels<MovementWithCategoryViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
-                fun <MovementWithCategoryViewModel : ViewModel?> create(modelClass: Class<it.unipd.dei.music_application.view.MovementWithCategoryViewModel>): it.unipd.dei.music_application.view.MovementWithCategoryViewModel {
-                    return MovementWithCategoryViewModel(db.getMovementDao())
+                fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return MovementWithCategoryViewModel(db.getMovementDao()) as T
                 }
             }
         }
-    )
+    )*/
 
     /*private val testViewModel by viewModels<TestViewModel>(
         factoryProducer = {
