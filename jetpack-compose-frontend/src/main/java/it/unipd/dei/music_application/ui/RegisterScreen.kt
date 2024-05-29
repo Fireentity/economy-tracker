@@ -280,6 +280,20 @@ fun RegisterScreen(
 
                 //MyLazyColumn(modifier = Modifier.fillMaxSize())
 
+                testViewModel.createDummyDataIfNoMovement()
+                movementWithCategoryViewModel.loadInitialMovements()
+                val movements = movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
+                //Text(text = "${movements.value.size}")
+                LazyColumn(
+                    modifier = modifier
+                ) {
+                    val textModifier = Modifier.padding(16.dp)
+
+                    items(movements.value.size) { index ->
+                        Text(text = "${movements.value.get(index = index).movement.amount}", modifier = textModifier)
+                        MyDivider()
+                    }
+                }
             }
         }
     }
