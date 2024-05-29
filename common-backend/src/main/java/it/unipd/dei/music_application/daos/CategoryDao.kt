@@ -17,9 +17,12 @@ interface CategoryDao {
     suspend fun deleteCategory(category: Category)
 
     @Query("SELECT * FROM categories")
-    suspend fun getCategories(): List<Category>
+    suspend fun getAllCategories(): List<Category>
 
     @Transaction
     @Query("SELECT categories.identifier, SUM(amount) as totalAmount FROM movements JOIN categories ON movements.categoryId = categories.uuid GROUP BY categoryId")
     suspend fun getTotalAmountByCategory(): List<CategoryTotal>
+    @Transaction
+    @Query("DELETE FROM categories")
+    fun deleteAllCategories()
 }

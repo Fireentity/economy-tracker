@@ -1,26 +1,28 @@
 package it.unipd.dei.music_application.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
-import it.unipd.dei.music_application.models.CategoryTotal
+import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.view.CategoryTotalViewModel
+import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
+import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
+import java.util.UUID
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -28,36 +30,58 @@ class RegisterFragment : Fragment() {
     // ViewModels
     private val testViewModel: TestViewModel by viewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
-    private val categoryTotalViewModel: CategoryTotalViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by viewModels()
 
     // Adapters for RecyclerViews
-    private lateinit var allAdapter: MovementCardAdapter
-    private lateinit var positiveAdapter: MovementCardAdapter
-    private lateinit var negativeAdapter: MovementCardAdapter
+    private lateinit var allRecyclerViewAdapter: MovementCardAdapter
+    private lateinit var positiveRecyclerViewAdapter: MovementCardAdapter
+    private lateinit var negativeRecyclerViewAdapter: MovementCardAdapter
 
     // RecyclerViews in fragment_register layout
     private lateinit var allRecyclerView: RecyclerView
     private lateinit var positiveRecyclerView: RecyclerView
     private lateinit var negativeRecyclerView: RecyclerView
 
-    //PieChart in fragment_register layout
-    private lateinit var pieChart: PieChart
+    //TextView for displaying amounts in fragment_register layout
+    private lateinit var totalAllTextView: TextView
+    private lateinit var totalPositiveTextView: TextView
+    private lateinit var totalNegativeTextView: TextView
 
     // TabLayout in fragment_register layout
     private lateinit var tabLayout: TabLayout
+    private var defaultSelectedTabLayoutPosition: Int = 1
+
+    // AutoCompleteTextView in fragment_register layout
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
+
+    // FloatingActionButton in fragment_register layout
+    private lateinit var floatingActionButton: FloatingActionButton
+
+    // Adapter for the dropdown menù
+    private lateinit var arrayAdapter: ArrayAdapter<Category>
 
     // Loading state to prevent multiple loading
     private var loading = false
 
-    //How many card we can see until it load more movements
+    // How many card we can see until it load more movements
     private val visibleThreshold = 3
+
+    // Utils for latest view Category and the default Category with all movements
+    private var tutteCategory =
+        Category(
+            UUID.randomUUID(),
+            ALL_CATEGORIES_IDENTIFIER,
+            System.currentTimeMillis(),
+            System.currentTimeMillis()
+        )
+    private var selectedCategory = tutteCategory
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         // Create dummy data if no movement exists
         testViewModel.createDummyDataIfNoMovement()
@@ -65,14 +89,20 @@ class RegisterFragment : Fragment() {
         // Inflate the layout
         val view = inflater.inflate(R.layout.fragment_register, container, false)
 
-        // Initialize PieChart
-        pieChart = view.findViewById(R.id.pie_chart)
-
         // Initialize RecyclerViews
         initializeRecyclerViews(view)
 
         // Initialize TabLayout
         initializeTabLayout(view)
+
+        // Initialize TextView
+        initializeTextView(view)
+
+        // Initialize AutoCompleteTextView
+        initializeAutoCompleteTextView(view)
+
+        // Initialize FloatingActionButton
+        initializeFloatingActionButton(view)
 
         // Create the adapters with an empty list
         initializeAdapters()
@@ -80,13 +110,45 @@ class RegisterFragment : Fragment() {
         // Set the adapters and layout managers to the RecyclerViews
         setupRecyclerViews()
 
-        // Call the ViewModel method to load initial data
-        movementWithCategoryViewModel.loadInitialMovements()
-        categoryTotalViewModel.loadCategoryTotal()
-
         // Observe data changes and update the UI
         observeViewModelData()
+
+        // Call the ViewModel method to load initial data
+        movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
+        movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
+        categoryViewModel.getAllCategories()
         return view
+    }
+
+    private fun initializeFloatingActionButton(view: View) {
+        floatingActionButton = view.findViewById(R.id.floating_action_button)
+        floatingActionButton.setOnClickListener {
+            showDialogFragment()
+        }
+    }
+
+    private fun showDialogFragment() {
+        val dialogFragment = DialogInputFragment()
+        dialogFragment.show(parentFragmentManager, "DialogInputFragment")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //TODO salva in datastore o sharedpreference:
+        //ultima categoria vista? cambia anche updateDropdownMenu
+        //ultimo pannello visto (entrate/uscite/tutti)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //TODO leggi da datastore o sharedpreference
+        //tabLayout.getTabAt(defaultSelectedTabLayoutPosition)?.select()
+    }
+
+    private fun initializeTextView(view: View) {
+        totalPositiveTextView = view.findViewById(R.id.text_top_left_recycler_view)
+        totalNegativeTextView = view.findViewById(R.id.text_top_right_recycler_view)
+        totalAllTextView = view.findViewById(R.id.text_top_center_recycler_view)
     }
 
     private fun initializeRecyclerViews(view: View) {
@@ -98,55 +160,87 @@ class RegisterFragment : Fragment() {
 
     private fun initializeTabLayout(view: View) {
         tabLayout = view.findViewById(R.id.register_tab_layout)
+        tabLayout.getTabAt(defaultSelectedTabLayoutPosition)?.select();
         addTabItemListener()
     }
 
     private fun initializeAdapters() {
-        allAdapter = MovementCardAdapter(emptyList())
-        positiveAdapter = MovementCardAdapter(emptyList())
-        negativeAdapter = MovementCardAdapter(emptyList())
+        allRecyclerViewAdapter = MovementCardAdapter(emptyList())
+        positiveRecyclerViewAdapter = MovementCardAdapter(emptyList())
+        negativeRecyclerViewAdapter = MovementCardAdapter(emptyList())
+    }
+
+    private fun initializeAutoCompleteTextView(view: View) {
+        autoCompleteTextView = view.findViewById(R.id.menu)
+        autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
+            autoCompleteTextView.clearFocus()
+            val temp = parent.getItemAtPosition(position) as Category
+            if (selectedCategory != temp) {
+
+                loading = true
+                selectedCategory = temp
+
+                allRecyclerViewAdapter.clear()
+                positiveRecyclerViewAdapter.clear()
+                negativeRecyclerViewAdapter.clear()
+
+                movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
+                movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
+
+                loading = false
+            }
+        }
     }
 
     private fun setupRecyclerViews() {
 
         allRecyclerView.apply {
-            adapter = allAdapter
+            adapter = allRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
         }
         positiveRecyclerView.apply {
-            adapter = positiveAdapter
+            adapter = positiveRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
         }
         negativeRecyclerView.apply {
-            adapter = negativeAdapter
+            adapter = negativeRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
 
     private fun observeViewModelData() {
         movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(allAdapter, movements)
+            updateAdapter(allRecyclerViewAdapter, movements)
         }
         movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(positiveAdapter, movements)
+            updateAdapter(positiveRecyclerViewAdapter, movements)
         }
         movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(negativeAdapter, movements)
+            updateAdapter(negativeRecyclerViewAdapter, movements)
         }
-        categoryTotalViewModel.allData.observe(viewLifecycleOwner){ categories ->
-            updatePieChart(categories)
+        movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) { amount ->
+            updateTextContainer(amount, "totalAll")
+        }
+        movementWithCategoryViewModel.totalPositiveAmount.observe(viewLifecycleOwner) { amount ->
+            updateTextContainer(amount, "totalPositive")
+        }
+        movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) { amount ->
+            updateTextContainer(amount, "totalNegative")
+        }
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
+            updateDropdownMenu(categories)
         }
     }
 
     private fun addScrollListenerForAllRecycleViews() {
         addScrollListener(allRecyclerView) {
-            movementWithCategoryViewModel.loadSomeMovements()
+            movementWithCategoryViewModel.loadSomeMovementsByCategory(selectedCategory)
         }
         addScrollListener(positiveRecyclerView) {
-            movementWithCategoryViewModel.loadSomePositiveMovements()
+            movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(selectedCategory)
         }
         addScrollListener(negativeRecyclerView) {
-            movementWithCategoryViewModel.loadSomeNegativeMovements()
+            movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(selectedCategory)
         }
 
     }
@@ -157,7 +251,7 @@ class RegisterFragment : Fragment() {
     ) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!loading && recyclerView.visibility == View.VISIBLE) {
+                if (dy > 0 && !loading && recyclerView.visibility == View.VISIBLE) {
                     super.onScrolled(recyclerView, dx, dy)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val totalItemCount = layoutManager.itemCount
@@ -208,19 +302,19 @@ class RegisterFragment : Fragment() {
                 // On tab reselected it scroll himself to the first element (if present)
                 when (tab?.text) {
                     "Tutti" -> {
-                        if (allAdapter.itemCount > 0) {
+                        if (allRecyclerViewAdapter.itemCount > 0) {
                             allRecyclerView.scrollToPosition(0)
                         }
                     }
 
                     "Uscite" -> {
-                        if (negativeAdapter.itemCount > 0) {
+                        if (negativeRecyclerViewAdapter.itemCount > 0) {
                             negativeRecyclerView.scrollToPosition(0)
                         }
                     }
 
                     "Entrate" -> {
-                        if (positiveAdapter.itemCount > 0) {
+                        if (positiveRecyclerViewAdapter.itemCount > 0) {
                             positiveRecyclerView.scrollToPosition(0)
                         }
                     }
@@ -236,27 +330,50 @@ class RegisterFragment : Fragment() {
     ) {
         val startChangePosition = adapter.getMovementsCount()
         val itemCount = newMovements.size - startChangePosition
-        adapter.updateMovements(newMovements, startChangePosition, itemCount)
+        if (itemCount > 0) {
+            adapter.updateMovements(newMovements, startChangePosition, itemCount)
+        }
     }
 
-    private fun updatePieChart(categoryTotals: List<CategoryTotal>) {
-        val entries = ArrayList<PieEntry>()
-        val colors = ArrayList<Int>()
+    private fun updateTextContainer(amount: Double, type: String) {
 
-        for (categoryTotal in categoryTotals) {
-            entries.add(PieEntry(categoryTotal.totalAmount.toFloat(), categoryTotal.identifier))
-            if (categoryTotal.totalAmount >= 0) {
-                colors.add(Color.GREEN) // Colore per valori positivi
-            } else {
-                colors.add(Color.RED) // Colore per valori negativi
+        when (type) {
+            "totalAll" -> {
+                totalAllTextView.text = String.format("%.2f", amount)
+                val euroView = view?.findViewById<TextView>(R.id.euro_symbol_center)
+                if (euroView != null) {
+                    val colorRes = if (amount > 0) R.color.green_600 else R.color.rose_600
+                    val color = ContextCompat.getColor(requireContext(), colorRes)
+                    euroView.setTextColor(color)
+                    totalAllTextView.setTextColor(color)
+                }
+            }
+
+            "totalPositive" -> {
+                totalPositiveTextView.text = String.format("%.2f", amount)
+            }
+
+            "totalNegative" -> {
+                totalNegativeTextView.text = String.format("%.2f", amount)
             }
         }
+    }
 
-        val dataSet = PieDataSet(entries, "Movements by Category")
-        dataSet.colors = colors
+    private fun updateDropdownMenu(categories: List<Category>) {
+        arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    android.R.layout.simple_dropdown_item_1line,
+                    listOf(
+                        tutteCategory
+                    ) + categories
+                )
+            }!!
+        autoCompleteTextView.setAdapter(arrayAdapter)
 
-        val data = PieData(dataSet)
-        pieChart.data = data
-        pieChart.invalidate() // refresh
+        // Di default sono tutte le categorie
+        autoCompleteTextView.setText(ALL_CATEGORIES_IDENTIFIER, false)
+        autoCompleteTextView.setSelection(0)
     }
 }
