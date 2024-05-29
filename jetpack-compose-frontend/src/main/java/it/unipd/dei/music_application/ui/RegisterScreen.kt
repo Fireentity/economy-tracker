@@ -1,18 +1,23 @@
 package it.unipd.dei.music_application.ui
 
 
+import android.app.TimePickerDialog
 import android.content.Context
+import android.widget.TimePicker
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -25,10 +30,13 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,17 +63,55 @@ import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.daos.MovementDao
 import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.models.CategoryTotal
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import java.time.LocalDateTime
 
 data class TabItem(
     val title: String
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTimePicker() {
+    var dateTime = LocalDateTime.now()
+
+    val timePickerState = remember {
+        TimePickerState(
+            is24Hour = true,
+            initialHour = dateTime.hour,
+            initialMinute = dateTime.minute
+        )
+    }
+
+    TimePicker(state = timePickerState)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextInputDialog(
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit
 ) {
-    var textFieldState by remember { mutableStateOf(TextFieldValue()) }
+    var amountFieldState by remember { mutableStateOf(TextFieldValue()) }
+    var date by remember { mutableStateOf(TextFieldValue()) }
+
+    var selectedTime by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+    //val calendar = Calendar.getInstance()
+    var dateTime = LocalDateTime.now()
+    val hour = dateTime.hour
+    val minute = dateTime.minute
+
+    val timePickerDialog = TimePickerDialog(
+        context,
+        { _, hourOfDay, minute ->
+            selectedTime = String.format("%02d:%02d", hourOfDay, minute)
+        },
+        hour, minute, true
+    )
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -73,15 +119,23 @@ fun TextInputDialog(
         text = {
             Column {
                 TextField(
-                    value = textFieldState,
-                    onValueChange = { textFieldState = it },
-                    label = { Text("Input") }
-                )
+                    value = amountFieldState,
+                    onValueChange = { amountFieldState = it },
+                    label = { Text("Ammontare") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                );
+                TextField(
+                    value = selectedTime,
+                    onValueChange = { },
+                    label = { Text(text = "seleziona data") },
+                    modifier = Modifier.clickable { timePickerDialog.show() },
+                    readOnly = true
+                );
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(textFieldState.text) }) {
-                Text("Confirm")
+            Button(onClick = { onConfirm(amountFieldState.text) }) {
+                Text("Submit")
             }
         },
         dismissButton = {
@@ -222,14 +276,10 @@ fun RegisterScreen(
                     )
                 }
                 
-                Text(text = reversedText)
+                //Text(text = reversedText)
 
-                MyLazyColumn(modifier = Modifier.fillMaxSize())
+                //MyLazyColumn(modifier = Modifier.fillMaxSize())
 
-                //testViewModel.createDummyDataIfNoMovement()
-                //movementWithCategoryViewModel.loadInitialMovements()
-                //categoryTotalViewModel.loadCategoryTotal()
-                //val lista = movementWithCategoryViewModel.allData.value?.get(0)?.movement?.amount
             }
         }
     }
