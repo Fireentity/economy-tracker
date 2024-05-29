@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import it.unipd.dei.music_application.database.BalanceDatabase
 import it.unipd.dei.music_application.ui.theme.Music_applicationTheme
-import it.unipd.dei.music_application.view.CategoryTotalViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
 

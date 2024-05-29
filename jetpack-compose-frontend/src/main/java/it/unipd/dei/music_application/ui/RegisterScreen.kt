@@ -53,7 +53,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.RoomDatabase
 import it.unipd.dei.music_application.MyLazyColumn
 import it.unipd.dei.music_application.database.BalanceDatabase
-import it.unipd.dei.music_application.view.CategoryTotalViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -66,7 +65,12 @@ import it.unipd.dei.music_application.models.CategoryTotal
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import it.unipd.dei.music_application.DisplayMovements
+import it.unipd.dei.music_application.models.Category
+import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
+import it.unipd.dei.music_application.view.CategoryViewModel
 import java.time.LocalDateTime
+import java.util.UUID
 
 data class TabItem(
     val title: String
@@ -159,10 +163,10 @@ fun RegisterScreen(
     val movementDao: MovementDao = db.getMovementDao()
     val categoryDao: CategoryDao = db.getCategoryDao()
 
-    val categoryTotalViewModel = viewModel<CategoryTotalViewModel>(
+    val categoryTotalViewModel = viewModel<CategoryViewModel>(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CategoryTotalViewModel(
+                return CategoryViewModel(
                     categoryDao
                 ) as T
             }
@@ -216,7 +220,7 @@ fun RegisterScreen(
                     ),
                     title = {
                         Text(
-                            "Page title",
+                            "Registro",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -281,19 +285,16 @@ fun RegisterScreen(
                 //MyLazyColumn(modifier = Modifier.fillMaxSize())
 
                 testViewModel.createDummyDataIfNoMovement()
-                movementWithCategoryViewModel.loadInitialMovements()
-                val movements = movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
-                //Text(text = "${movements.value.size}")
-                LazyColumn(
-                    modifier = modifier
-                ) {
-                    val textModifier = Modifier.padding(16.dp)
+                var category= Category(
+                    UUID.randomUUID(),
+                    ALL_CATEGORIES_IDENTIFIER,
+                    System.currentTimeMillis(),
+                    System.currentTimeMillis()
+                )
+                movementWithCategoryViewModel.loadInitialMovementsByCategory(category)
+                var movements = movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
 
-                    items(movements.value.size) { index ->
-                        Text(text = "${movements.value.get(index = index).movement.amount}", modifier = textModifier)
-                        MyDivider()
-                    }
-                }
+                DisplayMovements(movements = movements, modifier = Modifier.fillMaxSize())
             }
         }
     }
