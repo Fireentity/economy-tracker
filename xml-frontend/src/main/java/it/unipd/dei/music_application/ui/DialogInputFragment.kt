@@ -2,6 +2,7 @@ package it.unipd.dei.music_application.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -16,18 +17,27 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.button.MaterialButtonToggleGroup
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.Movement
+import it.unipd.dei.music_application.utils.Constants.IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE
+import it.unipd.dei.music_application.utils.Constants.OPERATION_SUCCESSFUL_MESSAGE
+import it.unipd.dei.music_application.utils.Constants.OPERATION_UNSUCCESSFUL_MESSAGE
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 import java.util.UUID
 
@@ -37,8 +47,9 @@ class DialogInputFragment : DialogFragment() {
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
 
-    private lateinit var movementAmountTextField: TextInputEditText
+    private lateinit var movementAmountTextField: EditText
     private lateinit var movementCategoryIdTextField: AutoCompleteTextView
+    private lateinit var movementCategoryIdTextInputLayout: TextInputLayout
     private lateinit var movementCreatedAtTextField: EditText
     private lateinit var categoryIdentifierTextField: EditText
     private lateinit var sectionMovementLinearLayout: LinearLayout
@@ -50,6 +61,7 @@ class DialogInputFragment : DialogFragment() {
     private val selectedOption: LiveData<Int> = _selectedOption
 
     private lateinit var selectedCategory: Category
+    private lateinit var categoryIdentifier: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,6 +94,8 @@ class DialogInputFragment : DialogFragment() {
                 setText(selectedCategory.identifier)
             }
         }
+        movementCategoryIdTextInputLayout =
+            view.findViewById(R.id.input_movement_category_id_layout)
         movementCreatedAtTextField = view.findViewById(R.id.input_movement_created_at)
         movementCreatedAtTextField.setOnClickListener { showDateTimePickerDialog() }
         categoryIdentifierTextField = view.findViewById(R.id.input_category_identifier)
@@ -129,20 +143,77 @@ class DialogInputFragment : DialogFragment() {
     }
 
     private fun observeViewModels() {
-        movementWithCategoryViewModel.insertResult.observe(viewLifecycleOwner) { success ->
-            if (success) dismiss()
-            else {
-                // TODO: Show failure message
+        movementWithCategoryViewModel.insertResult.observe(viewLifecycleOwner) {
+            if (it != null) {
+                displaySuccessOrNot(it)
             }
         }
 
-        selectedOption.observe(viewLifecycleOwner) { optionId ->
-            changeInputFieldsById(optionId)
+        selectedOption.observe(viewLifecycleOwner) {
+            changeInputFieldsById(it)
         }
 
-        categoryViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
-            setAdapter(categories)
+        categoryViewModel.insertResult.observe(viewLifecycleOwner) {
+            if (it != null) {
+                displaySuccessOrNot(it)
+            }
         }
+
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+            setAdapter(it)
+        }
+
+        categoryViewModel.isCategoryIdentifierPresent.observe(viewLifecycleOwner) {
+            if (it != null) {
+                createCategoryOrDisplayError(it)
+            }
+        }
+    }
+
+    private fun displaySuccessOrNot(success: Boolean) {
+        if (success) {
+            Toast.makeText(
+                requireContext(),
+                OPERATION_SUCCESSFUL_MESSAGE,
+                Toast.LENGTH_SHORT
+            ).show()
+            dismiss()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                OPERATION_UNSUCCESSFUL_MESSAGE,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun createCategoryOrDisplayError(isPresent: Boolean) {
+        if (isPresent) {
+            categoryIdentifierTextField.text = null
+            val previousHint = categoryIdentifierTextField.hint
+            categoryIdentifierTextField.hint = IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE
+            submitButton.isEnabled = false
+            submitButton.setTextColor(Color.RED)
+            val previousButtonTextColor = submitButton.textColors
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1500)
+                categoryIdentifierTextField.hint = previousHint
+                categoryIdentifierTextField.setText(categoryIdentifier)
+                //TODO non cambia colore scopri perche
+                submitButton.setTextColor(previousButtonTextColor)
+                submitButton.isEnabled = true
+            }
+        } else {
+            val category = Category(
+                UUID.randomUUID(),
+                categoryIdentifier,
+                System.currentTimeMillis(),
+                System.currentTimeMillis()
+            )
+
+            categoryViewModel.insertCategory(category)
+        }
+
     }
 
     private fun setAdapter(categories: List<Category>) {
@@ -174,15 +245,20 @@ class DialogInputFragment : DialogFragment() {
     }
 
     private fun handleMovementSubmission() {
+        if (!this::selectedCategory.isInitialized) {
+            showTemporaryError(movementCategoryIdTextField)
+            return
+        }
+
         val amount = movementAmountTextField.text.toString().toDoubleOrNull()
         if (amount == null) {
-            // TODO: Show invalid amount message
+            showTemporaryError(movementAmountTextField)
             return
         }
 
         val createdAt = convertToMilliseconds(movementCreatedAtTextField.text.toString())
         if (createdAt < 0) {
-            // TODO: Show invalid date message
+            showTemporaryError(movementCreatedAtTextField)
             return
         }
 
@@ -197,7 +273,28 @@ class DialogInputFragment : DialogFragment() {
     }
 
     private fun handleCategorySubmission() {
-        // TODO: Handle category submission
+        categoryIdentifier = categoryIdentifierTextField.text.toString()
+        if (categoryIdentifier.isEmpty()) {
+            showTemporaryError(categoryIdentifierTextField)
+            return
+        }
+        // The access to database require an observer (isCategoryIdentifierPresent)
+        categoryViewModel.isCategoryIdentifierPresent(categoryIdentifier)
+    }
+
+
+    private fun showTemporaryError(textField: TextView) {
+        val previousTextColor = textField.textColors
+        val previousButtonTextColor = submitButton.textColors
+        textField.setTextColor(Color.RED)
+        submitButton.isEnabled = false
+        submitButton.setTextColor(Color.RED)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1500)
+            textField.setTextColor(previousTextColor)
+            submitButton.setTextColor(previousButtonTextColor)
+            submitButton.isEnabled = true
+        }
     }
 
     private fun showDateTimePickerDialog() {
@@ -256,4 +353,5 @@ class DialogInputFragment : DialogFragment() {
             -1
         }
     }
+
 }

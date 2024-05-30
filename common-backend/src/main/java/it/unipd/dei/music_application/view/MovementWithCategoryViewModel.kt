@@ -193,10 +193,11 @@ class MovementWithCategoryViewModel @Inject constructor(
         }
     }
 
-    private val _insertResult = MutableLiveData<Boolean>()
-    val insertResult: LiveData<Boolean> get() = _insertResult
+    private val _insertResult = MutableLiveData<Boolean?>()
+    val insertResult: LiveData<Boolean?> get() = _insertResult
 
     fun insertMovement(movement: Movement) {
+        _insertResult.postValue(null)
         viewModelScope.launch {
             try {
                 movementDao.insertMovement(movement)

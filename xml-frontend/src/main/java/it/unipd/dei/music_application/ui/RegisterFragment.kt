@@ -209,26 +209,26 @@ class RegisterFragment : Fragment() {
     }
 
     private fun observeViewModelData() {
-        movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(allRecyclerViewAdapter, movements)
+        movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) {
+            updateAdapter(allRecyclerViewAdapter, it)
         }
-        movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(positiveRecyclerViewAdapter, movements)
+        movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) {
+            updateAdapter(positiveRecyclerViewAdapter, it)
         }
-        movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(negativeRecyclerViewAdapter, movements)
+        movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) {
+            updateAdapter(negativeRecyclerViewAdapter, it)
         }
-        movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) { amount ->
-            updateTextContainer(amount, "totalAll")
+        movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) {
+            updateTextContainer(it, "totalAll")
         }
-        movementWithCategoryViewModel.totalPositiveAmount.observe(viewLifecycleOwner) { amount ->
-            updateTextContainer(amount, "totalPositive")
+        movementWithCategoryViewModel.totalPositiveAmount.observe(viewLifecycleOwner) {
+            updateTextContainer(it, "totalPositive")
         }
-        movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) { amount ->
-            updateTextContainer(amount, "totalNegative")
+        movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) {
+            updateTextContainer(it, "totalNegative")
         }
-        categoryViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
-            updateDropdownMenu(categories)
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+            updateDropdownMenu(it)
         }
     }
 

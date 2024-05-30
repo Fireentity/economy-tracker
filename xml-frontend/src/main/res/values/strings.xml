@@ -24,4 +24,8 @@
     <string name="no_movements">No movements</string>
     <string name="bilancio">Bilancio:</string>
     <string name="categoria">Categoria:</string>
+    <string name="movimento">Movimento</string>
+    <string name="crea">Crea</string>
+    <string name="seleziona_data">Seleziona data</string>
+    <string name="ammontare">Ammontare</string>
 </resources>

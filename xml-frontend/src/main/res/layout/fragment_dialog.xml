@@ -1,110 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="16dp">
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/input_button_toggle_group"
+    <LinearLayout
+        android:id="@+id/layout_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:checkedButton="@id/input_option_movement"
-        app:singleSelection="true">
+        android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/input_option_movement"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/input_button_toggle_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Option 1" />
+            app:checkedButton="@id/input_option_movement"
+            app:singleSelection="true">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/input_option_category"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Option 2" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/input_option_movement"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/movimento" />
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/input_option_category"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/categoria" />
 
-    <!-- Sezione 1 con 3 campi -->
-    <LinearLayout
-        android:id="@+id/input_section_movement"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="invisible">
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_movement_amount_layout"
+
+        <LinearLayout
+            android:id="@+id/input_section_movement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ammontare">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <!-- TODO non si puo mettere amount negativo -->
+            <EditText
                 android:id="@+id/input_movement_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints="numberDecimal"
+                android:layout_marginTop="16dp"
                 android:digits="0123456789.-"
+                android:hint="@string/ammontare"
                 android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:maxLength="8"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:inputType="numberDecimal" />
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/categoria"
-            android:background="@android:color/transparent">
-
-            <AutoCompleteTextView
-                android:id="@+id/input_movement_category_id"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_movement_category_id_layout"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
-                android:singleLine="true"
+                android:layout_marginTop="16dp"
                 android:background="@android:color/transparent"
-                android:dropDownHeight="300dp"
-                android:completionThreshold="1" />
+                android:hint="@string/categoria">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/input_movement_category_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:completionThreshold="1"
+                    android:dropDownHeight="300dp"
+                    android:inputType="textAutoComplete"
+                    android:singleLine="true" />
 
-        <!-- TODO se aggiungi campo date cambia nome id-->
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/input_movement_created_at"
+            <EditText
+                android:id="@+id/input_movement_created_at"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:focusable="false"
+                android:hint="@string/seleziona_data" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/input_section_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:hint="seleziona data" />
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
+            <EditText
+                android:id="@+id/input_category_identifier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Identificatore" />
+        </LinearLayout>
 
-    </LinearLayout>
-
-    <!-- Sezione 2 con 2 campi -->
-    <LinearLayout
-        android:id="@+id/input_section_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="invisible">
-
-        <EditText
-            android:id="@+id/input_category_identifier"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Field 4" />
     </LinearLayout>
 
     <Button
         android:id="@+id/input_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</LinearLayout>
+        android:layout_below="@id/layout_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/crea" />
+
+</RelativeLayout>
