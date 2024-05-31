@@ -101,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="3dp"
                 android:text="@string/bilancio"
+                android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -117,7 +118,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/balance_text">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -140,13 +141,13 @@
                         android:text="@string/no_movements"
                         android:textColor="@color/green_700"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:singleLine="true"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -167,11 +168,12 @@
                         android:text="@string/no_movements"
                         android:textColor="@color/black"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:singleLine="true"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -183,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:paddingEnd="4dp"
                         android:text="@string/euro"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_700"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -192,9 +194,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/no_movements"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_700"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:singleLine="true"/>
                 </LinearLayout>
             </LinearLayout>
 

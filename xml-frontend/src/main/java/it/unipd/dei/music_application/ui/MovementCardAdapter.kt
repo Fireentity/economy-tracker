@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.MovementWithCategory
 
-class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
+class MovementCardAdapter(
+    private var movements: List<MovementWithCategory>,
+    private val longClickListener: OnItemLongClickListener
+) :
     RecyclerView.Adapter<MovementCardAdapter.MovementViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovementViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -21,11 +24,12 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
 
     override fun onBindViewHolder(holder: MovementViewHolder, position: Int) {
         val movementWithCategory = movements[position]
-        holder.bind(movementWithCategory)
+        holder.bind(movementWithCategory, longClickListener)
     }
 
     override fun getItemCount(): Int = movements.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateMovements(newMovements: List<MovementWithCategory>) {
         this.movements = newMovements
         notifyDataSetChanged()
@@ -56,7 +60,7 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
         private val amountTextView: TextView = itemView.findViewById(R.id.movement_card_amount)
         private val dateTextView: TextView = itemView.findViewById(R.id.movement_card_date)
         private val imageView: ImageView = itemView.findViewById(R.id.movement_card_image)
-        fun bind(movementWithCategory: MovementWithCategory) {
+        fun bind(movementWithCategory: MovementWithCategory, longClickListener: OnItemLongClickListener) {
 
             val amount = movementWithCategory.movement.amount
             //Setto la quantità che va formattata come number.##
@@ -75,6 +79,11 @@ class MovementCardAdapter(private var movements: List<MovementWithCategory>) :
             } else if (amount < 0) {
                 imageView.setImageResource(R.drawable.baseline_trending_down_24)
                 imageView.setBackgroundResource(R.drawable.circle_down)
+            }
+
+            itemView.setOnLongClickListener {
+                longClickListener.onItemLongClick(adapterPosition)
+                true
             }
         }
     }

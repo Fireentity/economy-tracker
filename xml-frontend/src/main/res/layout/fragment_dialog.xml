@@ -34,71 +34,20 @@
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-
-        <LinearLayout
-            android:id="@+id/input_section_movement"
+        <include
+            layout="@layout/fragment_input_movement"
+            android:id="@+id/section_movement"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="invisible">
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/drag_handle" />
 
-            <!-- TODO non si puo mettere amount negativo -->
-            <EditText
-                android:id="@+id/input_movement_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="numberDecimal"
-                android:layout_marginTop="16dp"
-                android:digits="0123456789.-"
-                android:hint="@string/ammontare"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_movement_category_id_layout"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@android:color/transparent"
-                android:hint="@string/categoria">
-
-                <AutoCompleteTextView
-                    android:id="@+id/input_movement_category_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:completionThreshold="1"
-                    android:dropDownHeight="300dp"
-                    android:inputType="textAutoComplete"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <EditText
-                android:id="@+id/input_movement_created_at"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:focusable="false"
-                android:hint="@string/seleziona_data" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/input_section_category"
+        <include
+            layout="@layout/fragment_input_category"
+            android:id="@+id/section_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            android:visibility="invisible">
-
-            <EditText
-                android:id="@+id/input_category_identifier"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Identificatore" />
-        </LinearLayout>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

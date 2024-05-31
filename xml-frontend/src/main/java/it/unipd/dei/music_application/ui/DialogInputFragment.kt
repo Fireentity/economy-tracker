@@ -1,3 +1,17 @@
+/*
+TODO organizza il fragmnet in modo piu chiaro e ordinato:
+    ├── ui/
+    │   ├── fragment/
+    │   │   ├── MyFragment.kt
+    │   ├── viewmodel/
+    │   │   ├── MyFragmentViewModel.kt
+    │   ├── helper/
+    │   │   ├── MyFragmentUIHelper.kt
+    │   ├── extensions/
+    │   │   ├── MyFragmentExtensions.kt
+*/
+
+
 package it.unipd.dei.music_application.ui
 
 import android.app.DatePickerDialog
@@ -18,7 +32,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -30,8 +43,8 @@ import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.Movement
 import it.unipd.dei.music_application.utils.Constants.IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE
-import it.unipd.dei.music_application.utils.Constants.OPERATION_SUCCESSFUL_MESSAGE
-import it.unipd.dei.music_application.utils.Constants.OPERATION_UNSUCCESSFUL_MESSAGE
+import it.unipd.dei.music_application.utils.DisplayToast.Companion.displayFailure
+import it.unipd.dei.music_application.utils.DisplayToast.Companion.displaySuccess
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -42,7 +55,7 @@ import java.util.Locale
 import java.util.UUID
 
 @AndroidEntryPoint
-class DialogInputFragment : DialogFragment() {
+class DialogInputFragment : DialogFragment(){
 
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
@@ -102,8 +115,8 @@ class DialogInputFragment : DialogFragment() {
     }
 
     private fun initializeSections(view: View) {
-        sectionCategoryLinearLayout = view.findViewById(R.id.input_section_category)
-        sectionMovementLinearLayout = view.findViewById(R.id.input_section_movement)
+        sectionCategoryLinearLayout = view.findViewById(R.id.section_category)
+        sectionMovementLinearLayout = view.findViewById(R.id.section_movement)
         _selectedOption.postValue(R.id.input_option_movement)
     }
 
@@ -144,8 +157,13 @@ class DialogInputFragment : DialogFragment() {
 
     private fun observeViewModels() {
         movementWithCategoryViewModel.insertResult.observe(viewLifecycleOwner) {
-            if (it != null) {
-                displaySuccessOrNot(it)
+            when (it) {
+                true -> {
+                    displaySuccess(requireContext())
+                    dismiss()
+                }
+                false -> displayFailure(requireContext())
+                null -> {}
             }
         }
 
@@ -154,8 +172,14 @@ class DialogInputFragment : DialogFragment() {
         }
 
         categoryViewModel.insertResult.observe(viewLifecycleOwner) {
-            if (it != null) {
-                displaySuccessOrNot(it)
+            when (it) {
+                true -> {
+                    displaySuccess(requireContext())
+                    dismiss()
+                }
+
+                false -> displayFailure(requireContext())
+                null -> {}
             }
         }
 
@@ -164,56 +188,39 @@ class DialogInputFragment : DialogFragment() {
         }
 
         categoryViewModel.isCategoryIdentifierPresent.observe(viewLifecycleOwner) {
-            if (it != null) {
-                createCategoryOrDisplayError(it)
+            when (it) {
+                true -> handleCategoryAlreadyPresent()
+                false -> createAndInsertCategory()
+                null -> {}
             }
         }
     }
 
-    private fun displaySuccessOrNot(success: Boolean) {
-        if (success) {
-            Toast.makeText(
-                requireContext(),
-                OPERATION_SUCCESSFUL_MESSAGE,
-                Toast.LENGTH_SHORT
-            ).show()
-            dismiss()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                OPERATION_UNSUCCESSFUL_MESSAGE,
-                Toast.LENGTH_SHORT
-            ).show()
+
+    private fun handleCategoryAlreadyPresent() {
+        categoryIdentifierTextField.text = null
+        val previousHint = categoryIdentifierTextField.hint
+        categoryIdentifierTextField.hint = IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE
+        submitButton.isEnabled = false
+        val previousButtonTextColor = submitButton.textColors
+        submitButton.setTextColor(Color.RED)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1500)
+            categoryIdentifierTextField.hint = previousHint
+            categoryIdentifierTextField.setText(categoryIdentifier)
+            submitButton.setTextColor(previousButtonTextColor)
+            submitButton.isEnabled = true
         }
     }
 
-    private fun createCategoryOrDisplayError(isPresent: Boolean) {
-        if (isPresent) {
-            categoryIdentifierTextField.text = null
-            val previousHint = categoryIdentifierTextField.hint
-            categoryIdentifierTextField.hint = IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE
-            submitButton.isEnabled = false
-            submitButton.setTextColor(Color.RED)
-            val previousButtonTextColor = submitButton.textColors
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(1500)
-                categoryIdentifierTextField.hint = previousHint
-                categoryIdentifierTextField.setText(categoryIdentifier)
-                //TODO non cambia colore scopri perche
-                submitButton.setTextColor(previousButtonTextColor)
-                submitButton.isEnabled = true
-            }
-        } else {
-            val category = Category(
-                UUID.randomUUID(),
-                categoryIdentifier,
-                System.currentTimeMillis(),
-                System.currentTimeMillis()
-            )
-
-            categoryViewModel.insertCategory(category)
-        }
-
+    private fun createAndInsertCategory() {
+        val category = Category(
+            UUID.randomUUID(),
+            categoryIdentifier,
+            System.currentTimeMillis(),
+            System.currentTimeMillis()
+        )
+        categoryViewModel.insertCategory(category)
     }
 
     private fun setAdapter(categories: List<Category>) {
@@ -251,7 +258,7 @@ class DialogInputFragment : DialogFragment() {
         }
 
         val amount = movementAmountTextField.text.toString().toDoubleOrNull()
-        if (amount == null) {
+        if (amount == null || amount == 0.0) {
             showTemporaryError(movementAmountTextField)
             return
         }
