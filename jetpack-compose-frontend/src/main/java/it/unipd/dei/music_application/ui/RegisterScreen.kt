@@ -127,14 +127,14 @@ fun TextInputDialog(
                     onValueChange = { amountFieldState = it },
                     label = { Text("Ammontare") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                );
+                )
                 TextField(
                     value = selectedTime,
                     onValueChange = { },
                     label = { Text(text = "seleziona data") },
                     modifier = Modifier.clickable { timePickerDialog.show() },
                     readOnly = true
-                );
+                )
             }
         },
         confirmButton = {
@@ -198,9 +198,9 @@ fun RegisterScreen(
 
 
     val tabItems = listOf(
+        TabItem(title = "Entrate"),
         TabItem(title = "Tutti"),
         TabItem(title = "Uscite"),
-        TabItem(title = "Entate"),
     )
 
     Surface(
@@ -245,7 +245,7 @@ fun RegisterScreen(
                     .fillMaxSize()
             ) {
                 var selectedTabIndex by rememberSaveable {
-                    mutableIntStateOf(0)
+                    mutableIntStateOf(1)
                 }
 
                 TabRow(
@@ -280,19 +280,29 @@ fun RegisterScreen(
                     )
                 }
                 
-                //Text(text = reversedText)
-
-                //MyLazyColumn(modifier = Modifier.fillMaxSize())
 
                 testViewModel.createDummyDataIfNoMovement()
+
                 var category= Category(
                     UUID.randomUUID(),
                     ALL_CATEGORIES_IDENTIFIER,
                     System.currentTimeMillis(),
                     System.currentTimeMillis()
                 )
-                movementWithCategoryViewModel.loadInitialMovementsByCategory(category)
-                var movements = movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
+
+                var movements = when(selectedTabIndex) {
+                    0 -> movementWithCategoryViewModel.positiveData.observeAsState(initial = emptyList())
+                    1 -> movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
+                    2 -> movementWithCategoryViewModel.negativeData.observeAsState(initial = emptyList())
+                    else -> movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
+                }
+
+                when (selectedTabIndex) {
+                    0 -> movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(category)
+                    1 -> movementWithCategoryViewModel.loadSomeMovementsByCategory(category)
+                    2 -> movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(category)
+                    else -> {}
+                }
 
                 DisplayMovements(movements = movements, modifier = Modifier.fillMaxSize())
             }
