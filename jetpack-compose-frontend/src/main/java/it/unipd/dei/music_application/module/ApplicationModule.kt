@@ -1,4 +1,4 @@
-package it.unipd.dei.music_application.modules
+package it.unipd.dei.music_application.module
 
 import android.content.Context
 import dagger.Module

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">music_application</string>
+    <string name="default_movement_date">1/1/1900</string>
+    <string name="default_movement_category">Category</string>
+    <string name="default_movement_amount">0.0</string>
+    <string name="euro">€</string>
 </resources>

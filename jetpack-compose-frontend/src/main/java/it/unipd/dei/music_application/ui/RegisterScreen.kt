@@ -47,28 +47,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import androidx.room.RoomDatabase
-import it.unipd.dei.music_application.MyLazyColumn
 import it.unipd.dei.music_application.database.BalanceDatabase
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
-import it.unipd.dei.music_application.view.TestViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import it.unipd.dei.music_application.MyDivider
-import it.unipd.dei.music_application.daos.BalanceDao
-import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.daos.MovementDao
-import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.models.CategoryTotal
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import it.unipd.dei.music_application.DisplayMovements
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.models.Category
+import it.unipd.dei.music_application.ui.components.MovementCard
+import it.unipd.dei.music_application.ui.components.MovementDialog
 import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
-import it.unipd.dei.music_application.view.CategoryViewModel
+import it.unipd.dei.music_application.view.TestViewModel
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -155,34 +147,11 @@ fun TextInputDialog(
 @Composable
 fun RegisterScreen(
     db: BalanceDatabase,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    //val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
-    val balanceDao: BalanceDao = db.getBalanceDao()
+    val movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel();
     val movementDao: MovementDao = db.getMovementDao()
     val categoryDao: CategoryDao = db.getCategoryDao()
-
-    val categoryTotalViewModel = viewModel<CategoryViewModel>(
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CategoryViewModel(
-                    categoryDao
-                ) as T
-            }
-        }
-    )
-
-    val movementWithCategoryViewModel = viewModel<MovementWithCategoryViewModel>(
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return MovementWithCategoryViewModel(
-                    movementDao
-                ) as T
-            }
-        }
-    )
-
     val testViewModel = viewModel<TestViewModel>(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -192,15 +161,6 @@ fun RegisterScreen(
                 ) as T
             }
         }
-    )
-
-    //testViewModel.createDummyDataIfNoMovement()
-
-
-    val tabItems = listOf(
-        TabItem(title = "Entrate"),
-        TabItem(title = "Tutti"),
-        TabItem(title = "Uscite"),
     )
 
     Surface(
@@ -237,41 +197,48 @@ fun RegisterScreen(
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "")
                 }
             }
-        ) {
-            paddingValues ->
+        ) { paddingValues ->
             Column(
                 modifier
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
                 var selectedTabIndex by rememberSaveable {
-                    mutableIntStateOf(1)
+                    mutableIntStateOf(0)
                 }
 
                 TabRow(
-                    selectedTabIndex = selectedTabIndex,
-                    indicator = { tabPositions ->
-                        TabRowDefaults.Indicator(
-                            modifier = Modifier
-                                .tabIndicatorOffset(tabPositions[selectedTabIndex])
-                                //.padding(horizontal = 25.dp)
-                                .wrapContentWidth(),
-                            height = 2.dp,
-                        )
-                    }
-                    //divider = { }
-                    ) {
-                    tabItems.forEachIndexed { index, item ->
-                        Tab(
-                            selected = index == selectedTabIndex,
-                            onClick = { selectedTabIndex = index },
-                            text = { Text(text = item.title) },
-                        )
-                    }
+                    selectedTabIndex = selectedTabIndex
+                ) {
+
+                    Tab(
+                        selected = selectedTabIndex == 0,
+                        onClick = {
+                            selectedTabIndex = 0
+
+                        },
+                        text = { Text(text = "Tutti") },
+                    )
+                    Tab(
+                        selected = selectedTabIndex == 1,
+                        onClick = {
+                            selectedTabIndex = 1
+
+                        },
+                        text = { Text(text = "Uscite") },
+                    )
+                    Tab(
+                        selected = selectedTabIndex == 2,
+                        onClick = {
+                            selectedTabIndex = 2
+
+                        },
+                        text = { Text(text = "Entrate") },
+                    )
                 }
 
                 if (showDialog) {
-                    TextInputDialog(
+                    MovementDialog(
                         onDismiss = { showDialog = false },
                         onConfirm = { inputText ->
                             showDialog = false
@@ -279,34 +246,40 @@ fun RegisterScreen(
                         }
                     )
                 }
-                
 
                 testViewModel.createDummyDataIfNoMovement()
+                movementWithCategoryViewModel.loadInitialMovements()
+                val movements = movementWithCategoryViewModel.getMovements()
+                    .observeAsState(initial = emptyList())
+                val negativeMovements = movementWithCategoryViewModel.getNegativeMovement()
+                    .observeAsState(initial = emptyList())
+                val positiveMovements = movementWithCategoryViewModel.getPositiveMovement()
+                    .observeAsState(initial = emptyList())
 
-                var category= Category(
-                    UUID.randomUUID(),
-                    ALL_CATEGORIES_IDENTIFIER,
-                    System.currentTimeMillis(),
-                    System.currentTimeMillis()
-                )
-
-                var movements = when(selectedTabIndex) {
-                    0 -> movementWithCategoryViewModel.positiveData.observeAsState(initial = emptyList())
-                    1 -> movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
-                    2 -> movementWithCategoryViewModel.negativeData.observeAsState(initial = emptyList())
-                    else -> movementWithCategoryViewModel.allData.observeAsState(initial = emptyList())
+                when(selectedTabIndex) {
+                    0 -> LazyColumn(
+                        modifier = modifier
+                    ) {
+                        items(movements.value.size) { index ->
+                            MovementCard(movements.value[index])
+                        }
+                    }
+                    1 -> LazyColumn(
+                        modifier = modifier
+                    ) {
+                        items(negativeMovements.value.size) { index ->
+                            MovementCard(movements.value[index])
+                        }
+                    }
+                    2 -> LazyColumn(
+                        modifier = modifier
+                    ) {
+                        items(positiveMovements.value.size) { index ->
+                            MovementCard(movements.value[index])
+                        }
+                    }
                 }
-
-                when (selectedTabIndex) {
-                    0 -> movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(category)
-                    1 -> movementWithCategoryViewModel.loadSomeMovementsByCategory(category)
-                    2 -> movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(category)
-                    else -> {}
-                }
-
-                DisplayMovements(movements = movements, modifier = Modifier.fillMaxSize())
             }
         }
     }
-
 }

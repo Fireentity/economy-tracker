@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">music-application</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="home_nav_button">Home</string>
+    <string name="register_nav_button">Registro</string>
+    <string name="recurrences_nav_bottom">Ricorrenze</string>
+    <string name="movimento_di_default">Movimento di default</string>
+    <string name="default_movement_amount">default movement amount</string>
+    <string name="lorem_ipsum">Lorem ipsum</string>
+    <string name="default_movement_date">default_movement_date</string>
+    <string name="default_movement_category">default_movement_category</string>
+    <string name="euro">€</string>
+    <string name="tutti">Tutti</string>
+    <string name="uscite">Uscite</string>
+    <string name="entrate">Entrate</string>
+    <string name="no_movements">No movements</string>
+    <string name="bilancio">Bilancio:</string>
+    <string name="categoria">Categoria:</string>
+</resources>

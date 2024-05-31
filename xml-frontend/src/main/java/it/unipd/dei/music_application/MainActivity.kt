@@ -12,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.database.BalanceDatabase
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

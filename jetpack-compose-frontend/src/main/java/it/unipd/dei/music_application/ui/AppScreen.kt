@@ -1,4 +1,4 @@
-package it.unipd.dei.music_application
+package it.unipd.dei.music_application.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,9 +29,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import it.unipd.dei.music_application.database.BalanceDatabase
-import it.unipd.dei.music_application.ui.HomeScreen
-import it.unipd.dei.music_application.ui.RecurrencesScreen
-import it.unipd.dei.music_application.ui.RegisterScreen
 
 
 enum class AppScreen() {
@@ -50,7 +47,7 @@ data class BottomNavigationItem(
 @Composable
 fun AppScreen(
     db: BalanceDatabase,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
 ) {
     val bottomNavigationIcons = listOf(
         BottomNavigationItem(
