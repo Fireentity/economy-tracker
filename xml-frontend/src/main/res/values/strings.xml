@@ -24,4 +24,13 @@
     <string name="no_movements">No movements</string>
     <string name="bilancio">Bilancio:</string>
     <string name="categoria">Categoria:</string>
+    <string name="movimento">Movimento</string>
+    <string name="crea">Crea</string>
+    <string name="seleziona_data">Seleziona data</string>
+    <string name="ammontare">Ammontare</string>
+    <string name="delete_movement_title">Elimina Movimento</string>
+    <string name="delete_movement_message">Sei sicuro di voler eliminare questo movimento?</string>
+    <string name="delete_category_title">Elimina Categoria</string>
+    <string name="cancel">Annulla</string>
+    <string name="si">Si</string>
 </resources>

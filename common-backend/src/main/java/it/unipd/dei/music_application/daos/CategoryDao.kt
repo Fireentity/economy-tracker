@@ -24,5 +24,9 @@ interface CategoryDao {
     suspend fun getTotalAmountByCategory(): List<CategoryTotal>
     @Transaction
     @Query("DELETE FROM categories")
-    fun deleteAllCategories()
+    suspend fun deleteAllCategories()
+
+    @Transaction
+    @Query("SELECT * FROM categories WHERE identifier = :identifier")
+    suspend fun getCategoriesByIdentifier(identifier: String): List<Category>
 }

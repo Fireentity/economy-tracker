@@ -25,7 +25,7 @@ import it.unipd.dei.music_application.view.TestViewModel
 import java.util.UUID
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), OnItemLongClickListener {
 
     // ViewModels
     private val testViewModel: TestViewModel by viewModels()
@@ -63,18 +63,18 @@ class RegisterFragment : Fragment() {
     // Loading state to prevent multiple loading
     private var loading = false
 
-    // How many card we can see until it load more movements
+    // How many card we cannot see until it load more movements
     private val visibleThreshold = 3
 
     // Utils for latest view Category and the default Category with all movements
-    private var tutteCategory =
+    private val generalCategory =
         Category(
             UUID.randomUUID(),
             ALL_CATEGORIES_IDENTIFIER,
             System.currentTimeMillis(),
             System.currentTimeMillis()
         )
-    private var selectedCategory = tutteCategory
+    private var selectedCategory = generalCategory
 
 
     override fun onCreateView(
@@ -165,9 +165,9 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initializeAdapters() {
-        allRecyclerViewAdapter = MovementCardAdapter(emptyList())
-        positiveRecyclerViewAdapter = MovementCardAdapter(emptyList())
-        negativeRecyclerViewAdapter = MovementCardAdapter(emptyList())
+        allRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
+        positiveRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
+        negativeRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
     }
 
     private fun initializeAutoCompleteTextView(view: View) {
@@ -209,26 +209,26 @@ class RegisterFragment : Fragment() {
     }
 
     private fun observeViewModelData() {
-        movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(allRecyclerViewAdapter, movements)
+        movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) {
+            updateAdapter(allRecyclerViewAdapter, it)
         }
-        movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(positiveRecyclerViewAdapter, movements)
+        movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) {
+            updateAdapter(positiveRecyclerViewAdapter, it)
         }
-        movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) { movements ->
-            updateAdapter(negativeRecyclerViewAdapter, movements)
+        movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) {
+            updateAdapter(negativeRecyclerViewAdapter, it)
         }
-        movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) { amount ->
-            updateTextContainer(amount, "totalAll")
+        movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) {
+            updateTextContainer(it, "totalAll")
         }
-        movementWithCategoryViewModel.totalPositiveAmount.observe(viewLifecycleOwner) { amount ->
-            updateTextContainer(amount, "totalPositive")
+        movementWithCategoryViewModel.totalPositiveAmount.observe(viewLifecycleOwner) {
+            updateTextContainer(it, "totalPositive")
         }
-        movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) { amount ->
-            updateTextContainer(amount, "totalNegative")
+        movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) {
+            updateTextContainer(it, "totalNegative")
         }
-        categoryViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
-            updateDropdownMenu(categories)
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+            updateDropdownMenu(it)
         }
     }
 
@@ -264,6 +264,7 @@ class RegisterFragment : Fragment() {
                 }
             }
         })
+
     }
 
     private fun addTabItemListener() {
@@ -360,20 +361,47 @@ class RegisterFragment : Fragment() {
     }
 
     private fun updateDropdownMenu(categories: List<Category>) {
-        arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    android.R.layout.simple_dropdown_item_1line,
-                    listOf(
-                        tutteCategory
-                    ) + categories
-                )
-            }!!
+        arrayAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            listOf(
+                generalCategory
+            ) + categories
+        )
+
         autoCompleteTextView.setAdapter(arrayAdapter)
 
         // Di default sono tutte le categorie
         autoCompleteTextView.setText(ALL_CATEGORIES_IDENTIFIER, false)
         autoCompleteTextView.setSelection(0)
     }
+
+
+    override fun onItemLongClick(position: Int) {
+        var movementWithCategory: MovementWithCategory? = null
+        //PORCATA MA AVENDO 3 recyclerview o faccio 3 adapter diversi o cosi
+        when (tabLayout.selectedTabPosition) {
+            //ENTRATE
+            0 -> {
+                movementWithCategory =
+                    movementWithCategoryViewModel.positiveData.value?.get(position)
+            }
+            //TUTTI
+            1 -> {
+                movementWithCategory =
+                    movementWithCategoryViewModel.allData.value?.get(position)
+            }
+            //USCITE
+            2 -> {
+                movementWithCategory =
+                    movementWithCategoryViewModel.negativeData.value?.get(position)
+            }
+        }
+        if (movementWithCategory == null) {
+            return
+        }
+        val optionModalBottomSheetFragment = OptionModalBottomSheetFragment(null, null)
+        optionModalBottomSheetFragment.show(parentFragmentManager, "DialogInputFragment")
+    }
+
 }

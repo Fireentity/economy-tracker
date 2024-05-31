@@ -1,7 +1,22 @@
+/*
+TODO organizza il fragmnet in modo piu chiaro e ordinato:
+    ├── ui/
+    │   ├── fragment/
+    │   │   ├── MyFragment.kt
+    │   ├── viewmodel/
+    │   │   ├── MyFragmentViewModel.kt
+    │   ├── helper/
+    │   │   ├── MyFragmentUIHelper.kt
+    │   ├── extensions/
+    │   │   ├── MyFragmentExtensions.kt
+*/
+
+
 package it.unipd.dei.music_application.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -16,29 +31,38 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.button.MaterialButtonToggleGroup
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.Movement
+import it.unipd.dei.music_application.utils.Constants.IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE
+import it.unipd.dei.music_application.utils.DisplayToast.Companion.displayFailure
+import it.unipd.dei.music_application.utils.DisplayToast.Companion.displaySuccess
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 import java.util.UUID
 
 @AndroidEntryPoint
-class DialogInputFragment : DialogFragment() {
+class DialogInputFragment : DialogFragment(){
 
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
 
-    private lateinit var movementAmountTextField: TextInputEditText
+    private lateinit var movementAmountTextField: EditText
     private lateinit var movementCategoryIdTextField: AutoCompleteTextView
+    private lateinit var movementCategoryIdTextInputLayout: TextInputLayout
     private lateinit var movementCreatedAtTextField: EditText
     private lateinit var categoryIdentifierTextField: EditText
     private lateinit var sectionMovementLinearLayout: LinearLayout
@@ -50,6 +74,7 @@ class DialogInputFragment : DialogFragment() {
     private val selectedOption: LiveData<Int> = _selectedOption
 
     private lateinit var selectedCategory: Category
+    private lateinit var categoryIdentifier: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,14 +107,16 @@ class DialogInputFragment : DialogFragment() {
                 setText(selectedCategory.identifier)
             }
         }
+        movementCategoryIdTextInputLayout =
+            view.findViewById(R.id.input_movement_category_id_layout)
         movementCreatedAtTextField = view.findViewById(R.id.input_movement_created_at)
         movementCreatedAtTextField.setOnClickListener { showDateTimePickerDialog() }
         categoryIdentifierTextField = view.findViewById(R.id.input_category_identifier)
     }
 
     private fun initializeSections(view: View) {
-        sectionCategoryLinearLayout = view.findViewById(R.id.input_section_category)
-        sectionMovementLinearLayout = view.findViewById(R.id.input_section_movement)
+        sectionCategoryLinearLayout = view.findViewById(R.id.section_category)
+        sectionMovementLinearLayout = view.findViewById(R.id.section_movement)
         _selectedOption.postValue(R.id.input_option_movement)
     }
 
@@ -129,20 +156,71 @@ class DialogInputFragment : DialogFragment() {
     }
 
     private fun observeViewModels() {
-        movementWithCategoryViewModel.insertResult.observe(viewLifecycleOwner) { success ->
-            if (success) dismiss()
-            else {
-                // TODO: Show failure message
+        movementWithCategoryViewModel.insertResult.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> {
+                    displaySuccess(requireContext())
+                    dismiss()
+                }
+                false -> displayFailure(requireContext())
+                null -> {}
             }
         }
 
-        selectedOption.observe(viewLifecycleOwner) { optionId ->
-            changeInputFieldsById(optionId)
+        selectedOption.observe(viewLifecycleOwner) {
+            changeInputFieldsById(it)
         }
 
-        categoryViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
-            setAdapter(categories)
+        categoryViewModel.insertResult.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> {
+                    displaySuccess(requireContext())
+                    dismiss()
+                }
+
+                false -> displayFailure(requireContext())
+                null -> {}
+            }
         }
+
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+            setAdapter(it)
+        }
+
+        categoryViewModel.isCategoryIdentifierPresent.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> handleCategoryAlreadyPresent()
+                false -> createAndInsertCategory()
+                null -> {}
+            }
+        }
+    }
+
+
+    private fun handleCategoryAlreadyPresent() {
+        categoryIdentifierTextField.text = null
+        val previousHint = categoryIdentifierTextField.hint
+        categoryIdentifierTextField.hint = IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE
+        submitButton.isEnabled = false
+        val previousButtonTextColor = submitButton.textColors
+        submitButton.setTextColor(Color.RED)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1500)
+            categoryIdentifierTextField.hint = previousHint
+            categoryIdentifierTextField.setText(categoryIdentifier)
+            submitButton.setTextColor(previousButtonTextColor)
+            submitButton.isEnabled = true
+        }
+    }
+
+    private fun createAndInsertCategory() {
+        val category = Category(
+            UUID.randomUUID(),
+            categoryIdentifier,
+            System.currentTimeMillis(),
+            System.currentTimeMillis()
+        )
+        categoryViewModel.insertCategory(category)
     }
 
     private fun setAdapter(categories: List<Category>) {
@@ -174,15 +252,20 @@ class DialogInputFragment : DialogFragment() {
     }
 
     private fun handleMovementSubmission() {
+        if (!this::selectedCategory.isInitialized) {
+            showTemporaryError(movementCategoryIdTextField)
+            return
+        }
+
         val amount = movementAmountTextField.text.toString().toDoubleOrNull()
-        if (amount == null) {
-            // TODO: Show invalid amount message
+        if (amount == null || amount == 0.0) {
+            showTemporaryError(movementAmountTextField)
             return
         }
 
         val createdAt = convertToMilliseconds(movementCreatedAtTextField.text.toString())
         if (createdAt < 0) {
-            // TODO: Show invalid date message
+            showTemporaryError(movementCreatedAtTextField)
             return
         }
 
@@ -197,7 +280,28 @@ class DialogInputFragment : DialogFragment() {
     }
 
     private fun handleCategorySubmission() {
-        // TODO: Handle category submission
+        categoryIdentifier = categoryIdentifierTextField.text.toString()
+        if (categoryIdentifier.isEmpty()) {
+            showTemporaryError(categoryIdentifierTextField)
+            return
+        }
+        // The access to database require an observer (isCategoryIdentifierPresent)
+        categoryViewModel.isCategoryIdentifierPresent(categoryIdentifier)
+    }
+
+
+    private fun showTemporaryError(textField: TextView) {
+        val previousTextColor = textField.textColors
+        val previousButtonTextColor = submitButton.textColors
+        textField.setTextColor(Color.RED)
+        submitButton.isEnabled = false
+        submitButton.setTextColor(Color.RED)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1500)
+            textField.setTextColor(previousTextColor)
+            submitButton.setTextColor(previousButtonTextColor)
+            submitButton.isEnabled = true
+        }
     }
 
     private fun showDateTimePickerDialog() {
@@ -256,4 +360,5 @@ class DialogInputFragment : DialogFragment() {
             -1
         }
     }
+
 }

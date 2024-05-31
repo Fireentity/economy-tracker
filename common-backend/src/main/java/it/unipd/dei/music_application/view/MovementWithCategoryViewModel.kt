@@ -1,5 +1,6 @@
 package it.unipd.dei.music_application.view
 
+import android.icu.text.Transliterator.Position
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,6 +37,13 @@ class MovementWithCategoryViewModel @Inject constructor(
 
     private val _sumNegativeMovementsAmount = MutableLiveData<Double>()
     val totalNegativeAmount: LiveData<Double> = _sumNegativeMovementsAmount
+
+    private val _insertResult = MutableLiveData<Boolean?>()
+    val insertResult: LiveData<Boolean?> = _insertResult
+
+    private val _deleteResult = MutableLiveData<Boolean?>()
+    val deleteResult: LiveData<Boolean?> = _deleteResult
+
 
     private var currentAllOffset = 0
     private var currentPositiveOffset = 0
@@ -193,16 +201,27 @@ class MovementWithCategoryViewModel @Inject constructor(
         }
     }
 
-    private val _insertResult = MutableLiveData<Boolean>()
-    val insertResult: LiveData<Boolean> get() = _insertResult
 
     fun insertMovement(movement: Movement) {
+        _insertResult.postValue(null)
         viewModelScope.launch {
             try {
                 movementDao.insertMovement(movement)
                 _insertResult.postValue(true)
             } catch (e: Exception) {
                 _insertResult.postValue(false)
+            }
+        }
+    }
+
+    fun deleteMovement(movement: Movement){
+        _deleteResult.postValue(null)
+        viewModelScope.launch {
+            try {
+                movementDao.deleteMovement(movement)
+                _deleteResult.postValue(true)
+            } catch (e:Exception){
+                _deleteResult.postValue(false)
             }
         }
     }
