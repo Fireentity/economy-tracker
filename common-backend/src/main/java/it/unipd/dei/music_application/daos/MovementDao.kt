@@ -13,7 +13,7 @@ import java.util.UUID
 interface MovementDao {
 
     @Upsert
-    suspend fun insertMovement(movement: Movement)
+    suspend fun upsertMovement(movement: Movement)
 
     @Delete
     suspend fun deleteMovement(movement: Movement)

@@ -1,5 +1,6 @@
 package it.unipd.dei.music_application.view
 
+import android.icu.text.Transliterator.Position
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -182,11 +183,11 @@ class MovementWithCategoryViewModel @Inject constructor(
         loadSomeMovements()
     }
 
-    fun insertMovement(movement: Movement) {
+    fun upsertMovement(movement: Movement) {
         _insertResult.postValue(null)
         viewModelScope.launch {
             try {
-                movementDao.insertMovement(movement)
+                movementDao.upsertMovement(movement)
                 _insertResult.postValue(true)
             } catch (e: Exception) {
                 _insertResult.postValue(false)
@@ -194,16 +195,15 @@ class MovementWithCategoryViewModel @Inject constructor(
         }
     }
 
-    fun deleteMovement(movement: Movement) {
+    fun deleteMovement(movement: Movement){
         _deleteResult.postValue(null)
         viewModelScope.launch {
             try {
                 movementDao.deleteMovement(movement)
                 _deleteResult.postValue(true)
-            } catch (e: Exception) {
+            } catch (e:Exception){
                 _deleteResult.postValue(false)
             }
         }
     }
-
 }

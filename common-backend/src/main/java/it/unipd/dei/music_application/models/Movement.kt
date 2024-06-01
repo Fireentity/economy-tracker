@@ -23,4 +23,14 @@ data class Movement(
     val categoryId: UUID,
     val createdAt: Long,
     val updatedAt: Long
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Movement) return false
+        return uuid == other.uuid
+    }
+
+    override fun hashCode(): Int {
+        return uuid.hashCode()
+    }
+}
