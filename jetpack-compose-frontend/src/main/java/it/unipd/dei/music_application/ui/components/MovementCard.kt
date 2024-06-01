@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun MovementCard(movementWithCategory: MovementWithCategory) {
-    val formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy")
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     ConstraintLayout(
         modifier = Modifier
