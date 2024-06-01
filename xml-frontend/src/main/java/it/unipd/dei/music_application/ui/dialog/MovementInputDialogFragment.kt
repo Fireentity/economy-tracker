@@ -21,6 +21,7 @@ import it.unipd.dei.music_application.ui.dialog.helper.MovementInputHelper
 import it.unipd.dei.music_application.utils.DisplayToast
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
+import java.util.Locale
 
 @AndroidEntryPoint
 class MovementInputDialogFragment(
@@ -117,7 +118,7 @@ class MovementInputDialogFragment(
     }
 
     private fun setParametersToInputFields() {
-        val amount = String.format("%.2f", movementWithCategory.movement.amount)
+        val amount = String.format(Locale.US, "%.2f", movementWithCategory.movement.amount)
         amountTextField.setText(amount)
 
         createdAtTextField.setText(
