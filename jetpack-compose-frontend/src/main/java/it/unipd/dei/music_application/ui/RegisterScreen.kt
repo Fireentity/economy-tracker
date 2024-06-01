@@ -203,7 +203,7 @@ fun RegisterScreen(
                     .fillMaxSize()
             ) {
                 var selectedTabIndex by rememberSaveable {
-                    mutableIntStateOf(0)
+                    mutableIntStateOf(1)
                 }
 
                 TabRow(
@@ -216,7 +216,7 @@ fun RegisterScreen(
                             selectedTabIndex = 0
 
                         },
-                        text = { Text(text = "Tutti") },
+                        text = { Text(text = "Entrate") },
                     )
                     Tab(
                         selected = selectedTabIndex == 1,
@@ -224,7 +224,7 @@ fun RegisterScreen(
                             selectedTabIndex = 1
 
                         },
-                        text = { Text(text = "Uscite") },
+                        text = { Text(text = "Tutti") },
                     )
                     Tab(
                         selected = selectedTabIndex == 2,
@@ -232,7 +232,7 @@ fun RegisterScreen(
                             selectedTabIndex = 2
 
                         },
-                        text = { Text(text = "Entrate") },
+                        text = { Text(text = "Uscite") },
                     )
                 }
 
@@ -259,22 +259,22 @@ fun RegisterScreen(
                     0 -> LazyColumn(
                         modifier = modifier
                     ) {
-                        items(movements.value.size) { index ->
-                            MovementCard(movements.value[index])
+                        items(positiveMovements.value.size) { index ->
+                            MovementCard(positiveMovements.value[index])
                         }
                     }
                     1 -> LazyColumn(
                         modifier = modifier
                     ) {
-                        items(negativeMovements.value.size) { index ->
-                            MovementCard(negativeMovements.value[index])
+                        items(movements.value.size) { index ->
+                            MovementCard(movements.value[index])
                         }
                     }
                     2 -> LazyColumn(
                         modifier = modifier
                     ) {
-                        items(positiveMovements.value.size) { index ->
-                            MovementCard(positiveMovements.value[index])
+                        items(negativeMovements.value.size) { index ->
+                            MovementCard(negativeMovements.value[index])
                         }
                     }
                 }
