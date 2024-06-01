@@ -10,7 +10,6 @@ import it.unipd.dei.music_application.daos.MovementDao
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.Movement
 import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
@@ -28,6 +27,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val spentMoney = MutableLiveData<Double>()
     private val _insertResult = MutableLiveData<Boolean?>()
     private val _deleteResult = MutableLiveData<Boolean?>()
+    private val categoryToFilter = MutableLiveData<Category?>()
 
     companion object {
         private const val PAGE_SIZE: Int = 10;
@@ -45,84 +45,80 @@ class MovementWithCategoryViewModel @Inject constructor(
         return positiveMovements
     }
 
-    private fun loadSomeMovements() {
+    fun addCategoryFilter(category: Category) {
+        categoryToFilter.postValue(category)
+    }
+
+    fun removeCategoryFilter() {
+        categoryToFilter.postValue(null)
+    }
+
+    fun loadSomeMovementsByCategory(then: () -> Unit) {
         viewModelScope.launch {
+            val categoryUuid: UUID? = categoryToFilter.value?.uuid
             movements.postValue(
                 movements.value?.plus(
-                    movementDao.getSomeMovements(
-                        PAGE_SIZE,
-                        movements.value?.size ?: 0
-                    )
+                    if (categoryUuid == null) {
+                        movementDao.getSomeMovements(
+                            PAGE_SIZE,
+                            positiveMovements.value?.size ?: 0
+                        )
+                    } else {
+                        movementDao.getSomeMovementsByCategory(
+                            categoryUuid,
+                            PAGE_SIZE,
+                            positiveMovements.value?.size ?: 0
+                        )
+                    }
                 )
             )
+            then()
         }
     }
 
-    private fun loadSomePositiveMovements() {
+    fun loadSomePositiveMovementsByCategory(then: () -> Unit) {
         viewModelScope.launch {
+            val categoryUuid: UUID? = categoryToFilter.value?.uuid
             positiveMovements.postValue(
                 positiveMovements.value?.plus(
-                    movementDao.getSomePositiveMovements(
-                        PAGE_SIZE,
-                        positiveMovements.value?.size ?: 0
-                    )
+                    if (categoryUuid == null) {
+                        movementDao.getSomeMovements(
+                            PAGE_SIZE,
+                            positiveMovements.value?.size ?: 0
+                        )
+                    } else {
+                        movementDao.getSomePositiveMovementsByCategory(
+                            categoryUuid,
+                            PAGE_SIZE,
+                            positiveMovements.value?.size ?: 0
+                        )
+                    }
                 )
             )
+            then()
         }
     }
 
-    private fun loadSomeNegativeMovements() {
+    fun loadSomeNegativeMovementsByCategory(then: () -> Unit) {
         viewModelScope.launch {
+            val categoryUuid: UUID? = categoryToFilter.value?.uuid
             negativeMovements.postValue(
                 negativeMovements.value?.plus(
-                    movementDao.getSomeNegativeMovements(
-                        PAGE_SIZE,
-                        negativeMovements.value?.size ?: 0
-                    )
+                    if (categoryUuid == null) {
+                        movementDao.getSomeNegativeMovements(
+                            PAGE_SIZE,
+                            negativeMovements.value?.size ?: 0
+                        )
+                    } else {
+                        movementDao.getSomeNegativeMovementsByCategory(
+                            categoryUuid,
+                            PAGE_SIZE,
+                            negativeMovements.value?.size ?: 0
+                        )
+                    }
                 )
             )
-        }
-    }
-
-    fun loadSomeMovementsByCategory(category: Category) {
-        viewModelScope.launch {
-            movements.postValue(
-                movements.value?.plus(
-                    movementDao.getSomeMovementsByCategory(
-                        category.uuid,
-                        PAGE_SIZE,
-                        movements.value?.size ?: 0
-                    )
-                )
-            )
-        }
-    }
-
-    fun loadSomePositiveMovementsByCategory(category: Category) {
-        viewModelScope.launch {
-            positiveMovements.postValue(
-                positiveMovements.value?.plus(
-                    movementDao.getSomePositiveMovementsByCategory(
-                        category.uuid,
-                        PAGE_SIZE,
-                        positiveMovements.value?.size ?: 0
-                    )
-                )
-            )
-        }
-    }
-
-    fun loadSomeNegativeMovementsByCategory(category: Category) {
-        viewModelScope.launch {
-            negativeMovements.postValue(
-                negativeMovements.value?.plus(
-                    movementDao.getSomeNegativeMovementsByCategory(
-                        category.uuid,
-                        PAGE_SIZE,
-                        negativeMovements.value?.size ?: 0
-                    )
-                )
-            )
+            then()
         }
     }
 
@@ -148,39 +144,27 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     fun loadTotalAmountsByCategory(category: Category) {
-        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
-            loadTotalAmount(movementDao::getTotalAmount, totalBalance)
-            loadTotalAmount(movementDao::getTotalPositiveAmount, earnedMoney)
-            loadTotalAmount(movementDao::getTotalNegativeAmount, spentMoney)
-        } else {
-            loadTotalAmount(
-                movementDao::getTotalAmountByCategory,
-                totalBalance,
-                category
-            )
-            loadTotalAmount(
-                movementDao::getTotalPositiveAmountByCategory,
-                earnedMoney,
-                category
-            )
-            loadTotalAmount(
-                movementDao::getTotalNegativeAmountByCategory,
-                spentMoney,
-                category
-            )
-        }
+        loadTotalAmount(
+            movementDao::getTotalAmountByCategory,
+            totalBalance,
+            category
+        )
+        loadTotalAmount(
+            movementDao::getTotalPositiveAmountByCategory,
+            earnedMoney,
+            category
+        )
+        loadTotalAmount(
+            movementDao::getTotalNegativeAmountByCategory,
+            spentMoney,
+            category
+        )
     }
 
-    fun loadInitialMovementsByCategory(category: Category) {
-        loadSomeMovementsByCategory(category)
-        loadSomePositiveMovementsByCategory(category)
-        loadSomeNegativeMovementsByCategory(category)
-    }
-
-    fun loadInitialMovements() {
-        loadSomeNegativeMovements()
-        loadSomePositiveMovements()
-        loadSomeMovements()
+    fun loadInitialMovementsByCategory() {
+        loadSomeMovementsByCategory {}
+        loadSomePositiveMovementsByCategory {}
+        loadSomeNegativeMovementsByCategory {}
     }
 
     fun upsertMovement(movement: Movement) {
@@ -195,13 +179,13 @@ class MovementWithCategoryViewModel @Inject constructor(
         }
     }
 
-    fun deleteMovement(movement: Movement){
+    fun deleteMovement(movement: Movement) {
         _deleteResult.postValue(null)
         viewModelScope.launch {
             try {
                 movementDao.deleteMovement(movement)
                 _deleteResult.postValue(true)
-            } catch (e:Exception){
+            } catch (e: Exception) {
                 _deleteResult.postValue(false)
             }
         }

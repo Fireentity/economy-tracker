@@ -59,7 +59,6 @@ import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.ui.components.MovementCard
 import it.unipd.dei.music_application.ui.components.MovementDialog
-import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
 import it.unipd.dei.music_application.view.TestViewModel
 import java.time.LocalDateTime
 import java.util.UUID
@@ -268,14 +267,14 @@ fun RegisterScreen(
                         modifier = modifier
                     ) {
                         items(negativeMovements.value.size) { index ->
-                            MovementCard(movements.value[index])
+                            MovementCard(negativeMovements.value[index])
                         }
                     }
                     2 -> LazyColumn(
                         modifier = modifier
                     ) {
                         items(positiveMovements.value.size) { index ->
-                            MovementCard(movements.value[index])
+                            MovementCard(positiveMovements.value[index])
                         }
                     }
                 }

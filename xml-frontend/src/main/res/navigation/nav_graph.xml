@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="it.unipd.dei.music_application.ui.RegisterFragment"
+        android:name="it.unipd.dei.music_application.ui.register.RegisterFragment"
         android:label="Register" >
         <action
             android:id="@+id/action_registerFragment_to_homeFragment"
