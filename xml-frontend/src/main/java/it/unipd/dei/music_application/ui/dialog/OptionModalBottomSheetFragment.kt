@@ -1,4 +1,4 @@
-package it.unipd.dei.music_application.ui
+package it.unipd.dei.music_application.ui.dialog
 
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -20,19 +20,16 @@ import it.unipd.dei.music_application.utils.DisplayToast.Companion.displayFailur
 import it.unipd.dei.music_application.utils.DisplayToast.Companion.displaySuccess
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class OptionModalBottomSheetFragment(
     private val movementWithCategory: MovementWithCategory?,
     private val category: Category?
-) :
-    BottomSheetDialogFragment() {
+) : BottomSheetDialogFragment() {
 
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
 
-    //TODO fai due cose diverse in base a se categoria o movimento
     private lateinit var categoryCard: View
     private lateinit var categoryIdentifier: TextView
 
@@ -42,7 +39,6 @@ class OptionModalBottomSheetFragment(
     private lateinit var movementAmountTextView: TextView
     private lateinit var movementDateTextView: TextView
     private lateinit var movementCardDivider: MaterialDivider
-
 
     private lateinit var editLayout: LinearLayout
     private lateinit var deleteLayout: LinearLayout
@@ -56,18 +52,13 @@ class OptionModalBottomSheetFragment(
     ): View {
         val view = inflater.inflate(R.layout.fragment_option, container, false)
 
-        if ((category != null && movementWithCategory != null) || (category == null) && movementWithCategory == null) {
-            valid = false
-            return view
-        }
+        valid = validateInputs()
+        if (!valid) return view
 
         initializeViews(view)
-        if (movementWithCategory != null) {
-            setupCategoryUI()
-        }
-        if (category != null) {
-            setupMovementUI()
-        }
+        if (movementWithCategory != null) setupMovementUI()
+        if (category != null) setupCategoryUI()
+
         return view
     }
 
@@ -75,23 +66,48 @@ class OptionModalBottomSheetFragment(
         super.onViewCreated(view, savedInstanceState)
         if (!valid) return
 
-        editLayout.setOnClickListener {
+        setupListeners()
+        observeDeleteResult()
+    }
 
+    private fun validateInputs(): Boolean {
+        return (category != null && movementWithCategory == null) || (category == null && movementWithCategory != null)
+    }
+
+    private fun setupListeners() {
+        editLayout.setOnClickListener {
+            showEditDialog()
         }
+
         deleteLayout.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(resources.getString(R.string.delete_movement_title))
-                .setMessage(resources.getString(R.string.delete_movement_message))
-                .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
-                .setPositiveButton(resources.getString(R.string.si)) { _, _ ->
-                    if (category != null) {
-                        deleteCategory()
-                    } else if (movementWithCategory != null) {
-                        deleteMovement()
-                    }
-                }
-                .show()
+            showDeleteConfirmationDialog()
         }
+    }
+
+    private fun showEditDialog() {
+        movementWithCategory?.let {
+            val movementInputDialogFragment = MovementInputDialogFragment(movementWithCategory)
+            movementInputDialogFragment.show(parentFragmentManager, "MovementInputDialogFragment")
+            dismiss()
+        }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.delete_movement_title))
+            .setMessage(resources.getString(R.string.delete_movement_message))
+            .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
+            .setPositiveButton(resources.getString(R.string.si)) { _, _ ->
+                if (category != null) {
+                    deleteCategory()
+                } else if (movementWithCategory != null) {
+                    deleteMovement()
+                }
+            }
+            .show()
+    }
+
+    private fun observeDeleteResult() {
         movementWithCategoryViewModel.deleteResult.observe(viewLifecycleOwner) {
             when (it) {
                 true -> {
@@ -100,39 +116,38 @@ class OptionModalBottomSheetFragment(
                 }
 
                 false -> displayFailure(requireContext())
-                null -> {}
+                null -> { /* No action needed */
+                }
             }
         }
-
     }
 
     private fun deleteMovement() {
-        if (movementWithCategory == null) {
-            return
+        movementWithCategory?.let {
+            movementWithCategoryViewModel.deleteMovement(it.movement)
         }
-        val movement = movementWithCategory.movement
-        movementWithCategoryViewModel.deleteMovement(movement)
     }
 
     private fun deleteCategory() {
-        TODO("Not yet implemented")
+        // TODO: Implement delete category functionality
     }
-
 
     private fun initializeViews(view: View) {
         categoryCard = view.findViewById(R.id.category_card)
         movementCard = view.findViewById(R.id.movement_card)
 
-        if (movementWithCategory != null) {
+        editLayout = view.findViewById(R.id.edit_layout)
+        deleteLayout = view.findViewById(R.id.delete_layout)
+
+        movementWithCategory?.let {
             movementImageView = view.findViewById(R.id.movement_card_image)
             movementCategoryIdTextView = view.findViewById(R.id.movement_card_category)
             movementAmountTextView = view.findViewById(R.id.movement_card_amount)
             movementDateTextView = view.findViewById(R.id.movement_card_date)
             movementCardDivider = view.findViewById(R.id.movement_card_divider)
-            editLayout = view.findViewById(R.id.edit_layout)
-            deleteLayout = view.findViewById(R.id.delete_layout)
         }
-        if (category != null) {
+
+        category?.let {
             categoryIdentifier = view.findViewById(R.id.category_card_identifier)
         }
     }
@@ -140,12 +155,18 @@ class OptionModalBottomSheetFragment(
     private fun setupMovementUI() {
         movementCard.visibility = View.VISIBLE
         movementCardDivider.visibility = View.GONE
-        val amount = movementWithCategory!!.movement.amount
-        movementAmountTextView.text = String.format("%.2f", amount)
-        movementCategoryIdTextView.text = movementWithCategory.category.identifier
-        movementDateTextView.text =
-            DateFormat.format("dd/MM/yyyy hh:mm", movementWithCategory.movement.createdAt)
-                .toString()
+
+        movementWithCategory?.let {
+            val amount = it.movement.amount
+            movementAmountTextView.text = String.format("%.2f", amount)
+            movementCategoryIdTextView.text = it.category.identifier
+            movementDateTextView.text =
+                DateFormat.format("dd/MM/yyyy hh:mm", it.movement.createdAt).toString()
+            setupMovementImageView(amount)
+        }
+    }
+
+    private fun setupMovementImageView(amount: Double) {
         if (amount > 0) {
             movementImageView.setImageResource(R.drawable.baseline_trending_up_24)
             movementImageView.setBackgroundResource(R.drawable.circle_up)
@@ -157,7 +178,8 @@ class OptionModalBottomSheetFragment(
 
     private fun setupCategoryUI() {
         categoryCard.visibility = View.VISIBLE
-        categoryIdentifier.text = category!!.identifier
+        category?.let {
+            categoryIdentifier.text = it.identifier
+        }
     }
-
 }

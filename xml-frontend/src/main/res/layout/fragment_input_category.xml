@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/input_section_category"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:orientation="vertical"
-    android:visibility="invisible">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/input_category_identifier"
+    <LinearLayout
+        android:id="@+id/input_section_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Identificatore" />
-</LinearLayout>
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/input_category_identifier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Identificatore" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/input_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_section_category" />
+</androidx.constraintlayout.widget.ConstraintLayout>

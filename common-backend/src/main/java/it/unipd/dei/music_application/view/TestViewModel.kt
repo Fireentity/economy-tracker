@@ -62,7 +62,7 @@ class TestViewModel @Inject constructor(
 
                     // Inserisci i movimenti nel database
                     movements.forEach { movement ->
-                        movementDao.insertMovement(movement)
+                        movementDao.upsertMovement(movement)
                     }
                 }
             }
