@@ -247,14 +247,27 @@ fun RegisterScreen(
                     )
                 }
 
+                val category = Category(
+                    UUID.randomUUID(),
+                    ALL_CATEGORIES_IDENTIFIER,
+                    System.currentTimeMillis(),
+                    System.currentTimeMillis()
+                )
+
                 testViewModel.createDummyDataIfNoMovement()
                 movementWithCategoryViewModel.loadInitialMovements()
+
                 val movements = movementWithCategoryViewModel.getMovements()
                     .observeAsState(initial = emptyList())
                 val negativeMovements = movementWithCategoryViewModel.getNegativeMovement()
                     .observeAsState(initial = emptyList())
                 val positiveMovements = movementWithCategoryViewModel.getPositiveMovement()
                     .observeAsState(initial = emptyList())
+
+
+                movementWithCategoryViewModel.loadTotalAmountsByCategory(category)
+
+                DisplayBalance(positiveMovements = positiveMovements, negativeMovements = negativeMovements)
 
                 when(selectedTabIndex) {
                     0 -> LazyColumn(
