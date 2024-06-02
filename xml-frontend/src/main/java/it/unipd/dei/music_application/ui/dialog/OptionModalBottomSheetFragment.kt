@@ -16,8 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.utils.DisplayToast.Companion.displayFailure
-import it.unipd.dei.music_application.utils.DisplayToast.Companion.displaySuccess
+import it.unipd.dei.music_application.utils.DisplayToast
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 
@@ -85,8 +84,12 @@ class OptionModalBottomSheetFragment(
     }
 
     private fun showEditDialog() {
+
         movementWithCategory?.let {
-            val movementInputDialogFragment = MovementInputDialogFragment(movementWithCategory)
+            val title = context?.resources?.getString(R.string.edit_movement_title)
+            val buttonText = context?.resources?.getString(R.string.edit_movement_button)
+            val movementInputDialogFragment =
+                MovementInputDialogFragment(title, buttonText, movementWithCategory)
             movementInputDialogFragment.show(parentFragmentManager, "MovementInputDialogFragment")
             dismiss()
         }
@@ -111,13 +114,12 @@ class OptionModalBottomSheetFragment(
         movementWithCategoryViewModel.deleteResult.observe(viewLifecycleOwner) {
             when (it) {
                 true -> {
-                    displaySuccess(requireContext())
+                    DisplayToast.displaySuccess(requireContext())
                     dismiss()
                 }
 
-                false -> displayFailure(requireContext())
-                null -> { /* No action needed */
-                }
+                false -> DisplayToast.displayFailure(requireContext())
+                null -> {}
             }
         }
     }

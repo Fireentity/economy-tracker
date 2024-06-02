@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
-import it.unipd.dei.music_application.ui.dialog.DialogInputFragment
+import it.unipd.dei.music_application.ui.dialog.MovementInputDialogFragment
 import it.unipd.dei.music_application.ui.dialog.OptionModalBottomSheetFragment
 import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
 import it.unipd.dei.music_application.view.CategoryViewModel
@@ -125,13 +125,15 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
     private fun initializeFloatingActionButton(view: View) {
         floatingActionButton = view.findViewById(R.id.floating_action_button)
         floatingActionButton.setOnClickListener {
-            showDialogFragment()
+            showMovementInputDialogFragment()
         }
     }
 
-    private fun showDialogFragment() {
-        val dialogFragment = DialogInputFragment()
-        dialogFragment.show(parentFragmentManager, "DialogInputFragment")
+    private fun showMovementInputDialogFragment() {
+        val title = context?.resources?.getString(R.string.new_movement_title)
+        val buttonText = context?.resources?.getString(R.string.new_movement_button)
+        val movementInputDialogFragment = MovementInputDialogFragment(title, buttonText)
+        movementInputDialogFragment.show(parentFragmentManager, "MovementInputDialogFragment")
     }
 
     override fun onPause() {
@@ -402,8 +404,9 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
         if (movementWithCategory == null) {
             return
         }
-        val optionModalBottomSheetFragment = OptionModalBottomSheetFragment(movementWithCategory, null)
-        optionModalBottomSheetFragment.show(parentFragmentManager, "DialogInputFragment")
+        val optionModalBottomSheetFragment =
+            OptionModalBottomSheetFragment(movementWithCategory, null)
+        optionModalBottomSheetFragment.show(parentFragmentManager, "OptionModalBottomSheetFragment")
     }
 
 }

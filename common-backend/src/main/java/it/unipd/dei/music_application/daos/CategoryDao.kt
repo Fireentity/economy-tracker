@@ -11,7 +11,7 @@ import it.unipd.dei.music_application.models.CategoryTotal
 @Dao
 interface CategoryDao {
     @Upsert
-    suspend fun insertCategory(category: Category)
+    suspend fun upsertCategory(category: Category)
 
     @Delete
     suspend fun deleteCategory(category: Category)
