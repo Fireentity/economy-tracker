@@ -47,7 +47,7 @@ class TestViewModel @Inject constructor(
                     )
 
                     // Inserisci la categoria nel database
-                    categoryDao.insertCategory(category)
+                    categoryDao.upsertCategory(category)
 
                     // Crea 50 movimenti fittizi associati alla categoria
                     val movements = List(100) { index ->
@@ -62,7 +62,7 @@ class TestViewModel @Inject constructor(
 
                     // Inserisci i movimenti nel database
                     movements.forEach { movement ->
-                        movementDao.insertMovement(movement)
+                        movementDao.upsertMovement(movement)
                     }
                 }
             }

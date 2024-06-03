@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.models.Category
-import it.unipd.dei.music_application.models.CategoryTotal
-import it.unipd.dei.music_application.models.Movement
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,8 +21,8 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     private val _isCategoryIdentifierPresent = MutableLiveData<Boolean?>()
     val isCategoryIdentifierPresent: LiveData<Boolean?> = _isCategoryIdentifierPresent
 
-    private val _insertResult = MutableLiveData<Boolean?>()
-    val insertResult: LiveData<Boolean?> = _insertResult
+    private val _upsertResult = MutableLiveData<Boolean?>()
+    val upsertResult: LiveData<Boolean?> = _upsertResult
 
     fun getAllCategories() {
         viewModelScope.launch {
@@ -45,14 +43,14 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
         }
     }
 
-    fun insertCategory(category: Category) {
-        _insertResult.postValue(null)
+    fun upsertCategory(category: Category) {
+        _upsertResult.postValue(null)
         viewModelScope.launch {
             try {
-                categoryDao.insertCategory(category)
-                _insertResult.postValue(true)
+                categoryDao.upsertCategory(category)
+                _upsertResult.postValue(true)
             } catch (e: Exception) {
-                _insertResult.postValue(false)
+                _upsertResult.postValue(false)
             }
         }
     }

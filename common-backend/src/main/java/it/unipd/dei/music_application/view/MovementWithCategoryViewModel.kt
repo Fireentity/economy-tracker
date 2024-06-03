@@ -16,111 +16,117 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovementWithCategoryViewModel @Inject constructor(
-    private val movementDao: MovementDao,
+    private val movementDao: MovementDao
 ) : ViewModel() {
 
-    private val movements = MutableLiveData<List<MovementWithCategory>>(emptyList())
-    private val positiveMovements = MutableLiveData<List<MovementWithCategory>>(emptyList())
-    private val negativeMovements = MutableLiveData<List<MovementWithCategory>>(emptyList())
-    private val totalBalance = MutableLiveData<Double>()
-    private val earnedMoney = MutableLiveData<Double>()
-    private val spentMoney = MutableLiveData<Double>()
-    private val _insertResult = MutableLiveData<Boolean?>()
+    private val _allMovementsWithCategory = MutableLiveData<List<MovementWithCategory>>()
+    val allData: LiveData<List<MovementWithCategory>> = _allMovementsWithCategory
+
+    private val _positiveMovementsWithCategory = MutableLiveData<List<MovementWithCategory>>()
+    val positiveData: LiveData<List<MovementWithCategory>> = _positiveMovementsWithCategory
+
+    private val _negativeMovementsWithCategory = MutableLiveData<List<MovementWithCategory>>()
+    val negativeData: LiveData<List<MovementWithCategory>> = _negativeMovementsWithCategory
+
+    private val _sumAllMovementsAmount = MutableLiveData<Double>()
+    val totalAllAmount: LiveData<Double> = _sumAllMovementsAmount
+
+    private val _sumPositiveMovementsAmount = MutableLiveData<Double>()
+    val totalPositiveAmount: LiveData<Double> = _sumPositiveMovementsAmount
+
+    private val _sumNegativeMovementsAmount = MutableLiveData<Double>()
+    val totalNegativeAmount: LiveData<Double> = _sumNegativeMovementsAmount
+
+    private val _upsertResult = MutableLiveData<Boolean?>()
+    val upsertResult: LiveData<Boolean?> = _upsertResult
+
     private val _deleteResult = MutableLiveData<Boolean?>()
+    val deleteResult: LiveData<Boolean?> = _deleteResult
 
-    companion object {
-        private const val PAGE_SIZE: Int = 10;
-    }
 
-    fun getMovements(): LiveData<List<MovementWithCategory>> {
-        return movements
-    }
+    private var currentAllOffset = 0
+    private var currentPositiveOffset = 0
+    private var currentNegativeOffset = 0
 
-    fun getNegativeMovement(): LiveData<List<MovementWithCategory>> {
-        return negativeMovements
-    }
+    private val pageSize = 10
 
-    fun getPositiveMovement(): LiveData<List<MovementWithCategory>> {
-        return positiveMovements
-    }
 
-    private fun loadSomeMovements() {
+    private fun loadMovements(
+        offset: Int,
+        updateOffset: (Int) -> Unit,
+        dataLoader: suspend (UUID, Int, Int) -> List<MovementWithCategory>,
+        liveData: MutableLiveData<List<MovementWithCategory>>,
+        category: Category
+    ) {
         viewModelScope.launch {
-            movements.postValue(
-                movements.value?.plus(
-                    movementDao.getSomeMovements(
-                        PAGE_SIZE,
-                        movements.value?.size ?: 0
-                    )
-                )
-            )
+            val loadedData = dataLoader(category.uuid, pageSize, offset)
+            if (loadedData.isNotEmpty()) {
+                liveData.postValue((liveData.value ?: emptyList()) + loadedData)
+                updateOffset(offset + loadedData.size)
+            }
         }
     }
 
-    private fun loadSomePositiveMovements() {
+    private fun loadMovements(
+        offset: Int,
+        updateOffset: (Int) -> Unit,
+        dataLoader: suspend (Int, Int) -> List<MovementWithCategory>,
+        liveData: MutableLiveData<List<MovementWithCategory>>
+    ) {
         viewModelScope.launch {
-            positiveMovements.postValue(
-                positiveMovements.value?.plus(
-                    movementDao.getSomePositiveMovements(
-                        PAGE_SIZE,
-                        positiveMovements.value?.size ?: 0
-                    )
-                )
-            )
+            val loadedData = dataLoader(pageSize, offset)
+            if (loadedData.isNotEmpty()) {
+                liveData.postValue((liveData.value ?: emptyList()) + loadedData)
+                updateOffset(offset + loadedData.size)
+            }
         }
     }
 
-    private fun loadSomeNegativeMovements() {
-        viewModelScope.launch {
-            negativeMovements.postValue(
-                negativeMovements.value?.plus(
-                    movementDao.getSomeNegativeMovements(
-                        PAGE_SIZE,
-                        negativeMovements.value?.size ?: 0
-                    )
-                )
-            )
-        }
-    }
 
     fun loadSomeMovementsByCategory(category: Category) {
-        viewModelScope.launch {
-            movements.postValue(
-                movements.value?.plus(
-                    movementDao.getSomeMovementsByCategory(
-                        category.uuid,
-                        PAGE_SIZE,
-                        movements.value?.size ?: 0
-                    )
-                )
-            )
+        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
+            loadMovements(currentAllOffset, {
+                currentAllOffset = it
+            }, movementDao::getSomeMovements, _allMovementsWithCategory)
+        } else {
+            loadMovements(currentAllOffset, {
+                currentAllOffset = it
+            }, movementDao::getSomeMovementsByCategory, _allMovementsWithCategory, category)
         }
     }
 
     fun loadSomePositiveMovementsByCategory(category: Category) {
-        viewModelScope.launch {
-            positiveMovements.postValue(
-                positiveMovements.value?.plus(
-                    movementDao.getSomePositiveMovementsByCategory(
-                        category.uuid,
-                        PAGE_SIZE,
-                        positiveMovements.value?.size ?: 0
-                    )
-                )
+        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
+            loadMovements(currentPositiveOffset, {
+                currentPositiveOffset = it
+            }, movementDao::getSomePositiveMovements, _positiveMovementsWithCategory)
+        } else {
+            loadMovements(
+                currentPositiveOffset,
+                {
+                    currentPositiveOffset = it
+                },
+                movementDao::getSomePositiveMovementsByCategory,
+                _positiveMovementsWithCategory,
+                category
             )
         }
     }
 
     fun loadSomeNegativeMovementsByCategory(category: Category) {
-        viewModelScope.launch {
-            negativeMovements.postValue(
-                negativeMovements.value?.plus(
-                    movementDao.getSomeNegativeMovementsByCategory(
-                        category.uuid,
-                        PAGE_SIZE,
-                        negativeMovements.value?.size ?: 0
-                    )
-                )
+        if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
+            loadMovements(currentNegativeOffset, {
+                currentNegativeOffset = it
+            }, movementDao::getSomeNegativeMovements, _negativeMovementsWithCategory)
+        } else {
+            loadMovements(
+                currentNegativeOffset,
+                {
+                    currentNegativeOffset = it
+                },
+                movementDao::getSomeNegativeMovementsByCategory,
+                _negativeMovementsWithCategory,
+                category
             )
         }
     }
@@ -148,62 +154,74 @@ class MovementWithCategoryViewModel @Inject constructor(
 
     fun loadTotalAmountsByCategory(category: Category) {
         if (category.identifier == ALL_CATEGORIES_IDENTIFIER) {
-            loadTotalAmount(movementDao::getTotalAmount, totalBalance)
-            loadTotalAmount(movementDao::getTotalPositiveAmount, earnedMoney)
-            loadTotalAmount(movementDao::getTotalNegativeAmount, spentMoney)
+            loadTotalAmount(movementDao::getTotalAmount, _sumAllMovementsAmount)
+            loadTotalAmount(movementDao::getTotalPositiveAmount, _sumPositiveMovementsAmount)
+            loadTotalAmount(movementDao::getTotalNegativeAmount, _sumNegativeMovementsAmount)
         } else {
             loadTotalAmount(
                 movementDao::getTotalAmountByCategory,
-                totalBalance,
+                _sumAllMovementsAmount,
                 category
             )
             loadTotalAmount(
                 movementDao::getTotalPositiveAmountByCategory,
-                earnedMoney,
+                _sumPositiveMovementsAmount,
                 category
             )
             loadTotalAmount(
                 movementDao::getTotalNegativeAmountByCategory,
-                spentMoney,
+                _sumNegativeMovementsAmount,
                 category
             )
         }
     }
 
     fun loadInitialMovementsByCategory(category: Category) {
+        currentAllOffset = 0
+        currentPositiveOffset = 0
+        currentNegativeOffset = 0
+
+        _allMovementsWithCategory.postValue(emptyList())
+        _positiveMovementsWithCategory.postValue(emptyList())
+        _negativeMovementsWithCategory.postValue(emptyList())
+
         loadSomeMovementsByCategory(category)
         loadSomePositiveMovementsByCategory(category)
         loadSomeNegativeMovementsByCategory(category)
     }
 
-    fun loadInitialMovements() {
-        loadSomeNegativeMovements()
-        loadSomePositiveMovements()
-        loadSomeMovements()
+    private fun loadAllMovements(
+        dataLoader: suspend () -> List<MovementWithCategory>,
+        liveData: MutableLiveData<List<MovementWithCategory>>
+    ) {
+        viewModelScope.launch {
+            val loadedData = dataLoader()
+            liveData.postValue(loadedData)
+        }
     }
 
-    fun insertMovement(movement: Movement) {
-        _insertResult.postValue(null)
+
+    fun upsertMovement(movement: Movement) {
+        _upsertResult.postValue(null)
         viewModelScope.launch {
             try {
-                movementDao.insertMovement(movement)
-                _insertResult.postValue(true)
+                movementDao.upsertMovement(movement)
+                _upsertResult.postValue(true)
             } catch (e: Exception) {
-                _insertResult.postValue(false)
+                _upsertResult.postValue(false)
             }
         }
     }
 
-    fun deleteMovement(movement: Movement) {
+    fun deleteMovement(movement: Movement){
         _deleteResult.postValue(null)
         viewModelScope.launch {
             try {
                 movementDao.deleteMovement(movement)
                 _deleteResult.postValue(true)
-            } catch (e: Exception) {
+            } catch (e:Exception){
                 _deleteResult.postValue(false)
             }
         }
     }
-
 }
