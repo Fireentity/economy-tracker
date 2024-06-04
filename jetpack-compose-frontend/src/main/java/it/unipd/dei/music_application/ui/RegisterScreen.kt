@@ -142,26 +142,7 @@ fun TextInputDialog(
     )
 }*/
 
-object CategorySaver {
-    val saver = mapSaver(
-        save = { category: Category ->
-            mapOf(
-                "uuid" to category.uuid,
-                "identifier" to category.identifier,
-                "createdAt" to category.createdAt,
-                "updatedAt" to category.updatedAt
-            )
-        },
-        restore = { map ->
-            Category(
-                map["uuid"] as UUID,
-                map["identifier"] as String,
-                map["createdAt"] as Long,
-                map["updatedAt"] as Long
-            )
-        }
-    )
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -296,6 +277,11 @@ fun RegisterScreen(
                                                 text = { Text(text = category.toString()) },
                                                 onClick = {
                                                     selectedCategory = category
+                                                    expandedDropdownMenu = false
+                                                    movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
+                                                    movementWithCategoryViewModel.loadSomeMovementsByCategory(selectedCategory)
+                                                    movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(selectedCategory)
+                                                    movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(selectedCategory)
                                                 }
                                             )
                                         }
@@ -367,7 +353,8 @@ fun RegisterScreen(
                         onDismiss = { showDialog = false },
                         onConfirm = { inputText ->
                             showDialog = false
-                        }
+                        },
+                        categoryViewModel
                     )
                 }
 
