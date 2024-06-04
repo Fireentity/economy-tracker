@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import it.unipd.dei.music_application.models.MovementWithCategory
+import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 
 @Composable
 fun MyDivider() {
@@ -40,22 +42,13 @@ fun MyLazyColumn(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DisplayBalance(positiveMovements: State<List<MovementWithCategory>>, negativeMovements: State<List<MovementWithCategory>>) {
+fun DisplayBalance(movementWithCategoryViewModel: MovementWithCategoryViewModel) {
     Column(
         modifier = Modifier
             .padding(top = 3.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var positiveAmount = 0.0
-        for (movement in positiveMovements.value) {
-            positiveAmount += movement.movement.amount
-        }
-
-        var negativeAmount = 0.0
-        for (movement in negativeMovements.value) {
-            negativeAmount += movement.movement.amount
-        }
 
         Text(text = "Bilancio:")
 
@@ -63,28 +56,34 @@ fun DisplayBalance(positiveMovements: State<List<MovementWithCategory>>, negativ
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "€%.2f".format(positiveAmount),
+                text = "€%.2f".format(movementWithCategoryViewModel.totalPositiveAmount.observeAsState(initial = 0.0).value),
                 color = Color(0xFF15803D),
                 style = MaterialTheme.typography.headlineSmall,
                 fontSize = 18.sp,
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 textAlign = TextAlign.Center
             )
             //Spacer(modifier = Modifier.weight(1.1f))
             Text(
-                text = "€%.2f".format(positiveAmount + negativeAmount),
-                color = if (positiveAmount + negativeAmount >=0) Color(0xFF15803D) else Color(0xFFB91C1C),
+                text = "€%.2f".format(movementWithCategoryViewModel.totalAllAmount.observeAsState(initial = 0.0).value),
+                color = if (movementWithCategoryViewModel.totalAllAmount.observeAsState(initial = 0.0).value >=0) Color(0xFF15803D) else Color(0xFFB91C1C),
                 style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 textAlign = TextAlign.Center
             )
             //Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "€%.2f".format(negativeAmount),
+                text = "€%.2f".format(movementWithCategoryViewModel.totalNegativeAmount.observeAsState(initial = 0.0).value),
                 color = Color(0xFFB91C1C),
                 style = MaterialTheme.typography.headlineSmall,
                 fontSize = 20.sp,
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 textAlign = TextAlign.Center
             )
         }
