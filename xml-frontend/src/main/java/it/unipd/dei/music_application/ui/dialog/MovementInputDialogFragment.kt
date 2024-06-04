@@ -80,6 +80,7 @@ class MovementInputDialogFragment(
         }
         categoryViewModel.getAllCategories()
         setParametersToInputFields()
+        MovementInputHelper.setupMovementAmountTextField(amountTextField)
     }
 
     private fun initializeInputFields(view: View) {

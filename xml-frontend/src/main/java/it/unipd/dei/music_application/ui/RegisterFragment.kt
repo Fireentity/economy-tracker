@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
+import it.unipd.dei.music_application.interfaces.OnItemLongClickListener
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.ui.dialog.MovementInputDialogFragment
@@ -35,9 +36,9 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
     private val categoryViewModel: CategoryViewModel by viewModels()
 
     // Adapters for RecyclerViews
-    private lateinit var allRecyclerViewAdapter: MovementCardAdapter
-    private lateinit var positiveRecyclerViewAdapter: MovementCardAdapter
-    private lateinit var negativeRecyclerViewAdapter: MovementCardAdapter
+    private var allRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
+    private var positiveRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
+    private var negativeRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
 
     // RecyclerViews in fragment_register layout
     private lateinit var allRecyclerView: RecyclerView
@@ -106,8 +107,6 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
         // Initialize FloatingActionButton
         initializeFloatingActionButton(view)
 
-        // Create the adapters with an empty list
-        initializeAdapters()
 
         // Set the adapters and layout managers to the RecyclerViews
         setupRecyclerViews()
@@ -168,12 +167,6 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
         addTabItemListener()
     }
 
-    private fun initializeAdapters() {
-        allRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
-        positiveRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
-        negativeRecyclerViewAdapter = MovementCardAdapter(emptyList(), this)
-    }
-
     private fun initializeAutoCompleteTextView(view: View) {
         autoCompleteTextView = view.findViewById(R.id.menu)
         autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
@@ -214,25 +207,39 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
 
     private fun observeViewModelData() {
         movementWithCategoryViewModel.allData.observe(viewLifecycleOwner) {
-            updateAdapter(allRecyclerViewAdapter, it)
+            if (it != null) {
+                updateAdapter(allRecyclerViewAdapter, it)
+            }
         }
         movementWithCategoryViewModel.positiveData.observe(viewLifecycleOwner) {
-            updateAdapter(positiveRecyclerViewAdapter, it)
+            if (it != null) {
+                updateAdapter(positiveRecyclerViewAdapter, it)
+            }
         }
         movementWithCategoryViewModel.negativeData.observe(viewLifecycleOwner) {
-            updateAdapter(negativeRecyclerViewAdapter, it)
+            if (it != null) {
+                updateAdapter(negativeRecyclerViewAdapter, it)
+            }
         }
         movementWithCategoryViewModel.totalAllAmount.observe(viewLifecycleOwner) {
-            updateTextContainer(it, "totalAll")
+            if (it != null) {
+                updateTextContainer(it, "totalAll")
+            }
         }
         movementWithCategoryViewModel.totalPositiveAmount.observe(viewLifecycleOwner) {
-            updateTextContainer(it, "totalPositive")
+            if (it != null) {
+                updateTextContainer(it, "totalPositive")
+            }
         }
         movementWithCategoryViewModel.totalNegativeAmount.observe(viewLifecycleOwner) {
-            updateTextContainer(it, "totalNegative")
+            if (it != null) {
+                updateTextContainer(it, "totalNegative")
+            }
         }
         categoryViewModel.allCategories.observe(viewLifecycleOwner) {
-            updateDropdownMenu(it)
+            if (it != null) {
+                updateDropdownMenu(it)
+            }
         }
     }
 

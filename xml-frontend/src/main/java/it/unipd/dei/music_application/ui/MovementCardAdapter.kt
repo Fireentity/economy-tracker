@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.music_application.R
+import it.unipd.dei.music_application.interfaces.OnItemLongClickListener
 import it.unipd.dei.music_application.models.MovementWithCategory
 
 class MovementCardAdapter(
