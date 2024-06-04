@@ -24,6 +24,9 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     private val _upsertResult = MutableLiveData<Boolean?>()
     val upsertResult: LiveData<Boolean?> = _upsertResult
 
+    private val _deleteResult = MutableLiveData<Boolean?>()
+    val deleteResult: LiveData<Boolean?> = _deleteResult
+
     fun getAllCategories() {
         viewModelScope.launch {
             val loadedData = categoryDao.getAllCategories()
@@ -35,7 +38,7 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
         viewModelScope.launch {
             val categories = categoryDao.getCategoriesByIdentifier(identifier)
             _isCategoryIdentifierPresent.postValue(null)
-            if(categories.isNotEmpty()){
+            if (categories.isNotEmpty()) {
                 _isCategoryIdentifierPresent.postValue(true)
             } else {
                 _isCategoryIdentifierPresent.postValue(false)
@@ -51,6 +54,18 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
                 _upsertResult.postValue(true)
             } catch (e: Exception) {
                 _upsertResult.postValue(false)
+            }
+        }
+    }
+
+    fun deleteCategory(category: Category) {
+        _deleteResult.postValue(null)
+        viewModelScope.launch {
+            try {
+                categoryDao.deleteCategory(category)
+                _deleteResult.postValue(true)
+            } catch (e: Exception) {
+                _deleteResult.postValue(false)
             }
         }
     }

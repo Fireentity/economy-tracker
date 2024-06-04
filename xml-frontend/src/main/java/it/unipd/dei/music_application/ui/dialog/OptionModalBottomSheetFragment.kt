@@ -5,6 +5,7 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -31,6 +32,8 @@ class OptionModalBottomSheetFragment(
 
     private lateinit var categoryCard: View
     private lateinit var categoryIdentifier: TextView
+    private lateinit var categoryImageButton: ImageButton
+    private lateinit var categoryCardDivider: MaterialDivider
 
     private lateinit var movementCard: View
     private lateinit var movementImageView: ImageView
@@ -42,8 +45,6 @@ class OptionModalBottomSheetFragment(
     private lateinit var editLayout: LinearLayout
     private lateinit var deleteLayout: LinearLayout
 
-    private var valid = true
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,22 +52,15 @@ class OptionModalBottomSheetFragment(
     ): View {
         val view = inflater.inflate(R.layout.fragment_option, container, false)
 
-        valid = validateInputs()
-        if (!valid) return view
+        if (!validateInputs()) return view
 
         initializeViews(view)
         if (movementWithCategory != null) setupMovementUI()
         if (category != null) setupCategoryUI()
 
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (!valid) return
-
         setupListeners()
         observeDeleteResult()
+        return view
     }
 
     private fun validateInputs(): Boolean {
@@ -91,27 +85,49 @@ class OptionModalBottomSheetFragment(
             val movementInputDialogFragment =
                 MovementInputDialogFragment(title, buttonText, movementWithCategory)
             movementInputDialogFragment.show(parentFragmentManager, "MovementInputDialogFragment")
-            dismiss()
         }
+        category?.let {
+            val title = context?.resources?.getString(R.string.edit_category_title)
+            val buttonText = context?.resources?.getString(R.string.edit_category_button)
+            val categoryInputDialogFragment =
+                CategoryInputDialogFragment(title, buttonText, category)
+            categoryInputDialogFragment.show(parentFragmentManager, "CategoryInputDialogFragment")
+
+        }
+        dismiss()
     }
 
     private fun showDeleteConfirmationDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(resources.getString(R.string.delete_movement_title))
-            .setMessage(resources.getString(R.string.delete_movement_message))
-            .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
-            .setPositiveButton(resources.getString(R.string.si)) { _, _ ->
-                if (category != null) {
-                    deleteCategory()
-                } else if (movementWithCategory != null) {
-                    deleteMovement()
-                }
-            }
-            .show()
+        if (movementWithCategory != null) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.delete_movement_title))
+                .setMessage(resources.getString(R.string.delete_movement_message))
+                .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
+                .setPositiveButton(resources.getString(R.string.si)) { _, _ -> deleteMovement() }
+                .show()
+        } else if (category != null) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.delete_category_title))
+                .setMessage(resources.getString(R.string.delete_category_message))
+                .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
+                .setPositiveButton(resources.getString(R.string.si)) { _, _ -> deleteCategory() }
+                .show()
+        }
     }
 
     private fun observeDeleteResult() {
         movementWithCategoryViewModel.deleteResult.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> {
+                    DisplayToast.displaySuccess(requireContext())
+                    dismiss()
+                }
+
+                false -> DisplayToast.displayFailure(requireContext())
+                null -> {}
+            }
+        }
+        categoryViewModel.deleteResult.observe(viewLifecycleOwner) {
             when (it) {
                 true -> {
                     DisplayToast.displaySuccess(requireContext())
@@ -131,7 +147,9 @@ class OptionModalBottomSheetFragment(
     }
 
     private fun deleteCategory() {
-        // TODO: Implement delete category functionality
+        category?.let {
+            categoryViewModel.deleteCategory(category)
+        }
     }
 
     private fun initializeViews(view: View) {
@@ -151,6 +169,18 @@ class OptionModalBottomSheetFragment(
 
         category?.let {
             categoryIdentifier = view.findViewById(R.id.category_card_identifier)
+            categoryImageButton = view.findViewById(R.id.view_category_button)
+            categoryCardDivider = view.findViewById(R.id.category_card_divider)
+        }
+    }
+
+    private fun setupMovementImageView(amount: Double) {
+        if (amount > 0) {
+            movementImageView.setImageResource(R.drawable.baseline_trending_up_24)
+            movementImageView.setBackgroundResource(R.drawable.circle_up)
+        } else if (amount < 0) {
+            movementImageView.setImageResource(R.drawable.baseline_trending_down_24)
+            movementImageView.setBackgroundResource(R.drawable.circle_down)
         }
     }
 
@@ -168,18 +198,10 @@ class OptionModalBottomSheetFragment(
         }
     }
 
-    private fun setupMovementImageView(amount: Double) {
-        if (amount > 0) {
-            movementImageView.setImageResource(R.drawable.baseline_trending_up_24)
-            movementImageView.setBackgroundResource(R.drawable.circle_up)
-        } else if (amount < 0) {
-            movementImageView.setImageResource(R.drawable.baseline_trending_down_24)
-            movementImageView.setBackgroundResource(R.drawable.circle_down)
-        }
-    }
-
     private fun setupCategoryUI() {
         categoryCard.visibility = View.VISIBLE
+        categoryImageButton.visibility = View.GONE
+        categoryCardDivider.visibility = View.GONE
         category?.let {
             categoryIdentifier.text = it.identifier
         }

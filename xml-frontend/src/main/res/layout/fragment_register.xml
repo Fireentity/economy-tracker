@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="Ciao"
+        android:contentDescription="Plus action"
         app:srcCompat="@drawable/baseline_add_24" />
 
     <FrameLayout

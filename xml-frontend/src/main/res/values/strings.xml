@@ -31,10 +31,15 @@
     <string name="delete_movement_title">Elimina Movimento</string>
     <string name="delete_movement_message">Sei sicuro di voler eliminare questo movimento?</string>
     <string name="delete_category_title">Elimina Categoria</string>
+    <string name="delete_category_message">Sei sicuro di voler eliminare questa categoria?</string>
     <string name="cancel">Annulla</string>
     <string name="si">Si</string>
     <string name="new_movement_title">Crea Movimento:</string>
     <string name="new_movement_button">Crea</string>
     <string name="edit_movement_title">Modifica Movimento:</string>
     <string name="edit_movement_button">Salva</string>
+    <string name="new_category_title">Crea Categoria:</string>
+    <string name="new_category_button">Crea</string>
+    <string name="edit_category_title">Modifica Categoria:</string>
+    <string name="edit_category_button">Salva</string>
 </resources>
