@@ -11,14 +11,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
+import java.util.UUID
 
 @Composable
 fun MyDivider() {
@@ -94,4 +97,25 @@ fun DisplayBalance(movementWithCategoryViewModel: MovementWithCategoryViewModel)
             color = Color.White
         )
     }
+}
+
+object CategorySaver {
+    val saver = mapSaver(
+        save = { category: Category ->
+            mapOf(
+                "uuid" to category.uuid,
+                "identifier" to category.identifier,
+                "createdAt" to category.createdAt,
+                "updatedAt" to category.updatedAt
+            )
+        },
+        restore = { map ->
+            Category(
+                map["uuid"] as UUID,
+                map["identifier"] as String,
+                map["createdAt"] as Long,
+                map["updatedAt"] as Long
+            )
+        }
+    )
 }
