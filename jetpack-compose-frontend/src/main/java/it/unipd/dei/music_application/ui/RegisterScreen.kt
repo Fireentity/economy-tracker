@@ -2,45 +2,34 @@ package it.unipd.dei.music_application.ui
 
 
 import android.app.TimePickerDialog
-import android.content.Context
-import android.widget.TimePicker
-import android.widget.Toast
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TimePicker
@@ -53,6 +42,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -60,20 +50,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import it.unipd.dei.music_application.database.BalanceDatabase
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.daos.MovementDao
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.ui.components.MovementCard
 import it.unipd.dei.music_application.ui.components.MovementDialog
 import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
+import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
 import java.time.LocalDateTime
 import java.util.UUID
@@ -82,7 +68,7 @@ data class TabItem(
     val title: String
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+/*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTimePicker() {
     var dateTime = LocalDateTime.now()
@@ -96,9 +82,9 @@ fun MyTimePicker() {
     }
 
     TimePicker(state = timePickerState)
-}
+}*/
 
-@OptIn(ExperimentalMaterial3Api::class)
+/*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextInputDialog(
     onDismiss: () -> Unit,
@@ -154,19 +140,41 @@ fun TextInputDialog(
             }
         }
     )
-}
+}*/
 
+object CategorySaver {
+    val saver = mapSaver(
+        save = { category: Category ->
+            mapOf(
+                "uuid" to category.uuid,
+                "identifier" to category.identifier,
+                "createdAt" to category.createdAt,
+                "updatedAt" to category.updatedAt
+            )
+        },
+        restore = { map ->
+            Category(
+                map["uuid"] as UUID,
+                map["identifier"] as String,
+                map["createdAt"] as Long,
+                map["updatedAt"] as Long
+            )
+        }
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     db: BalanceDatabase,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    categoryViewModel: CategoryViewModel,
+    testViewModel: TestViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel();
     val movementDao: MovementDao = db.getMovementDao()
     val categoryDao: CategoryDao = db.getCategoryDao()
-    val testViewModel = viewModel<TestViewModel>(
+    /*val testViewModel = viewModel<TestViewModel>(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return TestViewModel(
@@ -175,18 +183,63 @@ fun RegisterScreen(
                 ) as T
             }
         }
-    )
+    )*/
 
     Surface(
         modifier = modifier
     ) {
         val context = LocalContext.current
-        val categoryList = testViewModel.categoryNames.toMutableList()
-        categoryList.add(0, ALL_CATEGORIES_IDENTIFIER)
+        /*val categoryIdentifiers = testViewModel.categoryNames.toMutableList()
+        categoryIdentifiers.add(0, ALL_CATEGORIES_IDENTIFIER)*/
+
+        /*for (identifier in categoryIdentifiers) {
+            categoryViewModel.upsertCategory(
+                Category(
+                    UUID.randomUUID(),
+                    identifier,
+                    System.currentTimeMillis(),
+                    System.currentTimeMillis()
+                )
+            )
+            Log.i("upsert result", "${categoryViewModel.upsertResult.observeAsState().value}")
+        }*/
+
+
+        /*val prova = categoryViewModel.allCategories.observeAsState(initial = emptyList()).value
+        Log.i("upsert result", "${prova.size}")
+        for(i in prova) {
+            Log.i("upsert result", "${i.identifier}")
+        }*/
+
+        /*categoryViewModel.upsertCategory(
+            Category(
+                UUID.randomUUID(),
+                ALL_CATEGORIES_IDENTIFIER,
+                System.currentTimeMillis(),
+                System.currentTimeMillis()
+            )
+        )*/
+        //categoryViewModel.getAllCategories()
+        val categoryList = categoryViewModel.allCategories.observeAsState(initial = listOf()).value
+        /*categoryList.add(
+            0,
+            Category(
+                UUID.randomUUID(),
+                ALL_CATEGORIES_IDENTIFIER,
+                System.currentTimeMillis(),
+                System.currentTimeMillis()
+            )
+        )*/
 
         var showDialog by rememberSaveable { mutableStateOf(false) }
         var expandedDropdownMenu by remember { mutableStateOf(false) }
-        var selectedCategory by rememberSaveable { mutableStateOf( categoryList[0] ) }
+        //var selectedCategory by rememberSaveable { mutableStateOf(categoryIdentifiers[0]) }
+        var selectedCategory = rememberSaveable(saver = CategorySaver.saver) { Category(
+            categoryList[0].uuid,
+            categoryList[0].identifier,
+            categoryList[0].createdAt,
+            categoryList[0].updatedAt
+        ) }
 
         Scaffold(
             topBar = {
@@ -205,24 +258,26 @@ fun RegisterScreen(
                                 "Registro",
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.weight(1f).fillMaxWidth()
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxWidth()
                             )
 
                             //Spacer(modifier = Modifier.weight(1f).fillMaxWidth())
 
                             Box(
-                                modifier = Modifier.fillMaxWidth().weight(1f),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
                                 contentAlignment = Alignment.Center
                             ) {
-                                /*IconButton(onClick = { expandedDropdownMenu = true }) {
-                                    Icon(Icons.Filled.ArrowDropDown, contentDescription = "Menu")
-                                }*/
+
                                 ExposedDropdownMenuBox(
                                     expanded = expandedDropdownMenu,
                                     onExpandedChange = { expandedDropdownMenu = it }
                                 ) {
                                     TextField(
-                                        value = selectedCategory,
+                                        value = selectedCategory.identifier,
                                         onValueChange = {},
                                         readOnly = true,
                                         trailingIcon = {
@@ -238,7 +293,7 @@ fun RegisterScreen(
                                     ) {
                                         for (category in categoryList) {
                                             DropdownMenuItem(
-                                                text = { Text(text = category) },
+                                                text = { Text(text = category.toString()) },
                                                 onClick = {
                                                     selectedCategory = category
                                                 }
@@ -247,15 +302,7 @@ fun RegisterScreen(
 
                                     }
                                 }
-                                /*DropdownMenu(
-                                    expanded = expandedDropdownMenu,
-                                    onDismissRequest = { expandedDropdownMenu = false },
-                                    content = {
-                                        for (category in categoryList) {
-                                            Text(text = category)
-                                        }
-                                    }
-                                )*/
+
                             }
 
                         }
@@ -324,27 +371,28 @@ fun RegisterScreen(
                     )
                 }
 
-                val category = Category(
+                /*val category = Category(
                     UUID.randomUUID(),
                     selectedCategory,
                     System.currentTimeMillis(),
                     System.currentTimeMillis()
-                )
+                )*/
+                //categoryViewModel.getAllCategories()
+                movementWithCategoryViewModel.loadSomeMovementsByCategory(selectedCategory)
+                movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(selectedCategory)
+                movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(selectedCategory)
 
-                testViewModel.createDummyDataIfNoMovement()
-                movementWithCategoryViewModel.loadInitialMovements()
-
-                val movements = movementWithCategoryViewModel.getMovements()
+                val movements = movementWithCategoryViewModel.allData
                     .observeAsState(initial = emptyList())
-                val negativeMovements = movementWithCategoryViewModel.getNegativeMovement()
+                val negativeMovements = movementWithCategoryViewModel.negativeData
                     .observeAsState(initial = emptyList())
-                val positiveMovements = movementWithCategoryViewModel.getPositiveMovement()
+                val positiveMovements = movementWithCategoryViewModel.positiveData
                     .observeAsState(initial = emptyList())
 
 
-                movementWithCategoryViewModel.loadTotalAmountsByCategory(category)
+                movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
 
-                DisplayBalance(positiveMovements = positiveMovements, negativeMovements = negativeMovements)
+                DisplayBalance(movementWithCategoryViewModel = movementWithCategoryViewModel)
 
                 when(selectedTabIndex) {
                     0 -> LazyColumn(

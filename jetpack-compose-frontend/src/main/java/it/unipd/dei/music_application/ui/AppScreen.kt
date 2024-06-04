@@ -29,6 +29,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import it.unipd.dei.music_application.database.BalanceDatabase
+import it.unipd.dei.music_application.view.CategoryViewModel
+import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
+import it.unipd.dei.music_application.view.TestViewModel
 
 
 enum class AppScreen() {
@@ -47,6 +50,9 @@ data class BottomNavigationItem(
 @Composable
 fun AppScreen(
     db: BalanceDatabase,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    categoryViewModel: CategoryViewModel,
+    testViewModel: TestViewModel,
     navController: NavHostController = rememberNavController(),
 ) {
     val bottomNavigationIcons = listOf(
@@ -116,7 +122,7 @@ fun AppScreen(
 
                 // Registro
                 composable(route = AppScreen.entries[1].name) {
-                    RegisterScreen(db, modifier = Modifier.fillMaxSize())
+                    RegisterScreen(db, movementWithCategoryViewModel, categoryViewModel, testViewModel, modifier = Modifier.fillMaxSize())
                 }
 
                 // Ricorrenze
