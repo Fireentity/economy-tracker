@@ -47,7 +47,7 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
         _upsertResult.postValue(null)
         viewModelScope.launch {
             try {
-                categoryDao.insertCategory(category)
+                categoryDao.upsertCategory(category)
                 _upsertResult.postValue(true)
             } catch (e: Exception) {
                 _upsertResult.postValue(false)

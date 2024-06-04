@@ -4,18 +4,15 @@ import android.content.Context
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.Movement
 import java.util.UUID
 
-class MovementInputHelper {
-    companion object {
+object MovementInputHelper {
         fun setupMovementAmountTextField(movementAmountTextField: EditText) {
             val decimalDigitsInputFilter = InputFilter { source, _, _, dest, _, _ ->
                 val inputText = dest.toString() + source.toString()
@@ -46,7 +43,7 @@ class MovementInputHelper {
             })
         }
 
-        fun handleMovementSubmission(
+        fun validateAndReturnMovement(
             category: Category?,
             movementAmountTextField: EditText,
             movementSubmitButton: Button,
@@ -88,5 +85,4 @@ class MovementInputHelper {
             val arrayAdapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, categories)
             movementCategoryIdTextField.setAdapter(arrayAdapter)
         }
-    }
 }
