@@ -1,9 +1,6 @@
 package it.unipd.dei.music_application.ui
 
 
-import android.app.TimePickerDialog
-import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -32,8 +26,6 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -42,18 +34,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.music_application.database.BalanceDatabase
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.daos.MovementDao
-import androidx.compose.ui.text.input.KeyboardType
 import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.ui.components.MovementCard
@@ -167,50 +156,11 @@ fun RegisterScreen(
     )*/
 
     Surface(
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
         val context = LocalContext.current
-        /*val categoryIdentifiers = testViewModel.categoryNames.toMutableList()
-        categoryIdentifiers.add(0, ALL_CATEGORIES_IDENTIFIER)*/
 
-        /*for (identifier in categoryIdentifiers) {
-            categoryViewModel.upsertCategory(
-                Category(
-                    UUID.randomUUID(),
-                    identifier,
-                    System.currentTimeMillis(),
-                    System.currentTimeMillis()
-                )
-            )
-            Log.i("upsert result", "${categoryViewModel.upsertResult.observeAsState().value}")
-        }*/
-
-
-        /*val prova = categoryViewModel.allCategories.observeAsState(initial = emptyList()).value
-        Log.i("upsert result", "${prova.size}")
-        for(i in prova) {
-            Log.i("upsert result", "${i.identifier}")
-        }*/
-
-        /*categoryViewModel.upsertCategory(
-            Category(
-                UUID.randomUUID(),
-                ALL_CATEGORIES_IDENTIFIER,
-                System.currentTimeMillis(),
-                System.currentTimeMillis()
-            )
-        )*/
-        //categoryViewModel.getAllCategories()
         val categoryList = categoryViewModel.allCategories.observeAsState(initial = listOf()).value
-        /*categoryList.add(
-            0,
-            Category(
-                UUID.randomUUID(),
-                ALL_CATEGORIES_IDENTIFIER,
-                System.currentTimeMillis(),
-                System.currentTimeMillis()
-            )
-        )*/
 
         var showDialog by rememberSaveable { mutableStateOf(false) }
         var expandedDropdownMenu by remember { mutableStateOf(false) }
@@ -260,6 +210,7 @@ fun RegisterScreen(
                                     TextField(
                                         value = selectedCategory.identifier,
                                         onValueChange = {},
+                                        label = { Text(text = "Categoria") },
                                         readOnly = true,
                                         trailingIcon = {
                                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedDropdownMenu)
@@ -279,9 +230,7 @@ fun RegisterScreen(
                                                     selectedCategory = category
                                                     expandedDropdownMenu = false
                                                     movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
-                                                    movementWithCategoryViewModel.loadSomeMovementsByCategory(selectedCategory)
-                                                    movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(selectedCategory)
-                                                    movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(selectedCategory)
+                                                    movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
                                                 }
                                             )
                                         }
@@ -365,9 +314,8 @@ fun RegisterScreen(
                     System.currentTimeMillis()
                 )*/
                 //categoryViewModel.getAllCategories()
-                movementWithCategoryViewModel.loadSomeMovementsByCategory(selectedCategory)
-                movementWithCategoryViewModel.loadSomePositiveMovementsByCategory(selectedCategory)
-                movementWithCategoryViewModel.loadSomeNegativeMovementsByCategory(selectedCategory)
+                
+                movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
 
                 val movements = movementWithCategoryViewModel.allData
                     .observeAsState(initial = emptyList())
