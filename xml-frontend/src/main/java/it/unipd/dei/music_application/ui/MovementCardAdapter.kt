@@ -31,7 +31,7 @@ class MovementCardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovementViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_movement_card, parent, false)
+            .inflate(R.layout.fragment_movement_card_with_divider, parent, false)
         return MovementViewHolder(view)
     }
 

@@ -20,7 +20,8 @@ import it.unipd.dei.music_application.interfaces.OnItemLongClickListener
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.ui.dialog.MovementInputDialogFragment
-import it.unipd.dei.music_application.ui.dialog.OptionModalBottomSheetFragment
+import it.unipd.dei.music_application.ui.dialog.OptionCategoryModalBottomSheetFragment
+import it.unipd.dei.music_application.ui.dialog.OptionMovementModalBottomSheetFragment
 import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
@@ -411,9 +412,9 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
         if (movementWithCategory == null) {
             return
         }
-        val optionModalBottomSheetFragment =
-            OptionModalBottomSheetFragment(movementWithCategory, null)
-        optionModalBottomSheetFragment.show(parentFragmentManager, "OptionModalBottomSheetFragment")
+        val optionMovementModalBottomSheetFragment =
+            OptionMovementModalBottomSheetFragment(movementWithCategory)
+        optionMovementModalBottomSheetFragment.show(parentFragmentManager, "OptionMovementModalBottomSheetFragment")
     }
 
 }

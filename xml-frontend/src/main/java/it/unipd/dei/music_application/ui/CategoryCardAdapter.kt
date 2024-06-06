@@ -9,9 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.interfaces.OnItemClickListener
-import it.unipd.dei.music_application.interfaces.OnItemLongClickListener
 import it.unipd.dei.music_application.models.Category
-import it.unipd.dei.music_application.ui.dialog.OptionModalBottomSheetFragment
 
 
 class CategoryCardAdapter(
@@ -22,7 +20,7 @@ class CategoryCardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_category_card, parent, false)
+            .inflate(R.layout.fragment_category_card_with_button_and_divider, parent, false)
         return CategoryViewHolder(view)
     }
 

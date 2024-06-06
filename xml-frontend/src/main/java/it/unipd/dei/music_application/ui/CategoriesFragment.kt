@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.search.SearchBar
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.interfaces.OnItemClickListener
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.ui.dialog.CategoryInputDialogFragment
-import it.unipd.dei.music_application.ui.dialog.OptionModalBottomSheetFragment
+import it.unipd.dei.music_application.ui.dialog.OptionCategoryModalBottomSheetFragment
 import it.unipd.dei.music_application.view.CategoryViewModel
 
 @AndroidEntryPoint
-class CategoryFragment : Fragment(), OnItemClickListener {
+class CategoriesFragment : Fragment(), OnItemClickListener {
 
     private val categoryViewModel: CategoryViewModel by viewModels()
 
@@ -26,6 +29,8 @@ class CategoryFragment : Fragment(), OnItemClickListener {
     private var categoriesRecyclerViewAdapter: CategoryCardAdapter =
         CategoryCardAdapter(emptyList(), this)
     private lateinit var floatingActionButton: FloatingActionButton
+
+    private val textToSearch = "y";
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +57,7 @@ class CategoryFragment : Fragment(), OnItemClickListener {
 
     private fun updateAdapter(categories: List<Category>) {
         categoriesRecyclerViewAdapter.updateCategories(categories)
+        onEditText()
     }
 
     private fun initializeViews(view: View) {
@@ -74,9 +80,16 @@ class CategoryFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClick(category: Category) {
-        val optionModalBottomSheetFragment =
-            OptionModalBottomSheetFragment(null, category)
-        optionModalBottomSheetFragment.show(parentFragmentManager, "OptionModalBottomSheetFragment")
+        val optionCategoryModalBottomSheetFragment =
+            OptionCategoryModalBottomSheetFragment(category)
+        optionCategoryModalBottomSheetFragment.show(parentFragmentManager, "OptionCategoryModalBottomSheetFragment")
     }
 
+    private fun onEditText(){
+        val categories = categoryViewModel.allCategories.value
+        val cat = categories?.filter {
+            it.identifier.contains(textToSearch)
+        }
+        val a = cat?.get(0);
+    }
 }
