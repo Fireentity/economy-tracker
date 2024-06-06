@@ -45,93 +45,22 @@ import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import it.unipd.dei.music_application.daos.MovementDao
 import it.unipd.dei.music_application.daos.CategoryDao
 import it.unipd.dei.music_application.models.Category
+import it.unipd.dei.music_application.models.Movement
 import it.unipd.dei.music_application.ui.components.MovementCard
 import it.unipd.dei.music_application.ui.components.MovementDialog
-import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
+import it.unipd.dei.music_application.utils.DisplayToast.displayFailure
+import it.unipd.dei.music_application.utils.DisplayToast.displaySuccess
 import it.unipd.dei.music_application.view.CategoryViewModel
 import it.unipd.dei.music_application.view.TestViewModel
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.UUID
 
 data class TabItem(
     val title: String
 )
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyTimePicker() {
-    var dateTime = LocalDateTime.now()
-
-    val timePickerState = remember {
-        TimePickerState(
-            is24Hour = true,
-            initialHour = dateTime.hour,
-            initialMinute = dateTime.minute
-        )
-    }
-
-    TimePicker(state = timePickerState)
-}*/
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TextInputDialog(
-    onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
-) {
-    var amountFieldState by remember { mutableStateOf(TextFieldValue()) }
-    var date by remember { mutableStateOf(TextFieldValue()) }
-
-    var selectedTime by remember { mutableStateOf("") }
-
-    val context = LocalContext.current
-    //val calendar = Calendar.getInstance()
-    var dateTime = LocalDateTime.now()
-    val hour = dateTime.hour
-    val minute = dateTime.minute
-
-    val timePickerDialog = TimePickerDialog(
-        context,
-        { _, hourOfDay, minute ->
-            selectedTime = String.format("%02d:%02d", hourOfDay, minute)
-        },
-        hour, minute, true
-    )
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Text Inverter") },
-        text = {
-            Column {
-                TextField(
-                    value = amountFieldState,
-                    onValueChange = { amountFieldState = it },
-                    label = { Text("Ammontare") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                TextField(
-                    value = selectedTime,
-                    onValueChange = { },
-                    label = { Text(text = "seleziona data") },
-                    modifier = Modifier.clickable { timePickerDialog.show() },
-                    readOnly = true
-                )
-            }
-        },
-        confirmButton = {
-            Button(onClick = { onConfirm(amountFieldState.text) }) {
-                Text("Submit")
-            }
-        },
-        dismissButton = {
-            Button(onClick = onDismiss) {
-                Text("Dismiss")
-            }
-        }
-    )
-}*/
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -300,8 +229,40 @@ fun RegisterScreen(
                 if (showDialog) {
                     MovementDialog(
                         onDismiss = { showDialog = false },
-                        onConfirm = { inputText ->
+                        onConfirm = { stringAmount, category, date ->
                             showDialog = false
+
+                            try {
+                                val amount = stringAmount.toDouble()
+
+                                if (category.identifier != "" && date != "" ) {
+                                    val year = date.split("/")[2].toInt()
+                                    val month = date.split("/")[1].toInt()
+                                    val day = date.split("/")[0].toInt()
+
+                                    val localDate = LocalDate.of(year, month, day)
+                                    val startOfDay = localDate.atStartOfDay()
+                                    val instant = startOfDay.atZone(ZoneId.systemDefault()).toInstant()
+                                    val timestamp = instant.toEpochMilli()
+
+                                    val movement: Movement = Movement(
+                                        uuid = UUID.randomUUID(),
+                                        amount = String.format("%.2f", amount).toDouble(),
+                                        categoryId = category.uuid,
+                                        createdAt = timestamp,
+                                        updatedAt = timestamp
+                                    )
+                                    movementWithCategoryViewModel.upsertMovement(movement)
+                                    displaySuccess(context)
+                                }
+                                else{
+                                    displayFailure(context)
+                                }
+                            }
+                            catch (e: NumberFormatException) {
+                                displayFailure(context)
+                            }
+
                         },
                         categoryViewModel
                     )
@@ -313,8 +274,7 @@ fun RegisterScreen(
                     System.currentTimeMillis(),
                     System.currentTimeMillis()
                 )*/
-                //categoryViewModel.getAllCategories()
-                
+
                 movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
 
                 val movements = movementWithCategoryViewModel.allData

@@ -1,8 +1,16 @@
 package it.unipd.dei.music_application.ui.components
 
-import android.app.TimePickerDialog
-import androidx.compose.foundation.clickable
+import android.app.DatePickerDialog
+import android.content.Context
+import android.widget.DatePicker
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -10,8 +18,10 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,25 +30,46 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import it.unipd.dei.music_application.TimeUtils.zonedDateTimeNow
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.ui.CategorySaver
-import it.unipd.dei.music_application.utils.Constants.ALL_CATEGORIES_IDENTIFIER
+import it.unipd.dei.music_application.ui.CheckUpsertResult
 import it.unipd.dei.music_application.view.CategoryViewModel
-import java.time.LocalDateTime
+import java.util.Calendar
 import java.util.UUID
+
+private fun showDatePicker(context: Context, onDateSelected: (String) -> Unit) {
+    val calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
+            onDateSelected("$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear")
+        },
+        year, month, day
+    )
+
+    datePickerDialog.show()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovementDialog(
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit,
+    onConfirm: (String, Category, String) -> Unit,
     categoryViewModel: CategoryViewModel
 ) {
-    var amountFieldState by remember { mutableStateOf(TextFieldValue()) }
+    var selectedAmount by remember { mutableStateOf(TextFieldValue()) }
 
     categoryViewModel.getAllCategories()
     var expandedDropdownMenu by remember { mutableStateOf(false) }
@@ -50,31 +81,20 @@ fun MovementDialog(
     ) }
     val categoryList = categoryViewModel.allCategories.observeAsState(initial = listOf()).value
 
-    var date by remember { mutableStateOf(TextFieldValue()) }
-    var selectedTime by remember { mutableStateOf("") }
-
     val context = LocalContext.current
-    //val calendar = Calendar.getInstance()
-    var dateTime = LocalDateTime.now()
-    val hour = dateTime.hour
-    val minute = dateTime.minute
 
-    val timePickerDialog = TimePickerDialog(
-        context,
-        { _, hourOfDay, minute ->
-            selectedTime = String.format("%02d:%02d", hourOfDay, minute)
-        },
-        hour, minute, true
-    )
+    //val dateTime = zonedDateTimeNow()
+    var selectedDate by remember { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Text Inverter") },
+        title = { Text("Crea Movimento:") },
         text = {
             Column {
+
                 TextField(
-                    value = amountFieldState,
-                    onValueChange = { amountFieldState = it },
+                    value = selectedAmount,
+                    onValueChange = { selectedAmount = it },
                     label = { Text("Ammontare") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
@@ -84,8 +104,8 @@ fun MovementDialog(
                     onExpandedChange = { expandedDropdownMenu = it }
                 ) {
                     TextField(
-                        value = selectedCategory.identifier,
-                        onValueChange = {},
+                        value = selectedCategory.toString(),
+                        onValueChange = {  },
                         label = { Text(text = "Categoria:") },
                         readOnly = true,
                         trailingIcon = {
@@ -94,7 +114,6 @@ fun MovementDialog(
                         modifier = Modifier.menuAnchor(type = MenuAnchorType.PrimaryNotEditable, enabled = true),
                         colors = ExposedDropdownMenuDefaults.textFieldColors()
                     )
-
                     ExposedDropdownMenu(
                         expanded = expandedDropdownMenu,
                         onDismissRequest = { expandedDropdownMenu = false }
@@ -112,17 +131,45 @@ fun MovementDialog(
                     }
                 }
 
-                TextField(
-                    value = selectedTime,
-                    onValueChange = { },
-                    label = { Text(text = "seleziona data") },
-                    modifier = Modifier.clickable { timePickerDialog.show() },
-                    readOnly = true
+                Spacer(
+                    modifier = Modifier.height(8.dp).fillMaxWidth()
                 )
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    TextButton(
+                        onClick = {
+                            showDatePicker(context) { date ->
+                                selectedDate = date
+                            }
+                        },
+                        content = {
+                            Text(
+                                text = if (selectedDate == "") "Seleziona la data" else "data: $selectedDate",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                //fontSize = 16.sp
+                            )
+                        },
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                    )
+                }
+
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(amountFieldState.text) }) {
+            Button(onClick = {
+                onConfirm(selectedAmount.text, selectedCategory, selectedDate)
+            }
+            ) {
                 Text("Crea")
             }
         },

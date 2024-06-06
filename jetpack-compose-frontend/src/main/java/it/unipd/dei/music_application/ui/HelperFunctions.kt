@@ -1,5 +1,6 @@
 package it.unipd.dei.music_application.ui
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import it.unipd.dei.music_application.models.Category
-import it.unipd.dei.music_application.models.MovementWithCategory
+import it.unipd.dei.music_application.utils.DisplayToast.displayFailure
+import it.unipd.dei.music_application.utils.DisplayToast.displaySuccess
 import it.unipd.dei.music_application.view.MovementWithCategoryViewModel
 import java.util.UUID
 
@@ -118,4 +120,17 @@ object CategorySaver {
             )
         }
     )
+}
+
+@Composable
+fun CheckUpsertResult(movementWithCategoryViewModel: MovementWithCategoryViewModel, context: Context) {
+
+    val upsertResult = movementWithCategoryViewModel.upsertResult.observeAsState().value
+
+    if(upsertResult == true) {
+        displaySuccess(context)
+    }
+    else{
+        displayFailure(context)
+    }
 }
