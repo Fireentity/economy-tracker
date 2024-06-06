@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/recurrencesFragment"
-        android:name="it.unipd.dei.music_application.ui.CategoryFragment"
+        android:name="it.unipd.dei.music_application.ui.CategoriesFragment"
         android:label="Categories" >
         <action
             android:id="@+id/action_registerFragment_to_recurrencesFragment"

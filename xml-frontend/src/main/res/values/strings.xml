@@ -42,4 +42,5 @@
     <string name="new_category_button">Crea</string>
     <string name="edit_category_title">Modifica Categoria:</string>
     <string name="edit_category_button">Salva</string>
+    <string name="search_category_placeholder">Cerca una categoria...</string>
 </resources>
