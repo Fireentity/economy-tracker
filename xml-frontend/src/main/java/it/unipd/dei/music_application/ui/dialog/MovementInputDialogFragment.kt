@@ -71,14 +71,14 @@ class MovementInputDialogFragment(
                 null -> {}
             }
         }
-        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+        categoryViewModel.loadAllCategories.observe(viewLifecycleOwner) {
             MovementInputHelper.setAdapter(
                 requireContext(),
                 it,
                 categoryIdTextField
             )
         }
-        categoryViewModel.getAllCategories()
+        categoryViewModel.loadAllCategories()
         setParametersToInputFields()
         MovementInputHelper.setupMovementAmountTextField(amountTextField)
     }

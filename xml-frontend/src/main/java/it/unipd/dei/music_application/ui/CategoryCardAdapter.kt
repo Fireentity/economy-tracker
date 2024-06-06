@@ -31,7 +31,6 @@ class CategoryCardAdapter(
         holder.bind(category, clickListener)
     }
 
-    //Le categorie sono poche non dovrebbero esserci problemi di prestazioni
     @SuppressLint("NotifyDataSetChanged")
     fun updateCategories(categories: List<Category>) {
         this.categories = categories

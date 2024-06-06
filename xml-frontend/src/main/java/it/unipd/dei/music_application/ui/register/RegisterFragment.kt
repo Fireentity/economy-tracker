@@ -6,17 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
-import it.unipd.dei.music_application.enums.CategoryTab
 import it.unipd.dei.music_application.models.Category
 import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.ui.MovementCardAdapter
@@ -91,7 +85,7 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
         // Call the ViewModel method to load initial data
         movementWithCategoryViewModel.loadInitialMovementsByCategory(selectedCategory)
         movementWithCategoryViewModel.loadTotalAmountsByCategory(selectedCategory)
-        categoryViewModel.getAllCategories()
+        categoryViewModel.loadAllCategories()
         return view
     }
 
@@ -152,7 +146,7 @@ class RegisterFragment : Fragment(), OnItemLongClickListener {
         movementWithCategoryViewModel.getNegativeMovement().observe(viewLifecycleOwner) {
             updateAdapter(negativeRecyclerViewAdapter, it)
         }
-        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+        categoryViewModel.loadAllCategories.observe(viewLifecycleOwner) {
             updateDropdownMenu(it)
         }
     }

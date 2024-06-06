@@ -8,17 +8,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.models.Category
-import it.unipd.dei.music_application.models.Movement
-import it.unipd.dei.music_application.models.MovementWithCategory
 import it.unipd.dei.music_application.ui.dialog.helper.InputHelper
-import it.unipd.dei.music_application.ui.dialog.helper.MovementInputHelper
 import it.unipd.dei.music_application.utils.Constants
 import it.unipd.dei.music_application.utils.DisplayToast
 import it.unipd.dei.music_application.view.CategoryViewModel
@@ -29,52 +24,31 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 @AndroidEntryPoint
-class CategoryInputDialogFragment(
-    private val titleText: String? = null,
-    private val buttonText: String? = null,
-    private val category: Category? = null
-) :
-    DialogFragment() {
+class CategoryInputDialogFragment : DialogFragment() {
 
     private val categoryViewModel: CategoryViewModel by viewModels()
 
     private lateinit var identifierTextField: EditText
-    private lateinit var submitButton: Button
     private lateinit var titleTextField: TextView
 
     private lateinit var categoryIdentifier: String
-    override fun getTheme() = R.style.RoundedCornersDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_input_category, container, false)
+        val inflater = inflater.inflate(R.layout.fragment_input_category, container, false)
+        submitButton.setOnClickListener {
+            handleCategorySubmission()
+        }
+        return inflater;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeInputFields(view)
-        categoryViewModel.getAllCategories()
+        categoryViewModel.loadAllCategories()
         observeLiveData()
         setParametersToInputFields()
-    }
-
-    private fun initializeInputFields(view: View) {
-        identifierTextField = view.findViewById(R.id.input_category_identifier)
-        submitButton = view.findViewById(R.id.input_category_button)
-        titleTextField = view.findViewById(R.id.input_category_title)
-
-        if (titleText != null) {
-            titleTextField.text = titleText
-        }
-
-        if (buttonText != null) {
-            submitButton.text = buttonText
-        }
-        submitButton.setOnClickListener {
-            handleCategorySubmission()
-        }
     }
 
     private fun observeLiveData() {
@@ -131,6 +105,7 @@ class CategoryInputDialogFragment(
         lateinit var upsertCategory: Category
         if (category == null) {
             upsertCategory = Category(
+                //TODO servono gli uuid-v7
                 UUID.randomUUID(),
                 categoryIdentifier,
                 System.currentTimeMillis(),
@@ -147,12 +122,4 @@ class CategoryInputDialogFragment(
         }
         categoryViewModel.upsertCategory(upsertCategory)
     }
-
-    private fun setParametersToInputFields() {
-        if (category == null) {
-            return
-        }
-        identifierTextField.setText(category.identifier)
-    }
-
 }

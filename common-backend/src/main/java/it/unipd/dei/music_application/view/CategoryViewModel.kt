@@ -27,7 +27,7 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     private val _deleteResult = MutableLiveData<Boolean?>()
     val deleteResult: LiveData<Boolean?> = _deleteResult
 
-    fun getAllCategories() {
+    fun loadAllCategories() {
         viewModelScope.launch {
             val loadedData = categoryDao.getAllCategories()
             _allCategories.postValue(loadedData)

@@ -1,5 +1,6 @@
 package it.unipd.dei.music_application.utils
 
+//TODO bisogna usare il file strings.xml altrimenti non è traducibile. Questo è sbagliato
 object Constants{
     const val IDENTIFIER_ALREADY_PRESENT_ERROR_MESSAGE = "Identificativo già presente"
     const val OPERATION_SUCCESSFUL_MESSAGE = "Operazione completata con successo."

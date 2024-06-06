@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.search.SearchBar
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.interfaces.OnItemClickListener
@@ -42,17 +39,16 @@ class CategoriesFragment : Fragment(), OnItemClickListener {
         initializeViews(view)
 
         observeViewModel()
-        categoryViewModel.getAllCategories()
+        categoryViewModel.loadAllCategories()
         return view
     }
 
     private fun observeViewModel() {
-        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+        categoryViewModel.loadAllCategories.observe(viewLifecycleOwner) {
             if (it != null) {
                 updateAdapter(it)
             }
         }
-
     }
 
     private fun updateAdapter(categories: List<Category>) {
@@ -86,7 +82,7 @@ class CategoriesFragment : Fragment(), OnItemClickListener {
     }
 
     private fun onEditText(){
-        val categories = categoryViewModel.allCategories.value
+        val categories = categoryViewModel.loadAllCategories.value
         val cat = categories?.filter {
             it.identifier.contains(textToSearch)
         }

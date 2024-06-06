@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,41 +15,35 @@ import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.music_application.R
 import it.unipd.dei.music_application.interfaces.OnItemLongClickListener
 import it.unipd.dei.music_application.models.MovementWithCategory
+import it.unipd.dei.music_application.ui.dialog.OptionModalBottomSheetFragment
 
 class MovementCardAdapter(
-    private val movements: LiveData<List<MovementWithCategory>>,
-    private val longClickListener: OnItemLongClickListener,
-    viewLifecycleOwner: LifecycleOwner,
+    private val movements: List<MovementWithCategory>,
+    private val parentFragmentManager: FragmentManager
 ) : RecyclerView.Adapter<MovementCardAdapter.MovementViewHolder>() {
-    private var size: Int = movements.value?.size ?: 0
-
-    init {
-        movements.observe(viewLifecycleOwner) {
-            notifyItemRangeInserted(size, itemCount)
-            size = itemCount
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovementViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_movement_card_with_divider, parent, false)
-        return MovementViewHolder(view)
+        return MovementViewHolder(view, parentFragmentManager)
     }
 
     override fun onBindViewHolder(holder: MovementViewHolder, position: Int) {
-        val movementWithCategory: MovementWithCategory = movements.value?.get(position) ?: return
-        holder.bind(movementWithCategory, longClickListener)
+        val movementWithCategory: MovementWithCategory = movements[position]
+        holder.bind(movementWithCategory)
     }
 
-    override fun getItemCount(): Int = movements.value?.size ?: 0
+    override fun getItemCount(): Int = movements.size
 
-    class MovementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MovementViewHolder(itemView: View, private val parentFragmentManager: FragmentManager) : RecyclerView.ViewHolder(itemView) {
         private val categoryTextView: TextView = itemView.findViewById(R.id.movement_card_category)
         private val amountTextView: TextView = itemView.findViewById(R.id.movement_card_amount)
         private val dateTextView: TextView = itemView.findViewById(R.id.movement_card_date)
         private val imageView: ImageView = itemView.findViewById(R.id.movement_card_image)
 
-        fun bind(movementWithCategory: MovementWithCategory, longClickListener: OnItemLongClickListener) {
+        fun bind(
+            movementWithCategory: MovementWithCategory,
+        ) {
 
             val amount = movementWithCategory.movement.amount
             amountTextView.text = amount.toString()
@@ -66,7 +61,8 @@ class MovementCardAdapter(
             }
 
             itemView.setOnLongClickListener {
-                longClickListener.onItemLongClick(adapterPosition)
+                val optionModalBottomSheetFragment = OptionModalBottomSheetFragment(movementWithCategory, null)
+                optionModalBottomSheetFragment.show(parentFragmentManager, "OptionModalBottomSheetFragment")
                 true
             }
         }
