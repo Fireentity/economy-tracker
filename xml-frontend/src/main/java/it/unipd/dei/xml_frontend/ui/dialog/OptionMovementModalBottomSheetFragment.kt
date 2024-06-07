@@ -1,4 +1,4 @@
-package it.unipd.dei.music_application.ui.dialog
+package it.unipd.dei.xml_frontend.ui.dialog
 
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -12,11 +12,10 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import it.unipd.dei.music_application.R
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
-import it.unipd.dei.xml_frontend.ui.dialog.MovementInputDialogFragment
+import it.unipd.dei.xml_frontend.R
 
 @AndroidEntryPoint
 class OptionMovementModalBottomSheetFragment(

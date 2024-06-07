@@ -43,8 +43,8 @@ class EditCategoryDialog(
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setView(view)
             .setPositiveButton(
-                R.string.confirm,
-                DialogInterface.OnClickListener { _, _ -> editCategoryButton.onClick() })
+                R.string.confirm
+            ) { _, _ -> editCategoryButton.onClick() }
             .create()
 
         inputFieldView.doOnTextChanged { text, _, _, _ ->
