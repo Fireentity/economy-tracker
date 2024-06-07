@@ -28,12 +28,13 @@
     <string name="crea">Crea</string>
     <string name="seleziona_data">Seleziona data</string>
     <string name="ammontare">Ammontare</string>
-    <string name="delete_movement_title">Elimina Movimento</string>
-    <string name="delete_movement_message">Sei sicuro di voler eliminare questo movimento?</string>
+    <string name="delete_category">Elimina categoria</string>
+    <string name="delete_movement">Elimina movimento</string>
+    <string name="category_deletion_confirmation">Sei sicuro di voler eliminare questa categoria?</string>
+    <string name="movement_deletion_confirmation">Sei sicuro di voler eliminare questo movimento?</string>
     <string name="delete_category_title">Elimina Categoria</string>
     <string name="delete_category_message">Sei sicuro di voler eliminare questa categoria?</string>
     <string name="cancel">Annulla</string>
-    <string name="si">Si</string>
     <string name="new_movement_title">Crea Movimento:</string>
     <string name="new_movement_button">Crea</string>
     <string name="edit_movement_title">Modifica Movimento:</string>
@@ -45,4 +46,6 @@
     <string name="search_category_placeholder">Cerca una categoria...</string>
     <string name="category_already_exists">Questa categoria esiste già</string>
     <string name="confirm">Conferma</string>
+    <string name="insert_category_identifier">Inserisci il nome della categoria</string>
+    <string name="insert_movement_amount">Inserisci l\'importo della transazione</string>
 </resources>

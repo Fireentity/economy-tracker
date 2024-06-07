@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/category_card" />
 
     <LinearLayout
-        android:id="@+id/edit_layout"
+        android:id="@+id/show_edit_category_dialog_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
@@ -56,14 +56,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/delete_layout"
+        android:id="@+id/show_delete_category_dialog_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="15dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_layout">
+        app:layout_constraintTop_toBottomOf="@id/show_edit_category_dialog_button">
 
         <ImageView
             android:id="@+id/icon2"

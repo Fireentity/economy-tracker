@@ -7,21 +7,25 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.CategoryDao
 import it.unipd.dei.common_backend.models.Category
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.SQLException
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
     ViewModel() {
 
-    private val _allCategories = MutableLiveData<Map<String, Category>>()
-    val allCategories: LiveData<Map<String, Category>> = _allCategories
+    private val _allCategories = MutableLiveData<MutableMap<String, Category>>()
+    val allCategories: LiveData<MutableMap<String, Category>> = _allCategories
 
     fun loadAllCategories() {
         viewModelScope.launch {
-            val loadedData = categoryDao.getAllCategories().associateBy { it.identifier }
-            _allCategories.postValue(loadedData)
+            val categories: MutableMap<String, Category> = ConcurrentHashMap()
+            _allCategories.postValue(categoryDao.getAllCategories()
+                .associateByTo(categories) { it.identifier })
         }
     }
 
@@ -29,45 +33,31 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
         return _allCategories.value?.get(identifier);
     }
 
-    fun isCategoryIdentifierPresent(identifier: String): Boolean {
-        return getCategoryByIdentifier(identifier) == null;
-    }
-
-    //TODO also modify in ram
     fun upsertCategory(
         category: Category,
         onSuccess: () -> Unit,
         onThrow: (e: SQLException) -> Unit
     ) {
         viewModelScope.launch {
-            try {
-                categoryDao.upsertCategory(category);
-                onSuccess()
-            } catch (e: SQLException) {
-                onThrow(e)
+            withContext(Dispatchers.IO) {
+                try {
+                    categoryDao.upsertCategory(category);
+                    _allCategories.value?.put(category.identifier, category)
+                    onSuccess()
+                } catch (e: SQLException) {
+                    onThrow(e)
+                }
             }
         }
     }
 
-    //TODO also modify in ram
-
     fun deleteCategory(
         category: Category
     ) {
-        deleteCategory(category, {}, {})
-    }
-
-    fun deleteCategory(
-        category: Category,
-        onSuccess: () -> Unit,
-        onThrow: (e: SQLException) -> Unit
-    ) {
         viewModelScope.launch {
-            try {
+            withContext(Dispatchers.IO) {
                 categoryDao.deleteCategory(category)
-                onSuccess()
-            } catch (e: SQLException) {
-                onThrow(e)
+                _allCategories.value?.remove(category.identifier)
             }
         }
     }

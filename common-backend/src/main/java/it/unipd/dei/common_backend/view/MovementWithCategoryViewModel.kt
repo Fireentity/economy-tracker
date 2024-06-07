@@ -9,7 +9,10 @@ import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.models.Movement
 import it.unipd.dei.common_backend.models.MovementWithCategory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.sql.SQLException
 import java.util.UUID
 import javax.inject.Inject
 
@@ -24,8 +27,6 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val totalBalance = MutableLiveData<Double>()
     private val earnedMoney = MutableLiveData<Double>()
     private val spentMoney = MutableLiveData<Double>()
-    private val _insertResult = MutableLiveData<Boolean?>()
-    private val _deleteResult = MutableLiveData<Boolean?>()
     private val categoryToFilter = MutableLiveData<Category?>()
 
     companion object {
@@ -166,26 +167,44 @@ class MovementWithCategoryViewModel @Inject constructor(
         loadSomeNegativeMovementsByCategory {}
     }
 
-    fun upsertMovement(movement: Movement) {
-        _insertResult.postValue(null)
+    fun upsertMovement(
+        movement: Movement,
+        onSuccess: () -> Unit,
+        onFailure: (e: SQLException) -> Unit
+    ) {
         viewModelScope.launch {
             try {
                 movementDao.upsertMovement(movement)
-                _insertResult.postValue(true)
-            } catch (e: Exception) {
-                _insertResult.postValue(false)
+                onSuccess()
+            } catch (e: SQLException) {
+                onFailure(e)
             }
         }
     }
 
-    fun deleteMovement(movement: Movement) {
-        _deleteResult.postValue(null)
+    //TODO Modificare lo stato e rendere tutto thread-safe
+
+    fun deleteMovement(
+        movement: Movement,
+        onSuccess: () -> Unit,
+        onFailure: (e: SQLException) -> Unit
+    ) {
         viewModelScope.launch {
             try {
                 movementDao.deleteMovement(movement)
-                _deleteResult.postValue(true)
-            } catch (e: Exception) {
-                _deleteResult.postValue(false)
+                onSuccess()
+            } catch (e: SQLException) {
+                onFailure(e)
+            }
+        }
+    }
+
+    fun deleteMovement(
+        movement: Movement
+    ) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                movementDao.deleteMovement(movement)
             }
         }
     }

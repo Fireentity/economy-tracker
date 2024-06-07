@@ -1,10 +1,9 @@
-package it.unipd.dei.xml_frontend.ui.models
+package it.unipd.dei.xml_frontend.ui.buttons
 
 import android.content.Context
 import android.view.View
-import it.unipd.dei.xml_frontend.ui.dialog.category.AddCategoryDialog
 import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.xml_frontend.ui.models.IButton
+import it.unipd.dei.xml_frontend.ui.dialog.AddCategoryDialog
 
 class ShowAddCategoryDialogButton(
     private val dialogView: View,

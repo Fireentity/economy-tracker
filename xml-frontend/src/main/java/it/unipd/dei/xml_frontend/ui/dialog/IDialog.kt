@@ -1,4 +1,4 @@
-package it.unipd.dei.xml_frontend.ui.dialog.category
+package it.unipd.dei.xml_frontend.ui.dialog
 
 import android.content.Context
 import android.content.res.Resources

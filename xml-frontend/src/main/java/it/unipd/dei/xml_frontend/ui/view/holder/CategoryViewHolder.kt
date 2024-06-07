@@ -1,4 +1,4 @@
-package it.unipd.dei.music_application.ui.view.holder
+package it.unipd.dei.xml_frontend.ui.view.holder
 
 import android.view.View
 import android.widget.ImageButton

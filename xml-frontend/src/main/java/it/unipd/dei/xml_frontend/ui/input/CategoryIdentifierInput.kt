@@ -1,17 +1,19 @@
-package it.unipd.dei.xml_frontend.ui.models
+package it.unipd.dei.xml_frontend.ui.input
 
 import android.content.res.Resources
 import com.google.android.material.textfield.TextInputEditText
+import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 
-class CategoryIdentifierField(
+class CategoryIdentifierInput(
     private val resources: Resources,
     private val categoryViewModel: CategoryViewModel,
-    private val view: TextInputEditText
+    private val view: TextInputEditText,
+    category: Category? = null
 ) {
 
-    private var text = ""
+    private var text = category?.identifier
 
     fun getText() = text
 

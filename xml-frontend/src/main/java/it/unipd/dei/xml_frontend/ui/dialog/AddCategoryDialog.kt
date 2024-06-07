@@ -1,17 +1,16 @@
-package it.unipd.dei.xml_frontend.ui.dialog.category
+package it.unipd.dei.xml_frontend.ui.dialog
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.res.Resources
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import it.unipd.dei.xml_frontend.ui.models.AddCategoryButton
-import it.unipd.dei.xml_frontend.ui.models.CategoryIdentifierField
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
+import it.unipd.dei.xml_frontend.ui.buttons.AddCategoryButton
+import it.unipd.dei.xml_frontend.ui.input.CategoryIdentifierInput
 
 class AddCategoryDialog(
     categoryViewModel: CategoryViewModel,
@@ -20,7 +19,7 @@ class AddCategoryDialog(
 ) : IDialog {
 
     private val alertDialog: AlertDialog
-    private val inputField: CategoryIdentifierField
+    private val inputField: CategoryIdentifierInput
 
     init {
         val inputFieldView: TextInputEditText = view.findViewById(R.id.input_category_identifier)
@@ -31,13 +30,16 @@ class AddCategoryDialog(
             categoryViewModel
         )
 
-        this.inputField =
-            CategoryIdentifierField(fragmentContext.resources, categoryViewModel, inputFieldView)
+        this.inputField = CategoryIdentifierInput(
+            fragmentContext.resources,
+            categoryViewModel,
+            inputFieldView
+        )
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setView(view)
             .setPositiveButton(
-                R.string.confirm,
-                DialogInterface.OnClickListener { _, _ -> editCategoryButton.onClick() })
+                R.string.confirm
+            ) { _, _ -> editCategoryButton.onClick() }
             .create()
 
         inputFieldView.doOnTextChanged { text, _, _, _ ->
@@ -57,5 +59,5 @@ class AddCategoryDialog(
 
     override fun dismiss() = alertDialog.dismiss()
 
-    private fun getCategoryIdentifier() = inputField.getText()
+    private fun getCategoryIdentifier(): String? = inputField.getText()
 }

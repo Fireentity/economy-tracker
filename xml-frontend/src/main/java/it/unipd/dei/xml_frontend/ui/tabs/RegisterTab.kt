@@ -1,4 +1,4 @@
-package it.unipd.dei.xml_frontend.ui.register
+package it.unipd.dei.xml_frontend.ui.tabs
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
