@@ -36,6 +36,7 @@ class AddCategoryDialog(
             inputFieldView
         )
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
+            .setTitle("ciao")
             .setView(view)
             .setPositiveButton(
                 R.string.confirm
@@ -48,7 +49,10 @@ class AddCategoryDialog(
 
         view.setOnClickListener {
             editCategoryButton.onClick()
+
         }
+
+
     }
 
     override fun getFragmentContext() = fragmentContext
@@ -57,7 +61,9 @@ class AddCategoryDialog(
 
     override fun show() = alertDialog.show()
 
-    override fun dismiss() = alertDialog.dismiss()
+    override fun dismiss() {
+        alertDialog.dismiss()
+    }
 
     private fun getCategoryIdentifier(): String? = inputField.getText()
 }

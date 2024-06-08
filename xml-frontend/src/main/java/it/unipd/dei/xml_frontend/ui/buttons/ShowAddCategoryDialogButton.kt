@@ -6,12 +6,13 @@ import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.ui.dialog.AddCategoryDialog
 
 class ShowAddCategoryDialogButton(
-    private val dialogView: View,
-    private val categoryViewModel: CategoryViewModel,
-    private val fragmentContext: Context
+    dialogView: View,
+    categoryViewModel: CategoryViewModel,
+    fragmentContext: Context
 ) : IButton {
+    private val addCategoryDialog = AddCategoryDialog(categoryViewModel,dialogView,fragmentContext)
 
     override fun onClick() {
-        AddCategoryDialog(categoryViewModel,dialogView,fragmentContext).show()
+        addCategoryDialog.show()
     }
 }

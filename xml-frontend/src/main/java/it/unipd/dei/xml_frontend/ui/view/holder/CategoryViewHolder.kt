@@ -5,6 +5,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import it.unipd.dei.common_backend.models.Category
+import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.bottomsheets.CategoryBottomSheetFragment
 
@@ -19,10 +20,10 @@ class CategoryViewHolder(
         return itemView;
     }
 
-    fun bind(category: Category) {
+    fun bind(category: Category, categoryViewModel: CategoryViewModel) {
         categoryIdentifier.text = category.identifier
         categoryImageButton.setOnClickListener {
-            CategoryBottomSheetFragment(category).show(
+            CategoryBottomSheetFragment(category, categoryViewModel).show(
                 parentFragmentManager,
                 "OptionCategoryModalBottomSheetFragment"
             )

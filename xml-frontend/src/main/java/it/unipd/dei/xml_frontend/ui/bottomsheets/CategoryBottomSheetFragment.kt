@@ -16,10 +16,10 @@ import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 
 @AndroidEntryPoint
 class CategoryBottomSheetFragment(
-    private val category: Category
+    private val category: Category,
+    private val categoryViewModel: CategoryViewModel
 ) : BottomSheetDialogFragment() {
 
-    private val categoryViewModel: CategoryViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +32,7 @@ class CategoryBottomSheetFragment(
             false
         )
         val editCategoryDialogView = inflater.inflate(
-            R.layout.fragment_edit_category_dialog,
+            R.layout.fragment_category_dialog,
             container,
             false
         )
@@ -43,7 +43,7 @@ class CategoryBottomSheetFragment(
         val showEditCategoryDialogButtonView: View = view.findViewById(R.id.show_edit_category_dialog_button)
         val deleteLayout: View = view.findViewById(R.id.show_delete_category_dialog_button)
 
-        categoryViewHolder.bind(category)
+        categoryViewHolder.bind(category, categoryViewModel)
 
         showEditCategoryDialogButtonView.setOnClickListener {
             EditCategoryDialog(

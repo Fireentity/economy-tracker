@@ -1,15 +1,19 @@
 package it.unipd.dei.xml_frontend.ui.tabs
 
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.ui.MovementCardAdapter
 
-class RegisterTab(
-    private val viewModel: MovementWithCategoryViewModel,
+abstract class RegisterTab(
+    protected val viewModel: MovementWithCategoryViewModel,
     private val recyclerView: RecyclerView,
-    private val movementCardAdapter: MovementCardAdapter,
+    protected val movementCardAdapter: MovementCardAdapter,
+    lifecycleOwner: LifecycleOwner
 ) {
     private var loading: Boolean = false
 
@@ -22,6 +26,7 @@ class RegisterTab(
             adapter = movementCardAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        this.observeViewModel(lifecycleOwner)
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0 && !loading && recyclerView.visibility == View.VISIBLE) {
@@ -31,15 +36,25 @@ class RegisterTab(
                     val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
                     if (totalItemCount <= (lastVisibleItem + VISIBLE_THRESHOLD)) {
                         loading = true
-                        viewModel.loadSomeMovementsByCategory{
+                        loadSomeMovementsByCategory {
                             loading = false
                         }
                     }
                 }
             }
         })
-        viewModel.getMovements()
+        loading = true
+        this.loadSomeMovementsByCategory {
+            loading = false
+        }
+
+
     }
+
+
+    abstract fun observeViewModel(lifecycleOwner: LifecycleOwner)
+
+    abstract fun loadSomeMovementsByCategory(function: () -> Unit)
 
     fun show() {
         if (movementCardAdapter.itemCount > 0) {

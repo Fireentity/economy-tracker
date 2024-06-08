@@ -22,19 +22,19 @@ interface MovementDao {
     suspend fun deleteAllMovements()
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE categoryId = :categoryId ORDER BY createdAt")
-    suspend fun getMovementsByCategoryOrderedByCreatedAt(categoryId: UUID): List<MovementWithCategory>
+    @Query("SELECT * FROM movements WHERE categoryId = :categoryId ORDER BY date")
+    suspend fun getMovementsByCategoryOrderedByDate(categoryId: UUID): List<MovementWithCategory>
 
     @Transaction
-    @Query("SELECT * FROM movements ORDER BY createdAt DESC")
+    @Query("SELECT * FROM movements ORDER BY date DESC")
     suspend fun getAllMovements(): List<MovementWithCategory>
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE amount > 0 ORDER BY createdAt DESC")
+    @Query("SELECT * FROM movements WHERE amount > 0 ORDER BY date DESC")
     suspend fun getAllPositiveMovements(): List<MovementWithCategory>
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE amount < 0 ORDER BY createdAt DESC")
+    @Query("SELECT * FROM movements WHERE amount < 0 ORDER BY date DESC")
     suspend fun getAllNegativeMovements(): List<MovementWithCategory>
 
     @Transaction
@@ -65,22 +65,22 @@ interface MovementDao {
 
 
     @Transaction
-    @Query("SELECT * FROM movements ORDER BY createdAt DESC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM movements ORDER BY date DESC LIMIT :limit OFFSET :offset")
     suspend fun getSomeMovements(limit: Int, offset: Int): List<MovementWithCategory>
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE amount > 0 ORDER BY createdAt DESC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM movements WHERE amount > 0 ORDER BY date DESC LIMIT :limit OFFSET :offset")
     suspend fun getSomePositiveMovements(limit: Int, offset: Int): List<MovementWithCategory>
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE amount < 0 ORDER BY createdAt DESC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM movements WHERE amount < 0 ORDER BY date DESC LIMIT :limit OFFSET :offset")
     suspend fun getSomeNegativeMovements(limit: Int, offset: Int): List<MovementWithCategory>
 
     @Query("SElECT COUNT(uuid) FROM movements")
     suspend fun getMovementsCount(): Int
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE categoryId = :categoryId ORDER BY createdAt DESC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM movements WHERE categoryId = :categoryId ORDER BY date DESC LIMIT :limit OFFSET :offset")
     suspend fun getSomeMovementsByCategory(
         categoryId: UUID,
         limit: Int,
@@ -88,7 +88,7 @@ interface MovementDao {
     ): List<MovementWithCategory>
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE amount > 0 AND categoryId = :categoryId ORDER BY createdAt DESC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM movements WHERE amount > 0 AND categoryId = :categoryId ORDER BY date DESC LIMIT :limit OFFSET :offset")
     suspend fun getSomePositiveMovementsByCategory(
         categoryId: UUID,
         limit: Int,
@@ -96,7 +96,7 @@ interface MovementDao {
     ): List<MovementWithCategory>
 
     @Transaction
-    @Query("SELECT * FROM movements WHERE amount < 0 AND categoryId = :categoryId ORDER BY createdAt DESC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM movements WHERE amount < 0 AND categoryId = :categoryId ORDER BY date DESC LIMIT :limit OFFSET :offset")
     suspend fun getSomeNegativeMovementsByCategory(
         categoryId: UUID,
         limit: Int,

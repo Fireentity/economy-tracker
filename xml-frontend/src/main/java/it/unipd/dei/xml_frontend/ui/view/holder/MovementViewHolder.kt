@@ -6,10 +6,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import it.unipd.dei.common_backend.models.MovementWithCategory
+import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.bottomsheets.MovementBottomSheetFragment
 
-class MovementViewHolder(private val itemView: View, private val parentFragmentManager: FragmentManager) {
+class MovementViewHolder(
+    private val itemView: View,
+    private val parentFragmentManager: FragmentManager,
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    private val categoryViewModel: CategoryViewModel
+) {
     private val categoryTextView: TextView = itemView.findViewById(R.id.movement_card_category)
     private val amountTextView: TextView = itemView.findViewById(R.id.movement_card_amount)
     private val dateTextView: TextView = itemView.findViewById(R.id.movement_card_date)
@@ -39,7 +46,11 @@ class MovementViewHolder(private val itemView: View, private val parentFragmentM
         }
 
         itemView.setOnLongClickListener {
-            MovementBottomSheetFragment(movementWithCategory).show(
+            MovementBottomSheetFragment(
+                movementWithCategory,
+                movementWithCategoryViewModel,
+                categoryViewModel
+            ).show(
                 parentFragmentManager,
                 "OptionCategoryModalBottomSheetFragment"
             )

@@ -29,12 +29,12 @@ class CategoriesFragment : Fragment() {
             false
         )
         val dialogView = inflater.inflate(
-            R.layout.fragment_add_movement_dialog,
+            R.layout.fragment_category_dialog,
             container,
             false
         )
-        val floatingActionButton: View = view.findViewById(R.id.show_add_movement_dialog_button)
         val categoriesRecyclerView: View = view.findViewById(R.id.all_categories_recycler_view)
+        val floatingActionButton: View = view.findViewById(R.id.show_add_category_dialog_button)
         val showAddCategoryDialogButton = ShowAddCategoryDialogButton(
             dialogView,
             categoryViewModel,
@@ -44,7 +44,7 @@ class CategoriesFragment : Fragment() {
             showAddCategoryDialogButton.onClick()
         }
 
-        val categoriesRecyclerViewAdapter = CategoryCardAdapter(emptyList(), parentFragmentManager)
+        val categoriesRecyclerViewAdapter = CategoryCardAdapter(emptyList(), parentFragmentManager, categoryViewModel)
 
         categoryViewModel.loadAllCategories()
         return view

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
@@ -15,6 +16,7 @@ import kotlinx.coroutines.withContext
 import java.sql.SQLException
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
 class MovementWithCategoryViewModel @Inject constructor(
@@ -30,9 +32,12 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val categoryToFilter = MutableLiveData<Category?>()
 
     companion object {
-        private const val PAGE_SIZE: Int = 10;
+        private const val PAGE_SIZE: Int = 20;
     }
 
+    fun getCategoryToFilter(): LiveData<Category?> {
+        return categoryToFilter
+    }
     fun getMovements(): LiveData<List<MovementWithCategory>> {
         return movements
     }
@@ -46,11 +51,11 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     fun addCategoryFilter(category: Category) {
-        categoryToFilter.postValue(category)
+        categoryToFilter.value = category
     }
 
     fun removeCategoryFilter() {
-        categoryToFilter.postValue(null)
+        categoryToFilter.value = null
     }
 
     fun loadSomeMovementsByCategory(then: () -> Unit) {
@@ -207,5 +212,11 @@ class MovementWithCategoryViewModel @Inject constructor(
                 movementDao.deleteMovement(movement)
             }
         }
+    }
+
+    fun invalidateMovements() {
+        movements.value = emptyList()
+        positiveMovements.value = emptyList()
+        negativeMovements.value = emptyList()
     }
 }

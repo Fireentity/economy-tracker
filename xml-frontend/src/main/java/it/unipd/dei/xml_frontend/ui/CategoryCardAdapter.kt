@@ -6,13 +6,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.models.Category
+import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 
 
 class CategoryCardAdapter(
     private var categories: List<Category>,
-    private val parentFragmentManager: FragmentManager
+    private val parentFragmentManager: FragmentManager,
+    private val categoryViewModel: CategoryViewModel
 ) :
     RecyclerView.Adapter<CategoryCardAdapter.ViewHolder>() {
 
@@ -26,7 +28,7 @@ class CategoryCardAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
-        holder.bind(category)
+        holder.bind(category, categoryViewModel)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -38,8 +40,8 @@ class CategoryCardAdapter(
     class ViewHolder(private val categoryViewHolder: CategoryViewHolder) :
         RecyclerView.ViewHolder(categoryViewHolder.getItemView()) {
 
-        fun bind(category: Category) {
-            categoryViewHolder.bind(category)
+        fun bind(category: Category, categoryViewModel: CategoryViewModel) {
+            categoryViewHolder.bind(category, categoryViewModel)
         }
     }
 }

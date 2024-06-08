@@ -34,8 +34,8 @@
                 android:hint="@string/categoria"
                 android:background="@android:color/transparent">
 
-                <AutoCompleteTextView
-                    android:id="@+id/menu"
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/categories_dropdown_selection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textAutoComplete"
@@ -56,19 +56,19 @@
 
             <!-- TabItems -->
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/entrate_tab_item"
+                android:id="@+id/revenue_tab_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/entrate" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tutti_tab_item"
+                android:id="@+id/all_tab_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tutti" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/uscite_tab_item"
+                android:id="@+id/expenses_tab_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/uscite" />

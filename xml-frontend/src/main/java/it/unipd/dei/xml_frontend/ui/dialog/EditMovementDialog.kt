@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import it.unipd.dei.common_backend.models.MovementWithCategory
@@ -19,6 +20,7 @@ class EditMovementDialog(
     categoryViewModel: CategoryViewModel,
     view: View,
     private val fragmentContext: Context,
+    lifecycleOwner: LifecycleOwner
 ) : IDialog {
 
     private val alertDialog: AlertDialog
@@ -37,6 +39,7 @@ class EditMovementDialog(
         this.inputField = MovementCategoryInput(
             categoryViewModel,
             inputFieldView,
+            lifecycleOwner,
             movement
         )
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)

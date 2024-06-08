@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">music-application</string>
+    <string name="app_name">Economy Tracker</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -43,9 +43,11 @@
     <string name="new_category_button">Crea</string>
     <string name="edit_category_title">Modifica Categoria:</string>
     <string name="edit_category_button">Salva</string>
-    <string name="search_category_placeholder">Cerca una categoria...</string>
+    <string name="search_category_placeholder">Cerca una categoria…</string>
     <string name="category_already_exists">Questa categoria esiste già</string>
     <string name="confirm">Conferma</string>
     <string name="insert_category_identifier">Inserisci il nome della categoria</string>
     <string name="insert_movement_amount">Inserisci l\'importo della transazione</string>
+    <string name="all_categories_identifier">Tutte</string>
+    <string name="insert_movement_date">Seleziona la data della transazione</string>
 </resources>

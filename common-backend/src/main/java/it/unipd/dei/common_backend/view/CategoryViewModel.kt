@@ -13,8 +13,10 @@ import kotlinx.coroutines.withContext
 import java.sql.SQLException
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
+
 class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
     ViewModel() {
 
@@ -44,9 +46,18 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
                 try {
                     categoryDao.upsertCategory(category);
                     _allCategories.value?.put(category.identifier, category)
-                    onSuccess()
+                    viewModelScope.launch {
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
+                    }
+
                 } catch (e: SQLException) {
-                    onThrow(e)
+                    viewModelScope.launch {
+                        withContext(Dispatchers.Main) {
+                            onThrow(e)
+                        }
+                    }
                 }
             }
         }
