@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -28,17 +27,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import it.unipd.dei.common_backend.models.CategoryBuilder
 import it.unipd.dei.jetpack_compose_frontend.R
+import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddCategoryButton
 
 @Preview
 @Composable
 fun AddCategoryDialog(
+    onDismiss: () -> Unit = {}
 ) {
     val categoryBuilder = CategoryBuilder()
-
     var categoryIdentifier by remember { mutableStateOf(categoryBuilder.identifier) }
 
     Dialog(
-        onDismissRequest = { /* Handle dialog dismissal */ },
+        onDismissRequest = { onDismiss() },
         content = {
             Surface(
                 shape = RoundedCornerShape(24.dp),
@@ -47,14 +47,14 @@ fun AddCategoryDialog(
                     .wrapContentHeight()
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(24.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.new_category_title),
                         style = MaterialTheme.typography.titleMedium
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedTextField(
                         value = categoryIdentifier?:"",
@@ -62,21 +62,19 @@ fun AddCategoryDialog(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        TextButton(onClick = { /* Handle cancel button click */ }) {
+                        TextButton(onClick = { onDismiss() }) {
                             Text(text = stringResource(R.string.cancel))
                         }
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        Button(onClick = { /* Handle save button click */ }) {
-                            Text(text = stringResource(R.string.save))
-                        }
+                        AddCategoryButton(categoryIdentifier = categoryIdentifier?:"", {onDismiss()}, {onDismiss()})
                     }
                 }
             }

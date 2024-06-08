@@ -47,9 +47,11 @@ fun AddMovementDialog(
     onDismiss: () -> Unit = {},
 ) {
     val movementBuilder = MovementBuilder()
+    val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$");
     var movementAmount by remember {
         mutableStateOf(movementBuilder.amount?.toString() ?: "")
     }
+
     BasicAlertDialog(
         onDismissRequest = { onDismiss() },
         content = {
@@ -66,12 +68,16 @@ fun AddMovementDialog(
                     )
                     OutlinedTextField(
                         value = movementAmount,
-                        onValueChange = { movementAmount = it },
+                        onValueChange = {
+                            if (it.matches(regex)) {
+                                movementAmount = it
+                            }
+                        },
                         label = { Text(stringResource(R.string.insert_movement_amount)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 8.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                     )
 
                     var expanded by remember { mutableStateOf(false) }
@@ -118,7 +124,7 @@ fun AddMovementDialog(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        TextButton(onClick = { onDismiss() }){
+                        TextButton(onClick = { onDismiss() }) {
                             Text(stringResource(R.string.cancel))
                         }
 

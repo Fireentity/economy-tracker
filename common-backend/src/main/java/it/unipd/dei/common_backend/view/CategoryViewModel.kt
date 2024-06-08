@@ -13,7 +13,6 @@ import kotlinx.coroutines.withContext
 import java.sql.SQLException
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 
@@ -27,8 +26,12 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     fun loadAllCategories() {
         viewModelScope.launch {
             val categories: MutableMap<String, Category> = ConcurrentHashMap()
-            _allCategories.postValue(categoryDao.getAllCategories()
-                .associateByTo(categories) { it.identifier })
+            val test  = categoryDao.getAllCategories()
+            for (category in test) {
+                categories[category.identifier] = category
+            }
+            print(categories)
+            _allCategories.postValue(categories)
         }
     }
 

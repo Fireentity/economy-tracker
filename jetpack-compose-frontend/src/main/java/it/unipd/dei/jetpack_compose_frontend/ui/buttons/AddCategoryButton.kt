@@ -5,7 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.view.CategoryViewModel
@@ -15,7 +15,9 @@ import java.util.UUID
 @Composable
 fun AddCategoryButton(
     categoryIdentifier: String,
-    categoryViewMode: CategoryViewModel = viewModel(),
+    onSuccess: () -> Unit,
+    onFailure: () -> Unit,
+    categoryViewMode: CategoryViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val categorySuccessfullyAdded = stringResource(R.string.category_added_successfully)
@@ -29,9 +31,11 @@ fun AddCategoryButton(
         ),
         {
             DisplayToast.displayGeneric(context, categorySuccessfullyAdded)
+            onSuccess()
         },
         {
             DisplayToast.displayGeneric(context, categoryCreationFailed)
+            onFailure()
         }
     ) }) {
         Text(text = "Confirm")
