@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "it.unipd.dei.xml_frontend"
-        minSdk 34
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -36,15 +36,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        /*compose true*/
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.5.1'
-    }
-    packaging {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
+        viewBinding true
     }
 }
 
@@ -54,12 +46,13 @@ dependencies {
     /*implementation libs.androidx.activity.compose
     implementation platform(libs.androidx.compose.bom)
     androidTestImplementation platform(libs.androidx.compose.bom)*/
-    implementation libs.androidx.ui
+
+/*    implementation libs.androidx.ui
     implementation libs.androidx.ui.graphics
     implementation libs.androidx.ui.tooling.preview
     androidTestImplementation libs.androidx.ui.test.junit4
     debugImplementation libs.androidx.ui.tooling
-    debugImplementation libs.androidx.ui.test.manifest
+    debugImplementation libs.androidx.ui.test.manifest*/
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
@@ -89,5 +82,9 @@ dependencies {
     implementation libs.hilt.android
     ksp libs.hilt.compiler
 
+/*
     implementation libs.androidx.material3
+*/
+    implementation libs.material.v170
+
 }
