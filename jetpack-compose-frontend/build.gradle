@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id "com.google.devtools.ksp"
+    id 'com.google.dagger.hilt.android' apply true
 }
 
 android {
@@ -9,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "it.unipd.dei.jetpack_compose_frontend"
-        minSdk 34
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -37,30 +39,51 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.1'
-    }
-    packaging {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
+        kotlinCompilerExtensionVersion '1.5.11'
     }
 }
 
 dependencies {
-
-    implementation libs.androidx.core.ktx
-    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation project(":common-backend")
 
     implementation libs.androidx.activity.compose
     implementation platform(libs.androidx.compose.bom)
     implementation libs.androidx.ui
     implementation libs.androidx.ui.graphics
     implementation libs.androidx.ui.tooling.preview
-    implementation libs.androidx.material3
+
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.constraintlayout.compose
+
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
+    implementation libs.androidx.material3.android
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
+
+    implementation libs.kotlinx.coroutines.android //Coroutines
+
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.runtime.livedata
+    implementation libs.androidx.lifecycle.livedata.ktx.v280
+    implementation libs.androidx.lifecycle.viewmodel.ktx.v280 //ViewModel ktx
+
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    annotationProcessor libs.androidx.room.compiler
+    ksp libs.androidx.room.compiler
+
+    implementation libs.dagger
+    ksp libs.dagger.compiler // Dagger compiler
+    implementation libs.hilt.android
+    ksp libs.hilt.compiler
+
+    implementation libs.androidx.hilt.navigation.compose
 
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.ui.test.junit4
