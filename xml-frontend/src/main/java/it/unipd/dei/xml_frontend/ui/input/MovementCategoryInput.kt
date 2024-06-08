@@ -3,12 +3,15 @@ package it.unipd.dei.xml_frontend.ui.input
 import android.widget.AdapterView
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
+import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.view.CategoryViewModel
 
 class MovementCategoryInput(
     private val categoryViewModel: CategoryViewModel,
-    view: MaterialAutoCompleteTextView,
+    view: TextInputLayout,
+    textView: MaterialAutoCompleteTextView,
     lifecycleOwner: LifecycleOwner,
     movement: MovementWithCategory? = null
 ) {
@@ -18,9 +21,13 @@ class MovementCategoryInput(
     fun getCategory() = category
 
     init {
-        setItemsInUI(view)
+        setItemsInUI(textView)
         categoryViewModel.allCategories.observe(lifecycleOwner) {
-            setItemsInUI(view)
+            setItemsInUI(textView)
+        }
+        textView.setOnItemClickListener { parent, _, position, _ ->
+            category = categoryViewModel.getCategoryByIdentifier(parent.getItemAtPosition(position) as String)
+            view.clearFocus()
         }
     }
 
@@ -31,14 +38,10 @@ class MovementCategoryInput(
 
         view.setSimpleItems(categories)
 
-        if (category == null) {
-            return
-        }
-
-        val index = categories.indexOf(category!!.identifier)
-        if (index != -1) {
+        if (category != null) {
             view.setText(category!!.identifier)
         }
+
     }
 
     fun onItemClick(parent: AdapterView<*>, position: Int) {

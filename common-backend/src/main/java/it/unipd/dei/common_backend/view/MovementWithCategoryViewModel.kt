@@ -38,6 +38,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     fun getCategoryToFilter(): LiveData<Category?> {
         return categoryToFilter
     }
+
     fun getMovements(): LiveData<List<MovementWithCategory>> {
         return movements
     }
@@ -210,13 +211,20 @@ class MovementWithCategoryViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 movementDao.deleteMovement(movement)
+                //TODO va bene qua
+                invalidateMovementsAndReload()
             }
         }
     }
 
-    fun invalidateMovements() {
+    private fun invalidateMovements() {
         movements.value = emptyList()
         positiveMovements.value = emptyList()
         negativeMovements.value = emptyList()
+    }
+
+    fun invalidateMovementsAndReload() {
+        invalidateMovements();
+        loadInitialMovementsByCategory()
     }
 }

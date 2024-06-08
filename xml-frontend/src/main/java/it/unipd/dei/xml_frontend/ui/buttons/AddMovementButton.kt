@@ -14,7 +14,11 @@ class AddMovementButton(
 
     override fun onClick() {
 
-        val movement  = movementBuilder.toMovement() ?: return
+        val movement  = movementBuilder.toMovement()
+        if (movement == null) {
+            DisplayToast.displayFailure(fragmentContext)
+            return
+        }
 
         movementWithCategoryViewModel.upsertMovement(
             movement,

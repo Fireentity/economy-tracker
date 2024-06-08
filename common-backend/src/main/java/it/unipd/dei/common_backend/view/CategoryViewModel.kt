@@ -47,6 +47,8 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
                     _allCategories.value?.put(category.identifier, category)
                     viewModelScope.launch {
                         withContext(Dispatchers.Main) {
+                            //TODO va bene qua?
+                            loadAllCategories()
                             onSuccess()
                         }
                     }
