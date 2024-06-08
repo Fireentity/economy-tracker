@@ -18,6 +18,7 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
     ViewModel() {
 
+    //TODO esporre con un getter
     private val _allCategories = MutableLiveData<MutableMap<String, Category>>()
     val allCategories: LiveData<MutableMap<String, Category>> = _allCategories
 

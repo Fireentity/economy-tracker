@@ -109,19 +109,16 @@ fun AppScreen(
                 startDestination = AppScreen.entries[0].name, // Start page (Home) at app launch
                 modifier = Modifier.padding(paddingValues)
             ) {
-                // Home
                 composable(route = AppScreen.entries[0].name) {
                     HomeScreen(modifier = Modifier.fillMaxSize())
                 }
 
-                // Registro
                 composable(route = AppScreen.entries[1].name) {
-                    RegisterScreen(db, modifier = Modifier.fillMaxSize())
+                    RegisterScreen()
                 }
 
-                // Ricorrenze
                 composable(route = AppScreen.entries[2].name) {
-                    RecurrencesScreen(modifier = Modifier.fillMaxSize())
+                    CategoriesScreen()
                 }
             }
 

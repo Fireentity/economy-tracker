@@ -1,4 +1,4 @@
-package it.unipd.dei.jetpack_compose_frontend.ui.components
+package it.unipd.dei.jetpack_compose_frontend.ui.cards
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

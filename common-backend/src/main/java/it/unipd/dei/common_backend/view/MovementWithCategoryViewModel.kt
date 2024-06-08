@@ -82,7 +82,7 @@ class MovementWithCategoryViewModel @Inject constructor(
             positiveMovements.postValue(
                 positiveMovements.value?.plus(
                     if (categoryUuid == null) {
-                        movementDao.getSomeMovements(
+                        movementDao.getSomePositiveMovements(
                             PAGE_SIZE,
                             positiveMovements.value?.size ?: 0
                         )
