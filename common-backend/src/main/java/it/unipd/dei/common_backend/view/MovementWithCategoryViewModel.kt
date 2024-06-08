@@ -30,7 +30,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val categoryToFilter = MutableLiveData<Category?>()
 
     companion object {
-        private const val PAGE_SIZE: Int = 10;
+        private const val PAGE_SIZE: Int = 20;
     }
 
     fun getMovements(): LiveData<List<MovementWithCategory>> {
@@ -82,7 +82,7 @@ class MovementWithCategoryViewModel @Inject constructor(
             positiveMovements.postValue(
                 positiveMovements.value?.plus(
                     if (categoryUuid == null) {
-                        movementDao.getSomeMovements(
+                        movementDao.getSomePositiveMovements(
                             PAGE_SIZE,
                             positiveMovements.value?.size ?: 0
                         )

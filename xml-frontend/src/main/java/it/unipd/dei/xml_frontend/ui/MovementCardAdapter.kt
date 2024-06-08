@@ -9,7 +9,7 @@ import it.unipd.dei.xml_frontend.ui.view.holder.MovementViewHolder
 import it.unipd.dei.xml_frontend.R
 
 class MovementCardAdapter(
-    private val movements: List<MovementWithCategory>,
+    private var movements: List<MovementWithCategory>,
     private val parentFragmentManager: FragmentManager
 ) : RecyclerView.Adapter<MovementCardAdapter.ViewHolder>() {
 
@@ -22,6 +22,12 @@ class MovementCardAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movementWithCategory: MovementWithCategory = movements[position]
         holder.bind(movementWithCategory)
+    }
+
+    //TODO crea la funzione ottimizzata
+    fun updateMovements(movements: List<MovementWithCategory>){
+        this.movements = movements
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = movements.size

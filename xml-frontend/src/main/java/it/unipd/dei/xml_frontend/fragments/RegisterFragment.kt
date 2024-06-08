@@ -14,7 +14,10 @@ import it.unipd.dei.common_backend.view.TestViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.MovementCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddMovementDialogButton
+import it.unipd.dei.xml_frontend.ui.tabs.AllRegisterTab
+import it.unipd.dei.xml_frontend.ui.tabs.ExpensesRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.RegisterTab
+import it.unipd.dei.xml_frontend.ui.tabs.RevenueRegisterTab
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -37,36 +40,60 @@ class RegisterFragment : Fragment() {
         // Create dummy data if no movement exists
         testViewModel.createDummyDataIfNoMovement()
 
+
         // Inflate the layout
         val view = inflater.inflate(R.layout.fragment_register, container, false)
-        val addMovementButtonView: View = view.findViewById(R.id.show_add_movement_dialog_button)
+        val floatingActionButton: View = view.findViewById(R.id.show_add_movement_dialog_button)
 
-        //TODO osservare gli adapter
-        //TODO aggiungere il layout manager alle recycleview
+
+        val dialogView = inflater.inflate(
+            R.layout.fragment_movement_dialog,
+            container,
+            false
+        )
+        val showAddMovementDialogButton = ShowAddMovementDialogButton(
+            dialogView,
+            categoryViewModel,
+            movementWithCategoryViewModel,
+            requireContext()
+        )
+        floatingActionButton.setOnClickListener {
+            showAddMovementDialogButton.onClick()
+        }
+
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val tabs = listOf(
-            RegisterTab(
-                movementWithCategoryViewModel,
-                view.findViewById(R.id.all_movements_recycler_view),
-                MovementCardAdapter(
-                    movementWithCategoryViewModel.getMovements().value ?: emptyList(),
-                    parentFragmentManager
-                )
-            ),
-            RegisterTab(
+            RevenueRegisterTab(
                 movementWithCategoryViewModel,
                 view.findViewById(R.id.positive_movements_recycler_view),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getPositiveMovement().value ?: emptyList(),
                     parentFragmentManager
-                )
+                ),
+                this
             ),
-            RegisterTab(
+            AllRegisterTab(
+                movementWithCategoryViewModel,
+                view.findViewById(R.id.all_movements_recycler_view),
+                MovementCardAdapter(
+                    movementWithCategoryViewModel.getMovements().value ?: emptyList(),
+                    parentFragmentManager
+                ),
+                viewLifecycleOwner
+            ),
+            ExpensesRegisterTab(
                 movementWithCategoryViewModel,
                 view.findViewById(R.id.negative_movements_recycler_view),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getNegativeMovement().value ?: emptyList(),
                     parentFragmentManager
-                )
+                ),
+                this
             )
         )
 
@@ -86,22 +113,5 @@ class RegisterFragment : Fragment() {
                 tabs[tab?.position ?: 0].show()
             }
         })
-
-        addMovementButtonView.setOnClickListener {
-            val dialogView = inflater.inflate(
-                R.layout.fragment_movement_dialog,
-                container,
-                false
-            )
-            ShowAddMovementDialogButton(
-                dialogView,
-                categoryViewModel,
-                movementWithCategoryViewModel,
-                requireContext()
-            )
-        }
-
-
-        return view
     }
 }
