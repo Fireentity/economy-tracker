@@ -90,6 +90,5 @@ class CategoriesFragment : Fragment(), OnItemClickListener {
         val cat = categories?.filter {
             it.identifier.contains(textToSearch)
         }
-        val a = cat?.get(0);
     }
 }
