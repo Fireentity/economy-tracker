@@ -55,8 +55,9 @@ class TestViewModel @Inject constructor(
                             uuid = UUID.randomUUID(),
                             amount = Random.nextInt(-100, 100) + Random.nextInt(0, 10) * 0.01,
                             categoryId = categoryId,
-                            createdAt = currentTime + index * 10000L, // Tempi leggermente diversi per ogni movimento
-                            updatedAt = currentTime + index * 10000L
+                            date = currentTime + index * 100000L,
+                            createdAt = currentTime, // Tempi leggermente diversi per ogni movimento
+                            updatedAt = currentTime
                         )
                     }
 

@@ -89,7 +89,7 @@ class RegisterFragment : Fragment() {
 
         addMovementButtonView.setOnClickListener {
             val dialogView = inflater.inflate(
-                R.layout.fragment_add_movement_dialog,
+                R.layout.fragment_movement_dialog,
                 container,
                 false
             )

@@ -30,7 +30,7 @@ class MovementBottomSheetFragment(private val movement: MovementWithCategory) : 
             false
         )
         val editMovementDialogView = inflater.inflate(
-            R.layout.fragment_edit_movement_dialog,
+            R.layout.fragment_movement_dialog,
             container,
             false
         )

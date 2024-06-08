@@ -32,7 +32,7 @@ class CategoryBottomSheetFragment(
             false
         )
         val editCategoryDialogView = inflater.inflate(
-            R.layout.fragment_edit_category_dialog,
+            R.layout.fragment_category_dialog,
             container,
             false
         )

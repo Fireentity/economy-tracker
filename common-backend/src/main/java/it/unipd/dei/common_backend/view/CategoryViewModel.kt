@@ -43,9 +43,18 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
                 try {
                     categoryDao.upsertCategory(category);
                     _allCategories.value?.put(category.identifier, category)
-                    onSuccess()
+                    viewModelScope.launch {
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
+                    }
+
                 } catch (e: SQLException) {
-                    onThrow(e)
+                    viewModelScope.launch {
+                        withContext(Dispatchers.Main) {
+                            onThrow(e)
+                        }
+                    }
                 }
             }
         }

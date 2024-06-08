@@ -21,6 +21,7 @@ data class Movement(
     val uuid: UUID,
     val amount: Double,
     val categoryId: UUID,
+    val date:Long,
     val createdAt: Long,
     val updatedAt: Long
 ) {
