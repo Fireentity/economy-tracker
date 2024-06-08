@@ -44,7 +44,7 @@ class CategoriesFragment : Fragment() {
             showAddCategoryDialogButton.onClick()
         }
 
-        val categoriesRecyclerViewAdapter = CategoryCardAdapter(emptyList(), parentFragmentManager)
+        val categoriesRecyclerViewAdapter = CategoryCardAdapter(emptyList(), parentFragmentManager, categoryViewModel)
 
         categoryViewModel.loadAllCategories()
         return view

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
@@ -15,6 +16,7 @@ import kotlinx.coroutines.withContext
 import java.sql.SQLException
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
 class MovementWithCategoryViewModel @Inject constructor(

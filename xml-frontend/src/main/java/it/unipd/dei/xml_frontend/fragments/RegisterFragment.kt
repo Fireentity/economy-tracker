@@ -57,12 +57,12 @@ class RegisterFragment : Fragment() {
             dialogView,
             categoryViewModel,
             movementWithCategoryViewModel,
-            requireContext()
+            requireContext(),
+            viewLifecycleOwner
         )
         floatingActionButton.setOnClickListener {
             showAddMovementDialogButton.onClick()
         }
-
 
         return view
     }
@@ -84,7 +84,9 @@ class RegisterFragment : Fragment() {
                 view.findViewById(R.id.positive_movements_recycler_view),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getPositiveMovement().value ?: emptyList(),
-                    parentFragmentManager
+                    parentFragmentManager,
+                    movementWithCategoryViewModel,
+                    categoryViewModel
                 ),
                 viewLifecycleOwner
             ),
@@ -93,7 +95,9 @@ class RegisterFragment : Fragment() {
                 view.findViewById(R.id.all_movements_recycler_view),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getMovements().value ?: emptyList(),
-                    parentFragmentManager
+                    parentFragmentManager,
+                    movementWithCategoryViewModel,
+                    categoryViewModel
                 ),
                 viewLifecycleOwner
             ),
@@ -102,7 +106,9 @@ class RegisterFragment : Fragment() {
                 view.findViewById(R.id.negative_movements_recycler_view),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getNegativeMovement().value ?: emptyList(),
-                    parentFragmentManager
+                    parentFragmentManager,
+                    movementWithCategoryViewModel,
+                    categoryViewModel
                 ),
                 viewLifecycleOwner
             )

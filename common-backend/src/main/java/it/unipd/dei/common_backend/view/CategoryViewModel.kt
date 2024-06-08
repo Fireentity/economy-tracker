@@ -13,8 +13,10 @@ import kotlinx.coroutines.withContext
 import java.sql.SQLException
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
+
 class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
     ViewModel() {
 

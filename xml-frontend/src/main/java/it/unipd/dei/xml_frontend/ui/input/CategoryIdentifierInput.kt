@@ -24,7 +24,6 @@ class CategoryIdentifierInput(
             view.error = resources.getString(R.string.category_already_exists)
             return
         }
-
         view.error = null
     }
 }

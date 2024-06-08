@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import it.unipd.dei.common_backend.models.MovementBuilder
@@ -11,6 +12,7 @@ import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.buttons.AddMovementButton
+import it.unipd.dei.xml_frontend.ui.input.MovementAmountInput
 import it.unipd.dei.xml_frontend.ui.input.MovementCategoryInput
 
 class AddMovementDialog(
@@ -18,16 +20,20 @@ class AddMovementDialog(
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
     view: View,
     private val fragmentContext: Context,
+    lifecycleOwner: LifecycleOwner
 ) : IDialog {
 
     private val alertDialog: AlertDialog
-    private val inputField: MovementCategoryInput
+    private val categoryInputField: MovementCategoryInput
+    private val amountInputField: MovementAmountInput
+    private val dateInputField = null
     private val movementBuilder: MovementBuilder = MovementBuilder()
 
     init {
-        //TODO add the movement amount field
+
         val movementCategoryFieldView: MaterialAutoCompleteTextView =
             view.findViewById(R.id.input_movement_category)
+
         val addMovementButton = AddMovementButton(
             movementBuilder,
             this::dismiss,
@@ -35,9 +41,12 @@ class AddMovementDialog(
             movementWithCategoryViewModel
         )
 
-        this.inputField = MovementCategoryInput(
+        this.amountInputField = MovementAmountInput(view.findViewById(R.id.input_movement_amount))
+
+        this.categoryInputField = MovementCategoryInput(
             categoryViewModel,
-            movementCategoryFieldView
+            movementCategoryFieldView,
+            lifecycleOwner
         )
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setView(view)

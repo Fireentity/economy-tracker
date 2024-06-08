@@ -15,7 +15,7 @@ class MovementBuilder(
             return null
         }
 
-        val createdAt = createdAt ?: System.currentTimeMillis()
+        val createdAt = this.createdAt ?: System.currentTimeMillis()
 
         return Movement(
             //TODO fix this with epoch uuids

@@ -14,7 +14,7 @@ class AddMovementButton(
 
     override fun onClick() {
 
-        val movement  = movementBuilder.toMovement() ?: return;
+        val movement  = movementBuilder.toMovement() ?: return
 
         movementWithCategoryViewModel.upsertMovement(
             movement,

@@ -49,4 +49,5 @@
     <string name="insert_category_identifier">Inserisci il nome della categoria</string>
     <string name="insert_movement_amount">Inserisci l\'importo della transazione</string>
     <string name="all_categories_identifier">Tutte</string>
+    <string name="insert_movement_date">Seleziona la data della transazione</string>
 </resources>
