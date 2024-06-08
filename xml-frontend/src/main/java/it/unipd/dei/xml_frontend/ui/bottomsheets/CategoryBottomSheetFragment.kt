@@ -27,7 +27,7 @@ class CategoryBottomSheetFragment(
         savedInstanceState: Bundle?
     ): View {
         val view: View = inflater.inflate(
-            R.layout.fragment_option_category,
+            R.layout.fragment_category_bottom_sheet,
             container,
             false
         )
@@ -37,7 +37,7 @@ class CategoryBottomSheetFragment(
             false
         )
         val categoryViewHolder = CategoryViewHolder(
-            view.findViewById(R.id.fragment_category_card),
+            view.findViewById(R.id.category_card),
             parentFragmentManager
         )
         val showEditCategoryDialogButtonView: View = view.findViewById(R.id.show_edit_category_dialog_button)

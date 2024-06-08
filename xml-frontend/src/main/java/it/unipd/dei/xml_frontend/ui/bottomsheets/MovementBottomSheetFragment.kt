@@ -25,7 +25,7 @@ class MovementBottomSheetFragment(private val movement: MovementWithCategory) : 
     ): View {
         val view: View = inflater.inflate(
             //TODO check if this is right
-            R.layout.fragment_option_category,
+            R.layout.fragment_movement_bottom_sheet,
             container,
             false
         )
@@ -35,7 +35,7 @@ class MovementBottomSheetFragment(private val movement: MovementWithCategory) : 
             false
         )
         val movementViewHolder = MovementViewHolder(
-            view.findViewById(R.id.fragment_category_card),
+            view.findViewById(R.id.movement_card),
             parentFragmentManager
         )
         val showEditMovementDialogButtonView: View = view.findViewById(R.id.show_edit_movement_dialog_button)

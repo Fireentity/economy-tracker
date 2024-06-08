@@ -35,9 +35,9 @@ class EditMovementDialog(
         )
 
         this.inputField = MovementCategoryInput(
-            movement,
             categoryViewModel,
-            inputFieldView
+            inputFieldView,
+            movement
         )
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setView(view)

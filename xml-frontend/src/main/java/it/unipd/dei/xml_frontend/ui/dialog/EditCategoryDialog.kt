@@ -14,7 +14,6 @@ import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.buttons.UpdateCategoryButton
 import it.unipd.dei.xml_frontend.ui.input.CategoryIdentifierInput
 
-@AndroidEntryPoint
 class EditCategoryDialog(
     category: Category,
     categoryViewModel: CategoryViewModel,
