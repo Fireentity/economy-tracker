@@ -33,6 +33,9 @@ class MovementWithCategoryViewModel @Inject constructor(
         private const val PAGE_SIZE: Int = 20;
     }
 
+    fun getCategoryToFilter(): LiveData<Category?> {
+        return categoryToFilter
+    }
     fun getMovements(): LiveData<List<MovementWithCategory>> {
         return movements
     }
@@ -46,11 +49,11 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     fun addCategoryFilter(category: Category) {
-        categoryToFilter.postValue(category)
+        categoryToFilter.value = category
     }
 
     fun removeCategoryFilter() {
-        categoryToFilter.postValue(null)
+        categoryToFilter.value = null
     }
 
     fun loadSomeMovementsByCategory(then: () -> Unit) {
@@ -207,5 +210,11 @@ class MovementWithCategoryViewModel @Inject constructor(
                 movementDao.deleteMovement(movement)
             }
         }
+    }
+
+    fun invalidateMovements() {
+        movements.value = emptyList()
+        positiveMovements.value = emptyList()
+        negativeMovements.value = emptyList()
     }
 }

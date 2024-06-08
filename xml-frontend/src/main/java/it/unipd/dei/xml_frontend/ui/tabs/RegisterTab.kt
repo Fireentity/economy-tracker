@@ -1,6 +1,8 @@
 package it.unipd.dei.xml_frontend.ui.tabs
 
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +50,7 @@ abstract class RegisterTab(
 
 
     }
+
 
     abstract fun observeViewModel(lifecycleOwner: LifecycleOwner)
 

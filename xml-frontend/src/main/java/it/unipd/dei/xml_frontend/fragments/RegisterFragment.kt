@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.view.CategoryViewModel
@@ -14,6 +15,7 @@ import it.unipd.dei.common_backend.view.TestViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.MovementCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddMovementDialogButton
+import it.unipd.dei.xml_frontend.ui.dropdown.menus.CategoryDropdownMenu
 import it.unipd.dei.xml_frontend.ui.tabs.AllRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.ExpensesRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.RegisterTab
@@ -39,7 +41,7 @@ class RegisterFragment : Fragment() {
 
         // Create dummy data if no movement exists
         testViewModel.createDummyDataIfNoMovement()
-
+        categoryViewModel.loadAllCategories()
 
         // Inflate the layout
         val view = inflater.inflate(R.layout.fragment_register, container, false)
@@ -67,6 +69,15 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        CategoryDropdownMenu(
+            categoryViewModel,
+            movementWithCategoryViewModel,
+            view.findViewById(R.id.categories_dropdown_selection),
+            viewLifecycleOwner,
+            requireContext()
+        )
+
         val tabs = listOf(
             RevenueRegisterTab(
                 movementWithCategoryViewModel,
@@ -75,7 +86,7 @@ class RegisterFragment : Fragment() {
                     movementWithCategoryViewModel.getPositiveMovement().value ?: emptyList(),
                     parentFragmentManager
                 ),
-                this
+                viewLifecycleOwner
             ),
             AllRegisterTab(
                 movementWithCategoryViewModel,
@@ -93,7 +104,7 @@ class RegisterFragment : Fragment() {
                     movementWithCategoryViewModel.getNegativeMovement().value ?: emptyList(),
                     parentFragmentManager
                 ),
-                this
+                viewLifecycleOwner
             )
         )
 
