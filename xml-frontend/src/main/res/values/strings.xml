@@ -30,7 +30,7 @@
     <string name="ammontare">Ammontare</string>
     <string name="delete_category">Elimina categoria</string>
     <string name="delete_movement">Elimina movimento</string>
-    <string name="category_deletion_confirmation">Sei sicuro di voler eliminare questa categoria?</string>
+    <string name="category_deletion_confirmation">Sei sicuro di voler eliminare questa categoria? Cancellerai anche tutti i movimenti ad essa associati</string>
     <string name="movement_deletion_confirmation">Sei sicuro di voler eliminare questo movimento?</string>
     <string name="delete_category_title">Elimina Categoria</string>
     <string name="delete_category_message">Sei sicuro di voler eliminare questa categoria?</string>

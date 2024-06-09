@@ -177,12 +177,19 @@ class MovementWithCategoryViewModel @Inject constructor(
         onFailure: (e: SQLException) -> Unit
     ) {
         viewModelScope.launch {
-
-            try {
-                movementDao.upsertMovement(movement)
-                onSuccess()
-            } catch (e: SQLException) {
-                onFailure(e)
+            viewModelScope.launch {
+                try {
+                    withContext(Dispatchers.IO) {
+                        movementDao.upsertMovement(movement)
+                    }
+                    withContext(Dispatchers.Main) {
+                        onSuccess()
+                    }
+                } catch (e: SQLException) {
+                    withContext(Dispatchers.Main) {
+                        onFailure(e)
+                    }
+                }
             }
         }
     }
@@ -195,11 +202,19 @@ class MovementWithCategoryViewModel @Inject constructor(
         onFailure: (e: SQLException) -> Unit
     ) {
         viewModelScope.launch {
-            try {
-                movementDao.deleteMovement(movement)
-                onSuccess()
-            } catch (e: SQLException) {
-                onFailure(e)
+            viewModelScope.launch {
+                try {
+                    withContext(Dispatchers.IO) {
+                        movementDao.deleteMovement(movement)
+                    }
+                    withContext(Dispatchers.Main) {
+                        onSuccess()
+                    }
+                } catch (e: SQLException) {
+                    withContext(Dispatchers.Main) {
+                        onFailure(e)
+                    }
+                }
             }
         }
     }
@@ -209,9 +224,10 @@ class MovementWithCategoryViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                movementDao.deleteMovement(movement)
-                //TODO va bene qua
-                invalidateMovementsAndReload()
+                try {
+                    movementDao.deleteMovement(movement)
+                } catch (_: SQLException) {
+                }
             }
         }
     }

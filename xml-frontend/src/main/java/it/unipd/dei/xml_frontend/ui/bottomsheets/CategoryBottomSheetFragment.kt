@@ -8,6 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.dialog.DeleteCategoryDialog
 import it.unipd.dei.xml_frontend.ui.dialog.UpsertCategoryDialog
@@ -16,7 +17,7 @@ import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 @AndroidEntryPoint
 class CategoryBottomSheetFragment(
     private val category: Category,
-    private val categoryViewModel: CategoryViewModel
+    private val categoryViewModel: CategoryViewModel,
 ) : BottomSheetDialogFragment() {
 
 
@@ -39,28 +40,30 @@ class CategoryBottomSheetFragment(
             view.findViewById(R.id.category_card),
             parentFragmentManager
         )
-        val showEditCategoryDialogButtonView: View = view.findViewById(R.id.show_edit_category_dialog_button)
+        val showEditCategoryDialogButtonView: View =
+            view.findViewById(R.id.show_edit_category_dialog_button)
         val deleteLayout: View = view.findViewById(R.id.show_delete_category_dialog_button)
 
-        categoryViewHolder.bind(category, categoryViewModel)
+        categoryViewHolder.bindWithoutButton(category)
 
+        val upsertCategoryDialog = UpsertCategoryDialog(
+            categoryViewModel,
+            editCategoryDialogView,
+            requireContext(),
+            getString(R.string.edit_category_title),
+            category,
+        )
         showEditCategoryDialogButtonView.setOnClickListener {
-            UpsertCategoryDialog(
-                categoryViewModel,
-                editCategoryDialogView,
-                requireContext(),
-                getString(R.string.edit_category_title),
-                category,
-            ).show()
+            upsertCategoryDialog.show()
             dismiss()
         }
-
+        val deleteCategoryDialog = DeleteCategoryDialog(
+            categoryViewModel,
+            requireContext(),
+            category
+        )
         deleteLayout.setOnClickListener {
-            DeleteCategoryDialog(
-                categoryViewModel,
-                requireContext(),
-                category
-            ).show()
+            deleteCategoryDialog.show()
             dismiss()
         }
 

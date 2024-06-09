@@ -6,16 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.CategoryDao
+import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
+import it.unipd.dei.common_backend.models.Movement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.SQLException
+import java.util.PrimitiveIterator
 import java.util.TreeMap
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
+class CategoryViewModel @Inject constructor(
+    private val categoryDao: CategoryDao,
+    private val movementDao: MovementDao
+) :
     ViewModel() {
 
     private val _allCategories = MutableLiveData<TreeMap<String, Category>>()
@@ -63,13 +69,69 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     }
 
     fun deleteCategory(
-        category: Category
+        category: Category,
+        onSuccess: () -> Unit,
+        onFailure: (e: SQLException) -> Unit
     ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                categoryDao.deleteCategory(category)
-                _allCategories.value?.remove(category.identifier)
+                viewModelScope.launch {
+                    try {
+                        withContext(Dispatchers.IO) {
+                            categoryDao.deleteCategory(category)
+                        }
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
+                    } catch (e: SQLException) {
+                        withContext(Dispatchers.Main) {
+                            onFailure(e)
+                        }
+                    }
+                }
             }
         }
+    }
+
+    fun deleteCategoryAndItsMovements(
+        category: Category,
+        onSuccess: () -> Unit,
+        onFailure: (e: SQLException) -> Unit,
+        deleteMovement: (movement: Movement) -> Unit,
+        onMovementsDeleted: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val movements = movementDao.getMovementsByCategoryOrderedByDate(category.uuid)
+                    if (movements.isNotEmpty()) {
+                        movements.forEach {
+                            deleteMovement(it.movement)
+                        }
+                        withContext(Dispatchers.Main) {
+                            onMovementsDeleted()
+                        }
+                    }
+                    categoryDao.deleteCategory(category)
+                }
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } catch (e: SQLException) {
+                withContext(Dispatchers.Main) {
+                    onFailure(e)
+                }
+            }
+        }
+    }
+
+
+    fun invalidateCategories() {
+        _allCategories.value = TreeMap()
+    }
+
+    fun invalidateCategoriesAndReload() {
+        invalidateCategories()
+        loadAllCategories()
     }
 }
