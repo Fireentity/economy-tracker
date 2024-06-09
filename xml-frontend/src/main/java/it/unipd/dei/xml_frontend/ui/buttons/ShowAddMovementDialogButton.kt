@@ -5,7 +5,8 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
-import it.unipd.dei.xml_frontend.ui.dialog.AddMovementDialog
+import it.unipd.dei.xml_frontend.R
+import it.unipd.dei.xml_frontend.ui.dialog.UpsertMovementDialog
 
 class ShowAddMovementDialogButton(
     dialogView: View,
@@ -15,12 +16,13 @@ class ShowAddMovementDialogButton(
     lifecycleOwner: LifecycleOwner
 ) : IButton {
 
-    private val addMovementDialog = AddMovementDialog(
+    private val addMovementDialog = UpsertMovementDialog(
         categoryViewModel,
         movementWithCategoryViewModel,
         dialogView,
         fragmentContext,
-        lifecycleOwner
+        lifecycleOwner,
+        fragmentContext.getString(R.string.new_movement_title)
     )
 
     override fun onClick() {

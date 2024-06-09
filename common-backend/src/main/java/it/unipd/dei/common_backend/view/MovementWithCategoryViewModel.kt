@@ -167,7 +167,7 @@ class MovementWithCategoryViewModel @Inject constructor(
         )
     }
 
-    fun loadInitialMovementsByCategory() {
+    private fun loadInitialMovementsByCategory() {
         loadSomeMovementsByCategory {}
         loadSomePositiveMovementsByCategory {}
         loadSomeNegativeMovementsByCategory {}
@@ -179,6 +179,7 @@ class MovementWithCategoryViewModel @Inject constructor(
         onFailure: (e: SQLException) -> Unit
     ) {
         viewModelScope.launch {
+
             try {
                 movementDao.upsertMovement(movement)
                 onSuccess()

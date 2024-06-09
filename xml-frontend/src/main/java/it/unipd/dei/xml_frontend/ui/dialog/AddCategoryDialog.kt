@@ -9,7 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
-import it.unipd.dei.xml_frontend.ui.buttons.AddCategoryButton
+import it.unipd.dei.xml_frontend.ui.buttons.UpsertCategoryButton
 import it.unipd.dei.xml_frontend.ui.input.CategoryIdentifierInput
 
 class AddCategoryDialog(
@@ -23,11 +23,11 @@ class AddCategoryDialog(
 
     init {
         val inputFieldView: TextInputEditText = view.findViewById(R.id.input_category_identifier)
-        val editCategoryButton = AddCategoryButton(
-            this::getCategoryIdentifier,
-            this::dismiss,
+        val editCategoryButton = UpsertCategoryButton(
+            categoryViewModel,
             fragmentContext,
-            categoryViewModel
+            this::dismiss,
+            this::getCategoryIdentifier
         )
 
         this.inputField = CategoryIdentifierInput(

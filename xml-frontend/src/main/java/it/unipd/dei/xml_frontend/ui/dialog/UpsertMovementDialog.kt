@@ -7,24 +7,25 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import com.google.android.material.textfield.TextInputLayout
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.models.MovementBuilder
+import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
-import it.unipd.dei.xml_frontend.ui.buttons.AddMovementButton
-import it.unipd.dei.xml_frontend.ui.input.MovementAmountInput
 import it.unipd.dei.xml_frontend.ui.input.MovementCategoryInput
+import it.unipd.dei.xml_frontend.ui.buttons.UpsertMovementButton
+import it.unipd.dei.xml_frontend.ui.input.MovementAmountInput
 import it.unipd.dei.xml_frontend.ui.input.MovementDateInput
-import java.sql.DatabaseMetaData
 
-class AddMovementDialog(
+class UpsertMovementDialog(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
     view: View,
     private val fragmentContext: Context,
-    lifecycleOwner: LifecycleOwner
+    lifecycleOwner: LifecycleOwner,
+    title: String,
+    movementWithCategory: MovementWithCategory? = null
 ) : IDialog {
 
     private val alertDialog: AlertDialog
@@ -34,53 +35,63 @@ class AddMovementDialog(
     private val movementBuilder: MovementBuilder = MovementBuilder(
         { getMovementAmount() },
         { getMovementCategory() },
-        { getMovementDate() }
+        { getMovementDate() },
+        movementWithCategory?.movement
     )
 
     init {
-
-        val movementCategoryFieldView: MaterialAutoCompleteTextView =
+        val inputFieldView: MaterialAutoCompleteTextView =
             view.findViewById(R.id.input_movement_category)
-
-        val addMovementButton = AddMovementButton(
+        val updateMovementButton = UpsertMovementButton(
             movementBuilder,
-            this::dismiss,
+            movementWithCategoryViewModel,
             fragmentContext,
-            movementWithCategoryViewModel
+            this::dismiss
         )
-
         this.dateInputField = MovementDateInput(
             fragmentContext,
-            view.findViewById(R.id.input_movement_date)
+            view.findViewById(R.id.input_movement_date),
+            movementWithCategory?.movement
         )
 
         this.amountInputField = MovementAmountInput(
-            view.findViewById(R.id.input_movement_amount)
+            view.findViewById(R.id.input_movement_amount),
+            movementWithCategory?.movement
         )
 
         this.categoryInputField = MovementCategoryInput(
             categoryViewModel,
             view.findViewById(R.id.input_movement_category_layout),
-            movementCategoryFieldView,
-            lifecycleOwner
+            inputFieldView,
+            lifecycleOwner,
+            movementWithCategory
         )
+
+
+
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
+            .setTitle(title)
             .setView(view)
             .setPositiveButton(
                 R.string.confirm
-            ) { _, _ -> addMovementButton.onClick() }
+            ) { _, _ -> updateMovementButton.onClick() }
             .create()
 
-        //TODO chiedere cosa fa questo
+        inputFieldView.setOnItemClickListener { parent, _, position, _ ->
+            categoryInputField.onItemClick(
+                parent,
+                position
+            )
+        }
+
         view.setOnClickListener {
-            addMovementButton.onClick()
+            updateMovementButton.onClick()
         }
     }
 
     private fun getMovementAmount(): Double? = amountInputField.getAmount()
     private fun getMovementCategory(): Category? = categoryInputField.getCategory()
     private fun getMovementDate(): Long? = dateInputField.getDate()
-
     override fun getFragmentContext() = fragmentContext
 
     override fun getResources(): Resources = fragmentContext.resources
