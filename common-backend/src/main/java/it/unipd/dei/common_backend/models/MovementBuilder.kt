@@ -5,9 +5,9 @@ import it.unipd.dei.common_backend.view.CategoryViewModel
 import java.util.UUID
 
 class MovementBuilder(
-    val amount: () -> String? = { null },
-    val category: () -> String? = { null },
-    val date: () -> String? = { null },
+    val amount: () -> String = { "" },
+    val category: () -> String = { "" },
+    val date: () -> String = { "" },
     val movement: Movement? = null
 ) {
 
@@ -16,10 +16,6 @@ class MovementBuilder(
         val amount = amount()
         val category = category()
         val date = date()
-
-        if (amount == null || category == null || date == null) {
-            return null
-        }
 
         val createdAt = movement?.createdAt ?: System.currentTimeMillis()
         val uuid = movement?.uuid ?: UUID.randomUUID()

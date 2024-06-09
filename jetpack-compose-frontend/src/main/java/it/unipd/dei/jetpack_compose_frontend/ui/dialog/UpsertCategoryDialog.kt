@@ -22,18 +22,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import it.unipd.dei.common_backend.models.Category
+import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddCategoryButton
 
-@Preview
 @Composable
-fun AddCategoryDialog(
-    onDismiss: () -> Unit = {}
+fun UpsertCategoryDialog(
+    categoryViewModel: CategoryViewModel,
+    onDismiss: () -> Unit = {},
+    category: Category? = null
 ) {
-    var categoryIdentifier by remember { mutableStateOf("") }
+    var categoryIdentifier by remember { mutableStateOf(category?.identifier?:"") }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -55,8 +57,8 @@ fun AddCategoryDialog(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedTextField(
-                        value = categoryIdentifier?:"",
-                        onValueChange = {categoryIdentifier = it},
+                        value = categoryIdentifier,
+                        onValueChange = { categoryIdentifier = it },
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -72,7 +74,12 @@ fun AddCategoryDialog(
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        AddCategoryButton(categoryIdentifier = categoryIdentifier?:"", {onDismiss()}, {onDismiss()})
+                        AddCategoryButton(
+                            categoryIdentifier = categoryIdentifier,
+                            { onDismiss() },
+                            { onDismiss() },
+                            categoryViewModel
+                        )
                     }
                 }
             }

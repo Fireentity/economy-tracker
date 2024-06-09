@@ -12,10 +12,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -35,6 +32,7 @@ import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddMovementButton
+import it.unipd.dei.jetpack_compose_frontend.ui.input.MovementCategoryInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +51,7 @@ fun AddMovementDialog(
         { date }
     )) }
     val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$");
+    var expanded by remember { mutableStateOf(false) }
 
 
     BasicAlertDialog(
@@ -83,43 +82,8 @@ fun AddMovementDialog(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                     )
 
-                    var expanded by remember { mutableStateOf(false) }
-                    var selectedOptionText by remember { mutableStateOf("Tutte") }
 
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded },
-                    ) {
-                        OutlinedTextField(
-                            readOnly = true,
-                            value = selectedOptionText,
-                            onValueChange = { },
-                            label = { Text("Label") },
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(
-                                    expanded = expanded
-                                )
-                            },
-                            colors = ExposedDropdownMenuDefaults.textFieldColors()
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = {
-                                expanded = false
-                            }
-                        ) {
-                            categoryViewModel.allCategories.value?.keys?.forEach { selectionOption ->
-                                DropdownMenuItem(
-                                    text = { Text(text = selectionOption) },
-                                    onClick = {
-                                        selectedOptionText = selectionOption
-                                        expanded = false
-                                    }
-                                )
-                            }
-                        }
-                    }
+                    MovementCategoryInput(category, {category = it}, categoryViewModel)
 
                     Spacer(modifier = Modifier.height(24.dp))
 

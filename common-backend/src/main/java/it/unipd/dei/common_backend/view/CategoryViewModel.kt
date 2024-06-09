@@ -63,12 +63,27 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     }
 
     fun deleteCategory(
-        category: Category
+        category: Category,
+        onSuccess: () -> Unit,
+        onThrow: (e: SQLException) -> Unit
     ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                categoryDao.deleteCategory(category)
-                _allCategories.value?.remove(category.identifier)
+                try {
+                    categoryDao.deleteCategory(category)
+                    _allCategories.value?.remove(category.identifier)
+                    withContext(Dispatchers.Main) {
+                        //TODO va bene qua?
+                        loadAllCategories()
+                        onSuccess()
+                    }
+                } catch (e: SQLException) {
+                    viewModelScope.launch {
+                        withContext(Dispatchers.Main) {
+                            onThrow(e)
+                        }
+                    }
+                }
             }
         }
     }

@@ -41,7 +41,7 @@
     <string name="new_category_title">Crea Categoria:</string>
     <string name="new_category_button">Crea</string>
     <string name="edit_category_title">Modifica Categoria:</string>
-    <string name="edit_category_button">Salva</string>
+    <string name="edit_category">Salva</string>
     <string name="search_category_placeholder">Cerca una categoria...</string>
     <string name="category_already_exists">Questa categoria esiste già</string>
     <string name="save">Salva</string>

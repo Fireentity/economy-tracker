@@ -1,36 +1,42 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.cards
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.jetpack_compose_frontend.R
 
 @Composable
-fun CategoryCard(category: Category) {
+fun CategoryCard(category: Category, onClick: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
-        val (image, text) = createRefs()
+        val (image, text, showBottomSheetButton) = createRefs()
+        val icon = ImageVector.vectorResource(id = R.drawable.baseline_stacked_bar_chart_24)
 
-        Icon(
-            painter = painterResource(id = R.drawable.baseline_stacked_bar_chart_24),
-            contentDescription = "Category Image",
+        Image(
+            painter = rememberVectorPainter(icon),
+            contentDescription = "Category card icon",
             modifier = Modifier
                 .constrainAs(image) {
-                    start.linkTo(parent.start)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
                 }
-                .size(40.dp)
                 .padding(26.dp)
         )
 
@@ -45,5 +51,27 @@ fun CategoryCard(category: Category) {
                 }
                 .padding(vertical = 8.dp)
         )
+
+        IconButton(
+            onClick = {
+                onClick()
+            },
+            modifier = Modifier
+                .constrainAs(showBottomSheetButton) {
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+                .padding(end = 15.dp)
+                .padding(24.dp),
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "View category"
+            )
+        }
     }
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 5.dp),
+        thickness = 1.dp,
+    )
 }

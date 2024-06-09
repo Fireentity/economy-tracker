@@ -109,7 +109,7 @@ fun MovementCard(movementWithCategory: MovementWithCategory) {
     }
 
     HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 5.dp),
         thickness = 1.dp,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5F)
     )
 }
