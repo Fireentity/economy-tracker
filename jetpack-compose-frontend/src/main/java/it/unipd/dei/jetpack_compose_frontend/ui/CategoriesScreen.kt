@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.bottomsheets.CategoryBottomSheet
+import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddCategoryDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
 
 
@@ -22,7 +23,11 @@ fun CategoriesScreen(
     categoryViewModel: CategoryViewModel,
 ) {
     Surface {
-        Scaffold { paddingValues ->
+        Scaffold(floatingActionButton = {
+            ShowAddCategoryDialogButton(
+                categoryViewModel = categoryViewModel
+            )
+        }) { paddingValues ->
             Column(
                 Modifier
                     .padding(paddingValues)
@@ -51,7 +56,9 @@ fun CategoriesScreen(
                                 CategoryBottomSheet(
                                     category = category,
                                     categoryViewModel = categoryViewModel
-                                )
+                                ) {
+                                    showBottomSheet = false
+                                }
                             }
                         }
                     }

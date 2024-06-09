@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddMovementButton
 import it.unipd.dei.jetpack_compose_frontend.ui.input.MovementCategoryInput
+import it.unipd.dei.jetpack_compose_frontend.ui.input.MovementDateInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,62 +47,66 @@ fun AddMovementDialog(
     var amount by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
-    val movementBuilder by remember { mutableStateOf(MovementBuilder(
-        { amount },
-        { category },
-        { date }
-    )) }
+    val movementBuilder by remember {
+        mutableStateOf(MovementBuilder(
+            { amount },
+            { category },
+            { date }
+        ))
+    }
     val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$");
-    var expanded by remember { mutableStateOf(false) }
-
 
     BasicAlertDialog(
-        onDismissRequest = { onDismiss() },
-        content = {
-            Surface(shape = RoundedCornerShape(24.dp)) {
-                Column(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .padding(24.dp),
-                ) {
-                    Text(
-                        style = MaterialTheme.typography.titleMedium,
-                        text = stringResource(R.string.new_movement_title),
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                    OutlinedTextField(
-                        value = amount,
-                        onValueChange = {
-                            if (it.matches(regex)) {
-                                amount = it
-                            }
-                        },
-                        label = { Text(stringResource(R.string.insert_movement_amount)) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
-                    )
-
-
-                    MovementCategoryInput(category, {category = it}, categoryViewModel)
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        TextButton(onClick = { onDismiss() }) {
-                            Text(stringResource(R.string.cancel))
+        onDismissRequest = { onDismiss() }
+    ) {
+        Surface(shape = RoundedCornerShape(24.dp)) {
+            Column(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(24.dp),
+            ) {
+                Text(
+                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(R.string.new_movement_title),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                OutlinedTextField(
+                    value = amount,
+                    onValueChange = {
+                        if (it.matches(regex)) {
+                            amount = it
                         }
+                    },
+                    label = { Text(stringResource(R.string.insert_movement_amount)) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                )
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                MovementCategoryInput(category, { category = it }, categoryViewModel)
 
-                        AddMovementButton(movementBuilder = movementBuilder)
+                MovementDateInput(LocalContext.current, date) { date = it }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = { onDismiss() }) {
+                        Text(stringResource(R.string.cancel))
                     }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    AddMovementButton(
+                        movementBuilder = movementBuilder,
+                        movementWithCategoryViewModel,
+                        categoryViewModel
+                    )
                 }
             }
         }
-    )
+    }
 }

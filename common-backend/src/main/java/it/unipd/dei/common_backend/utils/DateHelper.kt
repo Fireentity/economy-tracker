@@ -25,11 +25,11 @@ object DateHelper {
             .toString()
     }
 
-    fun selectDateTime(context: Context, callback: (String) -> Unit) {
-        showDateTimePickerDialog(context, callback)
+    fun selectDateTime(context: Context, onDismiss: () -> Unit = {}, callback: (String) -> Unit) {
+        showDateTimePickerDialog(context, callback, onDismiss)
     }
 
-    private fun showDateTimePickerDialog(context: Context, callback: (String) -> Unit) {
+    private fun showDateTimePickerDialog(context: Context, callback: (String) -> Unit, onDismiss: () -> Unit = {}) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -51,6 +51,9 @@ object DateHelper {
             dayOfMonth
         )
 
+        datePickerDialog.setOnDismissListener {
+            onDismiss()
+        }
         datePickerDialog.show()
     }
 

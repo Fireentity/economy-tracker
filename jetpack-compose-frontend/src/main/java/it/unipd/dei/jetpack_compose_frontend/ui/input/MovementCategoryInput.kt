@@ -16,7 +16,11 @@ import it.unipd.dei.common_backend.view.CategoryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovementCategoryInput(category: String,onCategoryChange: (String) -> Unit, categoryViewModel: CategoryViewModel) {
+fun MovementCategoryInput(
+    category: String,
+    onCategoryChange: (String) -> Unit,
+    categoryViewModel: CategoryViewModel
+) {
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         expanded = expanded,

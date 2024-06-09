@@ -11,7 +11,7 @@ class MovementBuilder(
     val movement: Movement? = null
 ) {
 
-    fun toMovement(categoryViewModel: CategoryViewModel): Movement? {
+    fun toMovement(categoryViewModel: CategoryViewModel): Movement {
 
         val amount = amount()
         val category = category()
