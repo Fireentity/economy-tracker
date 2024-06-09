@@ -47,11 +47,7 @@ class CategoryDropdownMenu(
                 categoryViewModel.getCategoryByIdentifier(selectedCategoryIdentifier)
                     ?.let { movementWithCategoryViewModel.addCategoryFilter(it) }
             }
-
-            //TODO vedi se questo è il posto giusto per queste due chiamate a funzione o se:
-            movementWithCategoryViewModel.invalidateMovements()
-            movementWithCategoryViewModel.loadInitialMovementsByCategory()
-
+            movementWithCategoryViewModel.invalidateMovementsAndReload()
         }
     }
 }

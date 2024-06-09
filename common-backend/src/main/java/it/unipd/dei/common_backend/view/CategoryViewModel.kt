@@ -13,25 +13,21 @@ import kotlinx.coroutines.withContext
 import java.sql.SQLException
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
 
 class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
     ViewModel() {
 
-    //TODO esporre con un getter
-    private val _allCategories = MutableLiveData<MutableMap<String, Category>>()
-    val allCategories: LiveData<MutableMap<String, Category>> = _allCategories
+    private val _allCategories = MutableLiveData<TreeMap<String, Category>>()
+    val allCategories: LiveData<TreeMap<String, Category>> = _allCategories
 
     fun loadAllCategories() {
         viewModelScope.launch {
-            val categories: MutableMap<String, Category> = ConcurrentHashMap()
-            val test  = categoryDao.getAllCategories()
-            for (category in test) {
-                categories[category.identifier] = category
-            }
-            print(categories)
-            _allCategories.postValue(categories)
+            val categories: TreeMap<String, Category> = TreeMap()
+            _allCategories.postValue(categoryDao.getAllCategories()
+                .associateByTo(categories) { it.identifier })
         }
     }
 
@@ -51,6 +47,8 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
                     _allCategories.value?.put(category.identifier, category)
                     viewModelScope.launch {
                         withContext(Dispatchers.Main) {
+                            //TODO va bene qua?
+                            loadAllCategories()
                             onSuccess()
                         }
                     }

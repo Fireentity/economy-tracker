@@ -6,14 +6,23 @@ import android.text.TextWatcher
 
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.common_backend.models.Movement
+import java.util.Locale
 
 class MovementAmountInput(
     view: TextInputEditText,
     movement: Movement? = null
 ) {
+    companion object{
+        private val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$")
+    }
+
+    private var amount = movement?.amount
+
+
     init {
         val decimalDigitsInputFilter = InputFilter { source, _, _, dest, _, _ ->
-            if ((dest.toString() + source.toString()).matches(Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$"))) null else ""
+            val inputText = dest.toString() + source.toString()
+            if (inputText.matches(regex) && !inputText.startsWith(".")) null else ""
         }
         view.filters = arrayOf(decimalDigitsInputFilter)
 
@@ -32,14 +41,13 @@ class MovementAmountInput(
                         }
                     }
                 }
+                onTextChanged(editable)
             }
         })
         if(movement!=null){
-            view.setText(movement.amount.toString())
+            view.setText(String.format(Locale.US, "%.2f", movement.amount))
         }
     }
-
-    private var amount = movement?.amount
 
     fun getAmount(): Double? = amount
 
