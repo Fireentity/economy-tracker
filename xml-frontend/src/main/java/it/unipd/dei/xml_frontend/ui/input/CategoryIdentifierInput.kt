@@ -15,7 +15,7 @@ class CategoryIdentifierInput(
 
     private var text = category?.identifier
 
-    fun getText() = text
+    fun getText(): String? = text
 
     fun onTextChanged(text: CharSequence?) {
         this.text = text.toString()

@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.dialog.DeleteCategoryDialog
-import it.unipd.dei.xml_frontend.ui.dialog.EditCategoryDialog
+import it.unipd.dei.xml_frontend.ui.dialog.UpsertCategoryDialog
 import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 
 @AndroidEntryPoint
@@ -46,11 +45,12 @@ class CategoryBottomSheetFragment(
         categoryViewHolder.bind(category, categoryViewModel)
 
         showEditCategoryDialogButtonView.setOnClickListener {
-            EditCategoryDialog(
-                category,
+            UpsertCategoryDialog(
                 categoryViewModel,
                 editCategoryDialogView,
-                requireContext()
+                requireContext(),
+                getString(R.string.edit_category_title),
+                category,
             ).show()
             dismiss()
         }

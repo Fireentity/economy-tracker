@@ -7,53 +7,57 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.buttons.UpsertCategoryButton
 import it.unipd.dei.xml_frontend.ui.input.CategoryIdentifierInput
 
-class AddCategoryDialog(
+class UpsertCategoryDialog(
     categoryViewModel: CategoryViewModel,
     view: View,
     private val fragmentContext: Context,
+    title: String,
+    category: Category? = null,
 ) : IDialog {
 
     private val alertDialog: AlertDialog
-    private val inputField: CategoryIdentifierInput
+    private val identifierInputField: CategoryIdentifierInput
 
     init {
         val inputFieldView: TextInputEditText = view.findViewById(R.id.input_category_identifier)
-        val editCategoryButton = UpsertCategoryButton(
+        val updateCategoryButton = UpsertCategoryButton(
             categoryViewModel,
             fragmentContext,
             this::dismiss,
-            this::getCategoryIdentifier
+            { getText() },
+            category
         )
 
-        this.inputField = CategoryIdentifierInput(
-            fragmentContext.resources,
+        this.identifierInputField = CategoryIdentifierInput(
+            this.fragmentContext.resources,
             categoryViewModel,
-            inputFieldView
+            inputFieldView,
+            category
         )
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
-            .setTitle("ciao")
+            .setTitle(title)
             .setView(view)
             .setPositiveButton(
                 R.string.confirm
-            ) { _, _ -> editCategoryButton.onClick() }
+            ) { _, _ -> updateCategoryButton.onClick() }
             .create()
 
         inputFieldView.doOnTextChanged { text, _, _, _ ->
-            inputField.onTextChanged(text)
+            identifierInputField.onTextChanged(text)
         }
 
         view.setOnClickListener {
-            editCategoryButton.onClick()
-
+            updateCategoryButton.onClick()
         }
-
-
     }
+
+    private fun getText(): String? = identifierInputField.getText()
 
     override fun getFragmentContext() = fragmentContext
 
@@ -61,9 +65,5 @@ class AddCategoryDialog(
 
     override fun show() = alertDialog.show()
 
-    override fun dismiss() {
-        alertDialog.dismiss()
-    }
-
-    private fun getCategoryIdentifier(): String? = inputField.getText()
+    override fun dismiss() = alertDialog.dismiss()
 }
