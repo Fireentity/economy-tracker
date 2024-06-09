@@ -6,16 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.CategoryDao
+import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
+import it.unipd.dei.common_backend.models.Movement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.SQLException
+import java.util.PrimitiveIterator
 import java.util.TreeMap
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
+class CategoryViewModel @Inject constructor(
+    private val categoryDao: CategoryDao,
+    private val movementDao: MovementDao
+) :
     ViewModel() {
 
     private val _allCategories = MutableLiveData<TreeMap<String, Category>>()
@@ -86,5 +92,15 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
                 }
             }
         }
+    }
+
+
+    fun invalidateCategories() {
+        _allCategories.value = TreeMap()
+    }
+
+    fun invalidateCategoriesAndReload() {
+        invalidateCategories()
+        loadAllCategories()
     }
 }

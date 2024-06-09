@@ -46,7 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/insert_movement_date"
-        app:layout_constraintTop_toBottomOf="@+id/input_movement_category_layout">
+        app:layout_constraintTop_toBottomOf="@+id/input_movement_category_layout"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/baseline_date_range_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_movement_date"

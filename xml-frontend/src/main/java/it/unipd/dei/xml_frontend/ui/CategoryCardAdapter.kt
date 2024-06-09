@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 
@@ -14,7 +15,7 @@ import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 class CategoryCardAdapter(
     private var categories: List<Category>,
     private val parentFragmentManager: FragmentManager,
-    private val categoryViewModel: CategoryViewModel
+    private val categoryViewModel: CategoryViewModel,
 ) :
     RecyclerView.Adapter<CategoryCardAdapter.ViewHolder>() {
 
@@ -40,8 +41,14 @@ class CategoryCardAdapter(
     class ViewHolder(private val categoryViewHolder: CategoryViewHolder) :
         RecyclerView.ViewHolder(categoryViewHolder.getItemView()) {
 
-        fun bind(category: Category, categoryViewModel: CategoryViewModel) {
-            categoryViewHolder.bind(category, categoryViewModel)
+        fun bind(
+            category: Category,
+            categoryViewModel: CategoryViewModel,
+        ) {
+            categoryViewHolder.bindWithButton(
+                category,
+                categoryViewModel
+            )
         }
     }
 }

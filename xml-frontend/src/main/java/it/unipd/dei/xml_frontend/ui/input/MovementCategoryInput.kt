@@ -16,9 +16,7 @@ class MovementCategoryInput(
     movement: MovementWithCategory? = null
 ) {
 
-    private var category = movement?.category
-
-    fun getCategory() = category
+    private var category = movement?.category?.identifier
 
     init {
         setItemsInUI(textView)
@@ -26,10 +24,12 @@ class MovementCategoryInput(
             setItemsInUI(textView)
         }
         textView.setOnItemClickListener { parent, _, position, _ ->
-            category = categoryViewModel.getCategoryByIdentifier(parent.getItemAtPosition(position) as String)
+            category = parent.getItemAtPosition(position) as String
             view.clearFocus()
         }
     }
+
+    fun getCategory() = category
 
     private fun setItemsInUI(view: MaterialAutoCompleteTextView) {
         val categories: Array<String> = categoryViewModel.allCategories
@@ -39,13 +39,12 @@ class MovementCategoryInput(
         view.setSimpleItems(categories)
 
         if (category != null) {
-            view.setText(category!!.identifier)
+            view.setText(category)
         }
 
     }
 
     fun onItemClick(parent: AdapterView<*>, position: Int) {
-        val categoryIdentifier = parent.getItemAtPosition(position) as String
-        category = categoryViewModel.getCategoryByIdentifier(categoryIdentifier)
+        category = parent.getItemAtPosition(position) as String
     }
 }

@@ -5,6 +5,7 @@ import android.content.res.Resources
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.unipd.dei.common_backend.models.Movement
+import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 
@@ -22,7 +23,14 @@ class DeleteMovementDialog(
             .setMessage(fragmentContext.resources.getString(R.string.movement_deletion_confirmation))
             .setNeutralButton(fragmentContext.resources.getString(R.string.cancel)) { _, _ -> }
             .setPositiveButton(fragmentContext.resources.getString(R.string.confirm)) { _, _ ->
-                movementWithCategoryViewModel.deleteMovement(movement)
+                movementWithCategoryViewModel.deleteMovement(
+                    movement,
+                    {
+                        DisplayToast.displaySuccess(fragmentContext)
+                        movementWithCategoryViewModel.invalidateMovementsAndReload()
+                    },
+                    { DisplayToast.displayFailure(fragmentContext) }
+                )
             }
             .create()
     }

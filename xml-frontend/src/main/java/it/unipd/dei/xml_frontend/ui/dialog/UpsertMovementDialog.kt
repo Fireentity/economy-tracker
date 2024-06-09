@@ -45,6 +45,7 @@ class UpsertMovementDialog(
         val updateMovementButton = UpsertMovementButton(
             movementBuilder,
             movementWithCategoryViewModel,
+            categoryViewModel,
             fragmentContext,
             this::dismiss
         )
@@ -89,9 +90,9 @@ class UpsertMovementDialog(
         }
     }
 
-    private fun getMovementAmount(): Double? = amountInputField.getAmount()
-    private fun getMovementCategory(): Category? = categoryInputField.getCategory()
-    private fun getMovementDate(): Long? = dateInputField.getDate()
+    private fun getMovementAmount(): String = amountInputField.getAmount()
+    private fun getMovementCategory(): String? = categoryInputField.getCategory()
+    private fun getMovementDate(): String? = dateInputField.getDate()
     override fun getFragmentContext() = fragmentContext
 
     override fun getResources(): Resources = fragmentContext.resources

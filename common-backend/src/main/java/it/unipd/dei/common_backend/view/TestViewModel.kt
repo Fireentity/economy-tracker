@@ -30,7 +30,7 @@ class TestViewModel @Inject constructor(
     )
 
     fun createDummyDataIfNoMovement() {
-        deleteAll()
+        //deleteAll()
         viewModelScope.launch {
             movementsCount = movementDao.getMovementsCount()
             if (movementDao.getMovementsCount() == 0) {

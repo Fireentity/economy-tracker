@@ -10,20 +10,20 @@ class MovementDateInput(
     view: TextInputEditText,
     movement: Movement? = null
 ) {
-    private var date = movement?.date
+    private var date = movement?.date?.let { DateHelper.convertFromMillisecondsToDateTime(it) }
 
     init {
         view.setOnClickListener {
             DateHelper.selectDateTime(context) {
                 view.setText(it)
-                date = DateHelper.convertFromDateTimeToMilliseconds(it)
+                date = it
             }
         }
 
         if (movement != null) {
-            view.setText(DateHelper.convertFromMillisecondsToDateTime(movement.date))
+            view.setText(date)
         }
     }
 
-    fun getDate(): Long? = date
+    fun getDate(): String? = date
 }

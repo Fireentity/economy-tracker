@@ -3,14 +3,19 @@ package it.unipd.dei.xml_frontend.ui.buttons
 import android.content.Context
 import android.view.View
 import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.xml_frontend.ui.dialog.AddCategoryDialog
+import it.unipd.dei.xml_frontend.R
+import it.unipd.dei.xml_frontend.ui.dialog.UpsertCategoryDialog
 
 class ShowAddCategoryDialogButton(
     dialogView: View,
     categoryViewModel: CategoryViewModel,
     fragmentContext: Context
 ) : IButton {
-    private val addCategoryDialog = AddCategoryDialog(categoryViewModel,dialogView,fragmentContext)
+    private val addCategoryDialog = UpsertCategoryDialog(
+        categoryViewModel,
+        dialogView, fragmentContext,
+        fragmentContext.getString(R.string.new_category_title)
+    )
 
     override fun onClick() {
         addCategoryDialog.show()

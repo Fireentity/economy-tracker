@@ -16,7 +16,7 @@ class MovementAmountInput(
         private val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$")
     }
 
-    private var amount = movement?.amount
+    private var amount = String.format(Locale.US, "%.2f", movement?.amount)
 
 
     init {
@@ -45,14 +45,14 @@ class MovementAmountInput(
             }
         })
         if(movement!=null){
-            view.setText(String.format(Locale.US, "%.2f", movement.amount))
+            view.setText(amount)
         }
     }
 
-    fun getAmount(): Double? = amount
+    fun getAmount(): String = amount
 
-    fun onTextChanged(text: CharSequence?) {
-        this.amount = text.toString().toDoubleOrNull()
+    private fun onTextChanged(text: CharSequence?) {
+        this.amount = text.toString()
     }
 
 }
