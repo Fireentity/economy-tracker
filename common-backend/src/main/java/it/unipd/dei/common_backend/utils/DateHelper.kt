@@ -4,18 +4,19 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 object DateHelper {
-    fun convertFromDateTimeToMilliseconds(dateTime: String): Long {
+    fun convertFromDateTimeToMilliseconds(dateTime: String): Long? {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         return try {
             val date = dateFormat.parse(dateTime)
             date?.time ?: 0L
-        } catch (e: Exception) {
-            -1
+        } catch (e: ParseException) {
+            return null
         }
     }
 

@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import it.unipd.dei.common_backend.models.CategoryBuilder
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddCategoryButton
 
@@ -34,8 +33,7 @@ import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddCategoryButton
 fun AddCategoryDialog(
     onDismiss: () -> Unit = {}
 ) {
-    val categoryBuilder = CategoryBuilder()
-    var categoryIdentifier by remember { mutableStateOf(categoryBuilder.identifier) }
+    var categoryIdentifier by remember { mutableStateOf("") }
 
     Dialog(
         onDismissRequest = { onDismiss() },

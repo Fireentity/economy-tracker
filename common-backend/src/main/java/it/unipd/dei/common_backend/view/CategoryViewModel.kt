@@ -11,12 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.SQLException
-import java.util.concurrent.ConcurrentHashMap
+import java.util.TreeMap
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
-
 class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao) :
     ViewModel() {
 
@@ -26,8 +24,8 @@ class CategoryViewModel @Inject constructor(private val categoryDao: CategoryDao
     fun loadAllCategories() {
         viewModelScope.launch {
             val categories: TreeMap<String, Category> = TreeMap()
-            _allCategories.postValue(categoryDao.getAllCategories()
-                .associateByTo(categories) { it.identifier })
+            categoryDao.getAllCategories().associateByTo(categories) { it.identifier }
+            _allCategories.value = categories
         }
     }
 

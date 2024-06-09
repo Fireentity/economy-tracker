@@ -22,7 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.hilt.navigation.compose.hiltViewModel
+import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddMovementDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
@@ -30,9 +30,10 @@ import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen() {
-    val movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel();
-
+fun RegisterScreen(
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel
+) {
     Surface {
         Scaffold(
             topBar = {
@@ -52,10 +53,13 @@ fun RegisterScreen() {
                 )
             },
             floatingActionButton = {
-                ShowAddMovementDialogButton()
+                ShowAddMovementDialogButton(categoryViewModel, movementWithCategoryViewModel)
             }
         ) { paddingValues ->
-            Column(Modifier.padding(paddingValues).fillMaxSize()) {
+            Column(
+                Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()) {
                 var selectedTabIndex by rememberSaveable {
                     mutableIntStateOf(1)
                 }
@@ -98,17 +102,19 @@ fun RegisterScreen() {
                 val positiveMovements = movementWithCategoryViewModel.getPositiveMovement()
                     .observeAsState(initial = emptyList())
 
-                when(selectedTabIndex) {
+                when (selectedTabIndex) {
                     0 -> LazyColumn {
                         items(positiveMovements.value.size) { index ->
                             MovementCard(positiveMovements.value[index])
                         }
                     }
+
                     1 -> LazyColumn {
                         items(movements.value.size) { index ->
                             MovementCard(movements.value[index])
                         }
                     }
+
                     2 -> LazyColumn {
                         items(negativeMovements.value.size) { index ->
                             MovementCard(negativeMovements.value[index])

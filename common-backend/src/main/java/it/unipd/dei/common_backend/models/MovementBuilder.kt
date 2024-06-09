@@ -1,15 +1,17 @@
 package it.unipd.dei.common_backend.models
 
+import it.unipd.dei.common_backend.utils.DateHelper
+import it.unipd.dei.common_backend.view.CategoryViewModel
 import java.util.UUID
 
 class MovementBuilder(
-    val amount: () -> Double? = { null },
-    val category: () -> Category? = { null },
-    val date: () -> Long? = { null },
+    val amount: () -> String? = { null },
+    val category: () -> String? = { null },
+    val date: () -> String? = { null },
     val movement: Movement? = null
 ) {
 
-    fun toMovement(): Movement? {
+    fun toMovement(categoryViewModel: CategoryViewModel): Movement? {
 
         val amount = amount()
         val category = category()
@@ -24,9 +26,9 @@ class MovementBuilder(
         return Movement(
             //TODO fix this with epoch uuids
             uuid,
-            amount,
-            category.uuid,
-            date,
+            amount.toDouble(),
+            categoryViewModel.getCategoryByIdentifier(category)!!.uuid,
+            DateHelper.convertFromDateTimeToMilliseconds(date)!!,
             createdAt,
             System.currentTimeMillis()
         )

@@ -29,9 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
@@ -39,18 +37,23 @@ import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddMovementButton
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun AddMovementDialog(
-    categoryViewModel: CategoryViewModel = hiltViewModel(),
-    movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel(),
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
     onDismiss: () -> Unit = {},
 ) {
-    val movementBuilder = MovementBuilder()
+
+    var amount by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("") }
+    val movementBuilder by remember { mutableStateOf(MovementBuilder(
+        { amount },
+        { category },
+        { date }
+    )) }
     val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$");
-    var movementAmount by remember {
-        mutableStateOf(movementBuilder.amount?.toString() ?: "")
-    }
+
 
     BasicAlertDialog(
         onDismissRequest = { onDismiss() },
@@ -67,10 +70,10 @@ fun AddMovementDialog(
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
                     OutlinedTextField(
-                        value = movementAmount,
+                        value = amount,
                         onValueChange = {
                             if (it.matches(regex)) {
-                                movementAmount = it
+                                amount = it
                             }
                         },
                         label = { Text(stringResource(R.string.insert_movement_amount)) },

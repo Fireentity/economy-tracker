@@ -9,17 +9,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.dialog.AddMovementDialog
 
 @Composable
-fun ShowAddMovementDialogButton() {
+fun ShowAddMovementDialogButton(
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel
+) {
     var showDialog: Boolean by remember { mutableStateOf(false) }
     FloatingActionButton(onClick = {
         showDialog = true
     }) {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "")
     }
-    if(showDialog) {
-        AddMovementDialog(onDismiss = { showDialog = false })
+    if (showDialog) {
+        AddMovementDialog(categoryViewModel, movementWithCategoryViewModel) { showDialog = false }
     }
 }

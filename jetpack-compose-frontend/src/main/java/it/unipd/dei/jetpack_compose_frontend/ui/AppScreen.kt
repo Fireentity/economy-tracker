@@ -24,11 +24,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import it.unipd.dei.common_backend.database.BalanceDatabase
+import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.view.TestViewModel
 
 
 enum class AppScreen() {
@@ -46,9 +49,13 @@ data class BottomNavigationItem(
 
 @Composable
 fun AppScreen(
-    db: BalanceDatabase,
     navController: NavHostController = rememberNavController(),
+    testViewModel: TestViewModel = hiltViewModel(),
+    categoryViewModel: CategoryViewModel = hiltViewModel(),
+    movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel()
 ) {
+    testViewModel.createDummyDataIfNoMovement()
+    categoryViewModel.loadAllCategories()
     val bottomNavigationIcons = listOf(
         BottomNavigationItem(
             title = AppScreen.entries[0].name,
@@ -114,11 +121,11 @@ fun AppScreen(
                 }
 
                 composable(route = AppScreen.entries[1].name) {
-                    RegisterScreen()
+                    RegisterScreen(categoryViewModel, movementWithCategoryViewModel)
                 }
 
                 composable(route = AppScreen.entries[2].name) {
-                    CategoriesScreen()
+                    CategoriesScreen(categoryViewModel)
                 }
             }
 
