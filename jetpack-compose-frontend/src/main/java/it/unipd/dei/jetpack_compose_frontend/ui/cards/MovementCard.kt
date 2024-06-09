@@ -19,15 +19,21 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import it.unipd.dei.common_backend.models.MovementWithCategory
+import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.TimeUtils
+import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowMovementBottomSheetButton
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun MovementCard(movementWithCategory: MovementWithCategory) {
+fun MovementCard(
+    movementWithCategory: MovementWithCategory,
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel
+) {
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     ConstraintLayout(
@@ -36,13 +42,13 @@ fun MovementCard(movementWithCategory: MovementWithCategory) {
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
-        val (image, date, category, amount, euroSymbol) = createRefs()
+        val (image, date, category, amount, showBottomSheetButton) = createRefs()
 
         val colorFilter: ColorFilter
         val background: Color
         val icon: ImageVector
 
-        if(movementWithCategory.movement.amount > 0) {
+        if (movementWithCategory.movement.amount > 0) {
             colorFilter = ColorFilter.tint(colorResource(id = R.color.green_700))
             background = colorResource(id = R.color.green_100)
             icon = ImageVector.vectorResource(id = R.drawable.baseline_trending_up_24)
@@ -69,7 +75,8 @@ fun MovementCard(movementWithCategory: MovementWithCategory) {
         )
 
         Text(
-            text = TimeUtils.zonedDateTimeFromMillis(movementWithCategory.movement.createdAt).format(formatter),
+            text = TimeUtils.zonedDateTimeFromMillis(movementWithCategory.movement.createdAt)
+                .format(formatter),
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.constrainAs(date) {
                 start.linkTo(image.end, margin = 20.dp)
@@ -87,24 +94,23 @@ fun MovementCard(movementWithCategory: MovementWithCategory) {
         )
 
         Text(
-            text = movementWithCategory.movement.amount.toString(),
+            text = movementWithCategory.movement.amount.toString() + stringResource(id = R.string.euro),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.constrainAs(amount) {
-                end.linkTo(euroSymbol.start, margin = 5.dp)
-                bottom.linkTo(parent.bottom)
+                end.linkTo(showBottomSheetButton.start, margin = 5.dp)
                 top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
             }
         )
 
-        Text(
-            text = stringResource(id = R.string.euro),
-            color = Color.DarkGray,
-            fontSize = 15.sp,
-            modifier = Modifier.constrainAs(euroSymbol) {
+        ShowMovementBottomSheetButton(
+            modifier = Modifier.constrainAs(showBottomSheetButton) {
                 end.linkTo(parent.end)
-                bottom.linkTo(amount.bottom)
-                top.linkTo(amount.top)
-            }
+                top.linkTo(parent.top)
+            },
+            movement = movementWithCategory,
+            categoryViewModel = categoryViewModel,
+            movementWithCategoryViewModel = movementWithCategoryViewModel
         )
     }
 

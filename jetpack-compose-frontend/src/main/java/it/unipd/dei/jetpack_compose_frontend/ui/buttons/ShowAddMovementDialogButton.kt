@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
-import it.unipd.dei.jetpack_compose_frontend.ui.dialog.AddMovementDialog
+import it.unipd.dei.jetpack_compose_frontend.ui.dialog.UpsertMovementDialog
 
 @Composable
 fun ShowAddMovementDialogButton(
@@ -25,6 +25,6 @@ fun ShowAddMovementDialogButton(
         Icon(imageVector = Icons.Filled.Add, contentDescription = "")
     }
     if (showDialog) {
-        AddMovementDialog(categoryViewModel, movementWithCategoryViewModel) { showDialog = false }
+        UpsertMovementDialog(categoryViewModel, movementWithCategoryViewModel) { showDialog = false }
     }
 }

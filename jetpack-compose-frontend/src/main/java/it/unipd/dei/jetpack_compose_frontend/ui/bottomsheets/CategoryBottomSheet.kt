@@ -28,11 +28,11 @@ fun CategoryBottomSheet(
             modifier = Modifier.fillMaxWidth()
         ) {
 
-            CategoryCard(category) {}
-
-            ShowEditCategoryDialogButton(categoryViewModel, category)
+            CategoryCard(category, categoryViewModel)
 
             ShowDeleteCategoryDialogButton(categoryViewModel, category)
+
+            ShowEditCategoryDialogButton(categoryViewModel, category)
 
             Spacer(modifier = Modifier.fillMaxWidth().height(30.dp))
         }

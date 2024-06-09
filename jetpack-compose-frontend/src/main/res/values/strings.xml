@@ -34,14 +34,12 @@
     <string name="delete_category_title">Elimina Categoria</string>
     <string name="delete_category_message">Sei sicuro di voler eliminare questa categoria?</string>
     <string name="cancel">Annulla</string>
-    <string name="new_movement_title">Crea Movimento:</string>
+    <string name="create_movement">Crea Movimento:</string>
     <string name="new_movement_button">Crea</string>
-    <string name="edit_movement_title">Modifica Movimento:</string>
-    <string name="edit_movement_button">Salva</string>
+    <string name="edit_movement">Modifica movimento</string>
     <string name="new_category_title">Crea Categoria:</string>
     <string name="new_category_button">Crea</string>
-    <string name="edit_category_title">Modifica Categoria:</string>
-    <string name="edit_category">Salva</string>
+    <string name="edit_category">Modifica categoria</string>
     <string name="search_category_placeholder">Cerca una categoria...</string>
     <string name="category_already_exists">Questa categoria esiste già</string>
     <string name="save">Salva</string>
@@ -51,4 +49,5 @@
     <string name="movement_added_successfully">Movimento aggiunta con successo</string>
     <string name="category_creation_failed">Inserimento della categoria fallito</string>
     <string name="movement_creation_failed">Inserimento del moveimento fallito</string>
+    <string name="delete">Elimina</string>
 </resources>

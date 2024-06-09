@@ -59,7 +59,8 @@ fun RegisterScreen(
             Column(
                 Modifier
                     .padding(paddingValues)
-                    .fillMaxSize()) {
+                    .fillMaxSize()
+            ) {
                 var selectedTabIndex by rememberSaveable {
                     mutableIntStateOf(1)
                 }
@@ -105,19 +106,31 @@ fun RegisterScreen(
                 when (selectedTabIndex) {
                     0 -> LazyColumn {
                         items(positiveMovements.value.size) { index ->
-                            MovementCard(positiveMovements.value[index])
+                            MovementCard(
+                                positiveMovements.value[index],
+                                categoryViewModel,
+                                movementWithCategoryViewModel
+                            )
                         }
                     }
 
                     1 -> LazyColumn {
                         items(movements.value.size) { index ->
-                            MovementCard(movements.value[index])
+                            MovementCard(
+                                movements.value[index],
+                                categoryViewModel,
+                                movementWithCategoryViewModel
+                            )
                         }
                     }
 
                     2 -> LazyColumn {
                         items(negativeMovements.value.size) { index ->
-                            MovementCard(negativeMovements.value[index])
+                            MovementCard(
+                                negativeMovements.value[index],
+                                categoryViewModel,
+                                movementWithCategoryViewModel
+                            )
                         }
                     }
                 }

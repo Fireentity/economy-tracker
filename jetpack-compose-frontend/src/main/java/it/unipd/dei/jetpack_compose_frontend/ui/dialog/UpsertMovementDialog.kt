@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementBuilder
+import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.view.CategoryViewModel
 import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
@@ -38,9 +39,10 @@ import it.unipd.dei.jetpack_compose_frontend.ui.input.MovementDateInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddMovementDialog(
+fun UpsertMovementDialog(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    movement: MovementWithCategory? = null,
     onDismiss: () -> Unit = {},
 ) {
 
@@ -67,7 +69,7 @@ fun AddMovementDialog(
             ) {
                 Text(
                     style = MaterialTheme.typography.titleMedium,
-                    text = stringResource(R.string.new_movement_title),
+                    text = stringResource(R.string.create_movement),
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 OutlinedTextField(
@@ -78,13 +80,15 @@ fun AddMovementDialog(
                         }
                     },
                     label = { Text(stringResource(R.string.insert_movement_amount)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
 
+                Spacer(modifier = Modifier.height(8.dp))
+
                 MovementCategoryInput(category, { category = it }, categoryViewModel)
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 MovementDateInput(LocalContext.current, date) { date = it }
 
