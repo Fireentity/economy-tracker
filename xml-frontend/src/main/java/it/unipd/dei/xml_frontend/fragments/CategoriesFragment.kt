@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
-import it.unipd.dei.xml_frontend.ui.CategoryCardAdapter
+import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddCategoryDialogButton
 
 @AndroidEntryPoint

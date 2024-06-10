@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.common_backend.models.Movement
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,14 +20,15 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val movementDao: MovementDao,
 ) : ViewModel() {
 
-    private val movements = MutableLiveData<List<MovementWithCategory>>(emptyList())
-    private val positiveMovements = MutableLiveData<List<MovementWithCategory>>(emptyList())
-    private val negativeMovements = MutableLiveData<List<MovementWithCategory>>(emptyList())
+    private val movements = MutableLiveData<MutableList<MovementWithCategory>>(ArrayList(PAGE_SIZE))
+    private val positiveMovements =
+        MutableLiveData<MutableList<MovementWithCategory>>(ArrayList(PAGE_SIZE))
+    private val negativeMovements =
+        MutableLiveData<MutableList<MovementWithCategory>>(ArrayList(PAGE_SIZE))
     private val totalBalance = MutableLiveData<Double>()
     private val earnedMoney = MutableLiveData<Double>()
     private val spentMoney = MutableLiveData<Double>()
     private val categoryToFilter = MutableLiveData<Category?>()
-    private val categori = movements.value.sor
 
     companion object {
         private const val PAGE_SIZE: Int = 20;
@@ -38,17 +38,18 @@ class MovementWithCategoryViewModel @Inject constructor(
         return categoryToFilter
     }
 
-    fun getMovements(): LiveData<List<MovementWithCategory>> {
+    fun getMovements(): LiveData<out List<MovementWithCategory>> {
         return movements
     }
 
-    fun getNegativeMovement(): LiveData<List<MovementWithCategory>> {
+    fun getPositiveMovements(): LiveData<out List<MovementWithCategory>> {
+        return positiveMovements
+    }
+
+    fun getNegativeMovements(): LiveData<out List<MovementWithCategory>> {
         return negativeMovements
     }
 
-    fun getPositiveMovement(): LiveData<List<MovementWithCategory>> {
-        return positiveMovements
-    }
 
     fun addCategoryFilter(category: Category) {
         categoryToFilter.value = category
@@ -61,71 +62,108 @@ class MovementWithCategoryViewModel @Inject constructor(
     fun loadSomeMovementsByCategory(then: () -> Unit) {
         viewModelScope.launch {
             val categoryUuid: UUID? = categoryToFilter.value?.uuid
-            movements.postValue(
-                movements.value?.plus(
-                    if (categoryUuid == null) {
-                        movementDao.getSomeMovements(
-                            PAGE_SIZE,
-                            positiveMovements.value?.size ?: 0
-                        )
-                    } else {
-                        movementDao.getSomeMovementsByCategory(
-                            categoryUuid,
-                            PAGE_SIZE,
-                            positiveMovements.value?.size ?: 0
-                        )
-                    }
+            withContext(Dispatchers.IO) {
+                val result = loadSomeMovements(
+                    categoryUuid,
+                    PAGE_SIZE,
+                    movements.value?.size ?: 0
                 )
-            )
-            then()
+                withContext(Dispatchers.Main) {
+                    movements.value?.addAll(result)
+                    then()
+                }
+            }
         }
+    }
+
+    private suspend fun loadSomeMovements(
+        categoryUuid: UUID?,
+        limit: Int,
+        offset: Int
+    ): List<MovementWithCategory> {
+        if (categoryUuid != null) {
+            return movementDao.getSomeMovementsByCategory(
+                categoryUuid,
+                limit,
+                offset
+            )
+        }
+        return movementDao.getSomeMovements(
+            limit,
+            offset
+        )
     }
 
     fun loadSomePositiveMovementsByCategory(then: () -> Unit) {
         viewModelScope.launch {
             val categoryUuid: UUID? = categoryToFilter.value?.uuid
-            positiveMovements.postValue(
-                positiveMovements.value?.plus(
-                    if (categoryUuid == null) {
-                        movementDao.getSomePositiveMovements(
-                            PAGE_SIZE,
-                            positiveMovements.value?.size ?: 0
-                        )
-                    } else {
-                        movementDao.getSomePositiveMovementsByCategory(
-                            categoryUuid,
-                            PAGE_SIZE,
-                            positiveMovements.value?.size ?: 0
-                        )
-                    }
+            withContext(Dispatchers.IO) {
+                val result = loadSomePositiveMovements(
+                    categoryUuid,
+                    PAGE_SIZE,
+                    positiveMovements.value?.size ?: 0
                 )
-            )
-            then()
+                withContext(Dispatchers.Main) {
+                    positiveMovements.value?.addAll(result)
+                    then()
+                }
+            }
         }
+    }
+
+    private suspend fun loadSomePositiveMovements(
+        categoryUuid: UUID?,
+        limit: Int,
+        offset: Int
+    ): List<MovementWithCategory> {
+        if (categoryUuid != null) {
+            return movementDao.getSomePositiveMovementsByCategory(
+                categoryUuid,
+                limit,
+                offset
+            )
+        }
+        return movementDao.getSomePositiveMovements(
+            limit,
+            offset
+        )
     }
 
     fun loadSomeNegativeMovementsByCategory(then: () -> Unit) {
         viewModelScope.launch {
             val categoryUuid: UUID? = categoryToFilter.value?.uuid
-            negativeMovements.postValue(
-                negativeMovements.value?.plus(
-                    if (categoryUuid == null) {
-                        movementDao.getSomeNegativeMovements(
-                            PAGE_SIZE,
-                            negativeMovements.value?.size ?: 0
-                        )
-                    } else {
-                        movementDao.getSomeNegativeMovementsByCategory(
-                            categoryUuid,
-                            PAGE_SIZE,
-                            negativeMovements.value?.size ?: 0
-                        )
-                    }
+            withContext(Dispatchers.IO) {
+                val result = loadSomeNegativeMovements(
+                    categoryUuid,
+                    PAGE_SIZE,
+                    negativeMovements.value?.size ?: 0
                 )
-            )
-            then()
+                withContext(Dispatchers.Main) {
+                    negativeMovements.value?.addAll(result)
+                    then()
+                }
+            }
         }
     }
+
+    private suspend fun loadSomeNegativeMovements(
+        categoryUuid: UUID?,
+        limit: Int,
+        offset: Int
+    ): List<MovementWithCategory> {
+        if (categoryUuid != null) {
+            return movementDao.getSomeNegativeMovementsByCategory(
+                categoryUuid,
+                limit,
+                offset
+            )
+        }
+        return movementDao.getSomeNegativeMovements(
+            limit,
+            offset
+        )
+    }
+
 
     private fun loadTotalAmount(
         amountLoader: suspend () -> Double,
@@ -172,71 +210,60 @@ class MovementWithCategoryViewModel @Inject constructor(
         loadSomeNegativeMovementsByCategory {}
     }
 
+
     fun upsertMovement(
-        movement: Movement,
+        movement: MovementWithCategory,
         onSuccess: () -> Unit,
         onFailure: (e: SQLException) -> Unit
     ) {
         viewModelScope.launch {
-            viewModelScope.launch {
-                try {
-                    withContext(Dispatchers.IO) {
-                        movementDao.upsertMovement(movement)
-                    }
+            try {
+                withContext(Dispatchers.IO) {
+                    movementDao.upsertMovement(movement.movement)
                     withContext(Dispatchers.Main) {
+                        movement.upsertIfNegative(negativeMovements.value!!)
+                        movement.upsertIfPositive(positiveMovements.value!!)
+                        movement.upsert(movements.value!!)
                         onSuccess()
-                    }
-                } catch (e: SQLException) {
-                    withContext(Dispatchers.Main) {
-                        onFailure(e)
                     }
                 }
-            }
-        }
-    }
-
-    //TODO Modificare lo stato e rendere tutto thread-safe
-
-    fun deleteMovement(
-        movement: Movement,
-        onSuccess: () -> Unit,
-        onFailure: (e: SQLException) -> Unit
-    ) {
-        viewModelScope.launch {
-            viewModelScope.launch {
-                try {
-                    withContext(Dispatchers.IO) {
-                        movementDao.deleteMovement(movement)
-                    }
-                    withContext(Dispatchers.Main) {
-                        onSuccess()
-                    }
-                } catch (e: SQLException) {
-                    withContext(Dispatchers.Main) {
-                        onFailure(e)
-                    }
+            } catch (e: SQLException) {
+                withContext(Dispatchers.Main) {
+                    onFailure(e)
                 }
             }
         }
     }
 
     fun deleteMovement(
-        movement: Movement
+        movement: MovementWithCategory,
+        onSuccess: () -> Unit,
+        onFailure: (e: SQLException) -> Unit
     ) {
+
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    movementDao.deleteMovement(movement)
-                } catch (_: SQLException) {
+            try {
+                withContext(Dispatchers.IO) {
+                    movementDao.upsertMovement(movement.movement)
+                    withContext(Dispatchers.Main) {
+                        movement.deleteIfNegative(negativeMovements.value!!)
+                        movement.deleteIfPositive(positiveMovements.value!!)
+                        movement.delete(movements.value!!)
+                        onSuccess()
+                    }
+                }
+            } catch (e: SQLException) {
+                withContext(Dispatchers.Main) {
+                    onFailure(e)
                 }
             }
         }
     }
 
     private fun invalidateMovements() {
-        movements.value = emptyList()
-        positiveMovements.value = emptyList()
-        negativeMovements.value = emptyList()
+        movements.value?.clear()
+        positiveMovements.value?.clear()
+        negativeMovements.value?.clear()
     }
 
     fun invalidateMovementsAndReload() {

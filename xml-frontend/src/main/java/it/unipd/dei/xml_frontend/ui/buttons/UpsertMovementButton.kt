@@ -15,18 +15,18 @@ class UpsertMovementButton(
 ) : IButton {
 
     override fun onClick() {
-        val movement  = movementBuilder.toMovement(categoryViewModel)
-
-        movementWithCategoryViewModel.upsertMovement(
-            movement,
-            {
-                DisplayToast.displaySuccess(fragmentContext)
-                onClickRunnable()
-            },
-            {
-                DisplayToast.displayFailure(fragmentContext)
-                onClickRunnable()
-            }
-        );
+        movementBuilder.toMovement(categoryViewModel)?.let {
+            movementWithCategoryViewModel.upsertMovement(
+                it,
+                {
+                    DisplayToast.displaySuccess(fragmentContext)
+                    onClickRunnable()
+                },
+                {
+                    DisplayToast.displayFailure(fragmentContext)
+                    onClickRunnable()
+                }
+            )
+        }
     }
 }

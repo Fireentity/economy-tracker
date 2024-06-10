@@ -50,4 +50,7 @@
     <string name="category_creation_failed">Inserimento della categoria fallito</string>
     <string name="movement_creation_failed">Inserimento del moveimento fallito</string>
     <string name="delete">Elimina</string>
+    <string name="ok">Ok</string>
+    <string name="choose_movement_date">Scegli una data per il movimento</string>
+    <string name="date">Data</string>
 </resources>

@@ -1,4 +1,4 @@
-package it.unipd.dei.xml_frontend.ui
+package it.unipd.dei.xml_frontend.ui.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

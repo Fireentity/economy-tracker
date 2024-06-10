@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -15,9 +16,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -96,18 +100,27 @@ fun RegisterScreen(
                 }
 
                 movementWithCategoryViewModel.loadInitialMovementsByCategory()
-                val movements = movementWithCategoryViewModel.getMovements()
+                val movements by movementWithCategoryViewModel.getMovements()
                     .observeAsState(initial = emptyList())
-                val negativeMovements = movementWithCategoryViewModel.getNegativeMovement()
+                val negativeMovements by movementWithCategoryViewModel.getNegativeMovement()
                     .observeAsState(initial = emptyList())
-                val positiveMovements = movementWithCategoryViewModel.getPositiveMovement()
+                val positiveMovements by movementWithCategoryViewModel.getPositiveMovement()
                     .observeAsState(initial = emptyList())
-
+                val listState = rememberLazyListState()
+                val reachedBottom: Boolean by remember {
+                    derivedStateOf {
+                        val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+                        lastVisibleItem?.index != 0 && lastVisibleItem?.index == listState.layoutInfo.totalItemsCount - 1
+                    }
+                }
+                LaunchedEffect(reachedBottom) {
+                    if (reachedBottom) movementWithCategoryViewModel.loadSomeMovementsByCategory {  }
+                }
                 when (selectedTabIndex) {
-                    0 -> LazyColumn {
-                        items(positiveMovements.value.size) { index ->
+                    0 -> LazyColumn(state = listState) {
+                        items(positiveMovements.size) { index ->
                             MovementCard(
-                                positiveMovements.value[index],
+                                positiveMovements[index],
                                 categoryViewModel,
                                 movementWithCategoryViewModel
                             )
@@ -115,9 +128,9 @@ fun RegisterScreen(
                     }
 
                     1 -> LazyColumn {
-                        items(movements.value.size) { index ->
+                        items(movements.size) { index ->
                             MovementCard(
-                                movements.value[index],
+                                movements[index],
                                 categoryViewModel,
                                 movementWithCategoryViewModel
                             )
@@ -125,9 +138,9 @@ fun RegisterScreen(
                     }
 
                     2 -> LazyColumn {
-                        items(negativeMovements.value.size) { index ->
+                        items(negativeMovements.size) { index ->
                             MovementCard(
-                                negativeMovements.value[index],
+                                negativeMovements[index],
                                 categoryViewModel,
                                 movementWithCategoryViewModel
                             )

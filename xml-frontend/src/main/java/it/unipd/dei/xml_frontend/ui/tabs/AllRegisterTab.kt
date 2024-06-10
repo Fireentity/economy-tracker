@@ -3,7 +3,7 @@ package it.unipd.dei.xml_frontend.ui.tabs
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
-import it.unipd.dei.xml_frontend.ui.MovementCardAdapter
+import it.unipd.dei.xml_frontend.ui.adapters.MovementCardAdapter
 
 class AllRegisterTab(
     viewModel: MovementWithCategoryViewModel,

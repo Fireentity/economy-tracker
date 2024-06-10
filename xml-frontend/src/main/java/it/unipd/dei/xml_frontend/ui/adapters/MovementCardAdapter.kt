@@ -1,4 +1,4 @@
-package it.unipd.dei.xml_frontend.ui
+package it.unipd.dei.xml_frontend.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
-import it.unipd.dei.xml_frontend.ui.view.holder.MovementViewHolder
 import it.unipd.dei.xml_frontend.R
+import it.unipd.dei.xml_frontend.ui.view.holder.MovementViewHolder
 
 class MovementCardAdapter(
     private var movements: List<MovementWithCategory>,

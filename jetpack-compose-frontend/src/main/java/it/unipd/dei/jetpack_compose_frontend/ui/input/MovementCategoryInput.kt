@@ -21,6 +21,7 @@ fun MovementCategoryInput(
     onCategoryChange: (String) -> Unit,
     categoryViewModel: CategoryViewModel
 ) {
+    var error by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -29,14 +30,18 @@ fun MovementCategoryInput(
         OutlinedTextField(
             modifier = Modifier.menuAnchor(),
             value = category,
-            onValueChange = { onCategoryChange(it) },
+            onValueChange = {
+                onCategoryChange(it)
+                error = categoryViewModel.getCategoryByIdentifier(it) == null
+            },
             label = { Text("Label") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
                 )
             },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            isError = error
         )
 
         ExposedDropdownMenu(

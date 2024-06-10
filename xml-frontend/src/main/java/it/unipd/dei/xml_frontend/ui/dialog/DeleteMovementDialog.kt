@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import it.unipd.dei.common_backend.models.Movement
+import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
@@ -12,7 +12,7 @@ import it.unipd.dei.xml_frontend.R
 class DeleteMovementDialog(
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
     private val fragmentContext: Context,
-    movement: Movement
+    movement: MovementWithCategory
 ) : IDialog {
 
     private val alertDialog: AlertDialog
@@ -27,7 +27,6 @@ class DeleteMovementDialog(
                     movement,
                     {
                         DisplayToast.displaySuccess(fragmentContext)
-                        movementWithCategoryViewModel.invalidateMovementsAndReload()
                     },
                     { DisplayToast.displayFailure(fragmentContext) }
                 )

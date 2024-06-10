@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
-import it.unipd.dei.xml_frontend.ui.MovementCardAdapter
+import it.unipd.dei.xml_frontend.ui.adapters.MovementCardAdapter
 
 abstract class RegisterTab(
     protected val viewModel: MovementWithCategoryViewModel,

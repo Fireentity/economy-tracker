@@ -59,7 +59,7 @@ class MovementBottomSheetFragment(
 
         showDeleteMovementDialogButtonView.setOnClickListener {
             DeleteMovementDialog(
-                movementWithCategoryViewModel, requireContext(), movement.movement
+                movementWithCategoryViewModel, requireContext(), movement
             ).show()
             dismiss()
         }

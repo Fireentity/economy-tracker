@@ -12,7 +12,7 @@ import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.TestViewModel
 import it.unipd.dei.xml_frontend.R
-import it.unipd.dei.xml_frontend.ui.MovementCardAdapter
+import it.unipd.dei.xml_frontend.ui.adapters.MovementCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddMovementDialogButton
 import it.unipd.dei.xml_frontend.ui.dropdown.menus.CategoryDropdownMenu
 import it.unipd.dei.xml_frontend.ui.tabs.AllRegisterTab
@@ -81,7 +81,7 @@ class RegisterFragment : Fragment() {
                 movementWithCategoryViewModel,
                 view.findViewById(R.id.positive_movements_recycler_view),
                 MovementCardAdapter(
-                    movementWithCategoryViewModel.getPositiveMovement().value ?: emptyList(),
+                    movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
                     movementWithCategoryViewModel,
                     categoryViewModel
@@ -103,7 +103,7 @@ class RegisterFragment : Fragment() {
                 movementWithCategoryViewModel,
                 view.findViewById(R.id.negative_movements_recycler_view),
                 MovementCardAdapter(
-                    movementWithCategoryViewModel.getNegativeMovement().value ?: emptyList(),
+                    movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
                     movementWithCategoryViewModel,
                     categoryViewModel

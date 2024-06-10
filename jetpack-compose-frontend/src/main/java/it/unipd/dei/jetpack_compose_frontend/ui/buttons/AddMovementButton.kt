@@ -21,15 +21,17 @@ fun AddMovementButton(
     val categorySuccessfullyAdded = stringResource(R.string.movement_added_successfully)
     val categoryCreationFailed = stringResource(R.string.movement_creation_failed)
     Button(onClick = {
-        movementWithCategoryViewModel.upsertMovement(
-            movementBuilder.toMovement(categoryViewModel),
-            {
-                DisplayToast.displayGeneric(context, categorySuccessfullyAdded)
-            },
-            {
-                DisplayToast.displayGeneric(context, categoryCreationFailed)
-            }
-        )
+        movementBuilder.toMovement(categoryViewModel)?.let {
+            movementWithCategoryViewModel.upsertMovement(
+                it,
+                {
+                    DisplayToast.displayGeneric(context, categorySuccessfullyAdded)
+                },
+                {
+                    DisplayToast.displayGeneric(context, categoryCreationFailed)
+                }
+            )
+        }
     }) {
         Text(text = stringResource(R.string.save))
     }

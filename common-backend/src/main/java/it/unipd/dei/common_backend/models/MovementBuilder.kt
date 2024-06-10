@@ -11,22 +11,27 @@ class MovementBuilder(
     val movement: Movement? = null
 ) {
 
-    fun toMovement(categoryViewModel: CategoryViewModel): Movement {
-
-        val amount = amount()
-        val category = category()
-        val date = date()
+    fun toMovement(categoryViewModel: CategoryViewModel): MovementWithCategory? {
 
         val createdAt = movement?.createdAt ?: System.currentTimeMillis()
         val uuid = movement?.uuid ?: UUID.randomUUID()
-        return Movement(
-            //TODO fix this with epoch uuids
-            uuid,
-            amount.toDouble(),
-            categoryViewModel.getCategoryByIdentifier(category)!!.uuid,
-            DateHelper.convertFromDateTimeToMilliseconds(date)!!,
-            createdAt,
-            System.currentTimeMillis()
-        )
+        return categoryViewModel.getCategoryByIdentifier(category())?.let { category ->
+            DateHelper.convertFromDateTimeToMilliseconds(date())?.let { date ->
+                amount().toDoubleOrNull()?.let { amount ->
+                    MovementWithCategory(
+                        Movement(
+                            //TODO fix this with epoch uuids
+                            uuid,
+                            amount,
+                            category.uuid,
+                            date,
+                            createdAt,
+                            System.currentTimeMillis()
+                        ),
+                        category
+                    )
+                }
+            }
+        }
     }
 }
