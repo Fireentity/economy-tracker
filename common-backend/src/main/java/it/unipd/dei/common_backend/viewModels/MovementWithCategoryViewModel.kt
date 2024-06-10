@@ -50,7 +50,6 @@ class MovementWithCategoryViewModel @Inject constructor(
         return negativeMovements
     }
 
-
     fun addCategoryFilter(category: Category) {
         categoryToFilter.value = category
     }
@@ -69,7 +68,9 @@ class MovementWithCategoryViewModel @Inject constructor(
                     movements.value?.size ?: 0
                 )
                 withContext(Dispatchers.Main) {
-                    movements.value?.addAll(result)
+                    movements.value?.plus{
+                        result
+                    }
                     then()
                 }
             }
@@ -104,7 +105,9 @@ class MovementWithCategoryViewModel @Inject constructor(
                     positiveMovements.value?.size ?: 0
                 )
                 withContext(Dispatchers.Main) {
-                    positiveMovements.value?.addAll(result)
+                    positiveMovements.value?.plus{
+                        result
+                    }
                     then()
                 }
             }
@@ -139,7 +142,9 @@ class MovementWithCategoryViewModel @Inject constructor(
                     negativeMovements.value?.size ?: 0
                 )
                 withContext(Dispatchers.Main) {
-                    negativeMovements.value?.addAll(result)
+                    negativeMovements.value?.plus{
+                        result
+                    }
                     then()
                 }
             }
