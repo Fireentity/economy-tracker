@@ -108,7 +108,8 @@ fun UpsertMovementDialog(
                     AddMovementButton(
                         movementBuilder = movementBuilder,
                         movementWithCategoryViewModel,
-                        categoryViewModel
+                        categoryViewModel,
+                        onDismiss,
                     )
                 }
             }

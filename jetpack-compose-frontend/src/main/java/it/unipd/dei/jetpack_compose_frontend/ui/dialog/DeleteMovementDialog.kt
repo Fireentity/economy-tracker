@@ -4,8 +4,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.models.MovementWithCategory
+import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 
@@ -16,6 +18,9 @@ fun DeleteMovementDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
+    val context = LocalContext.current
+    val movementSuccessfullyAdded = stringResource(R.string.movement_added_successfully)
+    val movementCreationFailed = stringResource(R.string.movement_creation_failed)
     AlertDialog(
         onDismissRequest = { },
         title = { Text(text = stringResource(R.string.delete_movement)) },
@@ -23,9 +28,15 @@ fun DeleteMovementDialog(
         confirmButton = {
             TextButton(onClick = {
                 movementWithCategoryViewModel.deleteMovement(
-                    movement.movement,
-                    onConfirm
-                ) { onDismiss() }
+                    movement,
+                    {
+                        DisplayToast.displayGeneric(context, movementSuccessfullyAdded)
+                        onConfirm()
+                    }
+                ) {
+                    DisplayToast.displayGeneric(context, movementCreationFailed)
+                    onDismiss()
+                }
             }) {
                 Text(text = stringResource(R.string.delete))
             }

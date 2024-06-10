@@ -20,11 +20,11 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val movementDao: MovementDao,
 ) : ViewModel() {
 
-    private val movements = MutableLiveData<MutableList<MovementWithCategory>>(ArrayList(PAGE_SIZE))
+    private val movements = MutableLiveData<List<MovementWithCategory>>(emptyList())
     private val positiveMovements =
-        MutableLiveData<MutableList<MovementWithCategory>>(ArrayList(PAGE_SIZE))
+        MutableLiveData<List<MovementWithCategory>>(emptyList())
     private val negativeMovements =
-        MutableLiveData<MutableList<MovementWithCategory>>(ArrayList(PAGE_SIZE))
+        MutableLiveData<List<MovementWithCategory>>(emptyList())
     private val totalBalance = MutableLiveData<Double>()
     private val earnedMoney = MutableLiveData<Double>()
     private val spentMoney = MutableLiveData<Double>()
@@ -38,15 +38,15 @@ class MovementWithCategoryViewModel @Inject constructor(
         return categoryToFilter
     }
 
-    fun getMovements(): LiveData<out List<MovementWithCategory>> {
+    fun getMovements(): LiveData<List<MovementWithCategory>> {
         return movements
     }
 
-    fun getPositiveMovements(): LiveData<out List<MovementWithCategory>> {
+    fun getPositiveMovements(): LiveData<List<MovementWithCategory>> {
         return positiveMovements
     }
 
-    fun getNegativeMovements(): LiveData<out List<MovementWithCategory>> {
+    fun getNegativeMovements(): LiveData<List<MovementWithCategory>> {
         return negativeMovements
     }
 
@@ -68,9 +68,7 @@ class MovementWithCategoryViewModel @Inject constructor(
                     movements.value?.size ?: 0
                 )
                 withContext(Dispatchers.Main) {
-                    movements.value?.plus{
-                        result
-                    }
+                    movements.value = movements.value?.plus(result)
                     then()
                 }
             }
@@ -105,9 +103,7 @@ class MovementWithCategoryViewModel @Inject constructor(
                     positiveMovements.value?.size ?: 0
                 )
                 withContext(Dispatchers.Main) {
-                    positiveMovements.value?.plus{
-                        result
-                    }
+                    positiveMovements.value = positiveMovements.value?.plus(result)
                     then()
                 }
             }
@@ -142,9 +138,7 @@ class MovementWithCategoryViewModel @Inject constructor(
                     negativeMovements.value?.size ?: 0
                 )
                 withContext(Dispatchers.Main) {
-                    negativeMovements.value?.plus{
-                        result
-                    }
+                    negativeMovements.value = negativeMovements.value?.plus(result)
                     then()
                 }
             }
@@ -226,9 +220,7 @@ class MovementWithCategoryViewModel @Inject constructor(
                 withContext(Dispatchers.IO) {
                     movementDao.upsertMovement(movement.movement)
                     withContext(Dispatchers.Main) {
-                        movement.upsertIfNegative(negativeMovements.value!!)
-                        movement.upsertIfPositive(positiveMovements.value!!)
-                        movement.upsert(movements.value!!)
+                        invalidateMovementsAndReload()
                         onSuccess()
                     }
                 }
@@ -249,11 +241,9 @@ class MovementWithCategoryViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    movementDao.upsertMovement(movement.movement)
+                    movementDao.deleteMovement(movement.movement)
                     withContext(Dispatchers.Main) {
-                        movement.deleteIfNegative(negativeMovements.value!!)
-                        movement.deleteIfPositive(positiveMovements.value!!)
-                        movement.delete(movements.value!!)
+                        invalidateMovementsAndReload()
                         onSuccess()
                     }
                 }
@@ -266,9 +256,9 @@ class MovementWithCategoryViewModel @Inject constructor(
     }
 
     private fun invalidateMovements() {
-        movements.value?.clear()
-        positiveMovements.value?.clear()
-        negativeMovements.value?.clear()
+        movements.value = emptyList()
+        positiveMovements.value = emptyList()
+        negativeMovements.value = emptyList()
     }
 
     fun invalidateMovementsAndReload() {

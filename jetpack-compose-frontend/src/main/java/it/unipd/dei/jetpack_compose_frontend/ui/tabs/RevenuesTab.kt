@@ -12,11 +12,10 @@ import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
 
-
 @Composable
-fun AllTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categoryViewModel: CategoryViewModel) {
+fun RevenuesTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categoryViewModel: CategoryViewModel) {
     movementWithCategoryViewModel.loadInitialMovementsByCategory()
-    val movements by movementWithCategoryViewModel.getMovements()
+    val movements by movementWithCategoryViewModel.getPositiveMovements()
         .observeAsState(initial = emptyList())
 
     val listState = rememberLazyListState()
@@ -27,7 +26,7 @@ fun AllTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categor
         }
     }
     LaunchedEffect(reachedBottom) {
-        if (reachedBottom) movementWithCategoryViewModel.loadSomeMovementsByCategory { }
+        if (reachedBottom) movementWithCategoryViewModel.loadSomePositiveMovementsByCategory { }
     }
     LazyColumn(state = listState) {
         items(movements.size) { index ->

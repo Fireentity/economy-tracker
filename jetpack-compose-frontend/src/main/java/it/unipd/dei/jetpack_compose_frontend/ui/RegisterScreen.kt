@@ -30,6 +30,9 @@ import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddMovementDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
+import it.unipd.dei.jetpack_compose_frontend.ui.tabs.AllTab
+import it.unipd.dei.jetpack_compose_frontend.ui.tabs.ExpensesTab
+import it.unipd.dei.jetpack_compose_frontend.ui.tabs.RevenuesTab
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,53 +102,21 @@ fun RegisterScreen(
                     )
                 }
 
-                movementWithCategoryViewModel.loadInitialMovementsByCategory()
-                val movements by movementWithCategoryViewModel.getMovements()
-                    .observeAsState(initial = emptyList())
-                val negativeMovements by movementWithCategoryViewModel.getNegativeMovement()
-                    .observeAsState(initial = emptyList())
-                val positiveMovements by movementWithCategoryViewModel.getPositiveMovement()
-                    .observeAsState(initial = emptyList())
-                val listState = rememberLazyListState()
-                val reachedBottom: Boolean by remember {
-                    derivedStateOf {
-                        val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-                        lastVisibleItem?.index != 0 && lastVisibleItem?.index == listState.layoutInfo.totalItemsCount - 1
-                    }
-                }
-                LaunchedEffect(reachedBottom) {
-                    if (reachedBottom) movementWithCategoryViewModel.loadSomeMovementsByCategory {  }
-                }
                 when (selectedTabIndex) {
-                    0 -> LazyColumn(state = listState) {
-                        items(positiveMovements.size) { index ->
-                            MovementCard(
-                                positiveMovements[index],
-                                categoryViewModel,
-                                movementWithCategoryViewModel
-                            )
-                        }
-                    }
+                    0 -> RevenuesTab(
+                        movementWithCategoryViewModel = movementWithCategoryViewModel,
+                        categoryViewModel = categoryViewModel
+                    )
 
-                    1 -> LazyColumn {
-                        items(movements.size) { index ->
-                            MovementCard(
-                                movements[index],
-                                categoryViewModel,
-                                movementWithCategoryViewModel
-                            )
-                        }
-                    }
+                    1 -> AllTab(
+                        movementWithCategoryViewModel = movementWithCategoryViewModel,
+                        categoryViewModel = categoryViewModel
+                    )
 
-                    2 -> LazyColumn {
-                        items(negativeMovements.size) { index ->
-                            MovementCard(
-                                negativeMovements[index],
-                                categoryViewModel,
-                                movementWithCategoryViewModel
-                            )
-                        }
-                    }
+                    2 -> ExpensesTab(
+                        movementWithCategoryViewModel = movementWithCategoryViewModel,
+                        categoryViewModel = categoryViewModel
+                    )
                 }
             }
         }

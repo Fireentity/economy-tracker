@@ -15,20 +15,23 @@ import it.unipd.dei.jetpack_compose_frontend.R
 fun AddMovementButton(
     movementBuilder: MovementBuilder,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    categoryViewModel: CategoryViewModel
+    categoryViewModel: CategoryViewModel,
+    onClick: () -> Unit
 ) {
     val context = LocalContext.current
-    val categorySuccessfullyAdded = stringResource(R.string.movement_added_successfully)
-    val categoryCreationFailed = stringResource(R.string.movement_creation_failed)
+    val movementSuccessfullyAdded = stringResource(R.string.movement_added_successfully)
+    val movementCreationFailed = stringResource(R.string.movement_creation_failed)
     Button(onClick = {
         movementBuilder.toMovement(categoryViewModel)?.let {
             movementWithCategoryViewModel.upsertMovement(
                 it,
                 {
-                    DisplayToast.displayGeneric(context, categorySuccessfullyAdded)
+                    DisplayToast.displayGeneric(context, movementSuccessfullyAdded)
+                    onClick()
                 },
                 {
-                    DisplayToast.displayGeneric(context, categoryCreationFailed)
+                    DisplayToast.displayGeneric(context, movementCreationFailed)
+                    onClick()
                 }
             )
         }
