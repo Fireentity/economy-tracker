@@ -18,12 +18,10 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val categoryDao: CategoryDao,
-    private val movementDao: MovementDao
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val _allCategories = MutableLiveData<TreeMap<String, Category>>()
-    val allCategories: LiveData<TreeMap<String, Category>> = _allCategories
+    private val _allCategories = MutableLiveData<Map<String, Category>>(emptyMap())
+    val allCategories: LiveData<Map<String, Category>> = _allCategories
 
     fun loadAllCategories() {
         viewModelScope.launch {
@@ -46,11 +44,10 @@ class CategoryViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 try {
                     categoryDao.upsertCategory(category);
-                    _allCategories.value?.put(category.identifier, category)
                     viewModelScope.launch {
                         withContext(Dispatchers.Main) {
-                            //TODO va bene qua?
-                            loadAllCategories()
+                            _allCategories.value = _allCategories.value?.plus(Pair(category.identifier, category))
+                            invalidateCategoriesAndReload()
                             onSuccess()
                         }
                     }
@@ -75,10 +72,9 @@ class CategoryViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 try {
                     categoryDao.deleteCategory(category)
-                    _allCategories.value?.remove(category.identifier)
                     withContext(Dispatchers.Main) {
-                        //TODO va bene qua?
-                        loadAllCategories()
+                        _allCategories.value = _allCategories.value?.minus(category.identifier)
+                        invalidateCategoriesAndReload()
                         onSuccess()
                     }
                 } catch (e: SQLException) {
@@ -94,11 +90,13 @@ class CategoryViewModel @Inject constructor(
 
 
     fun invalidateCategories() {
-        _allCategories.value = TreeMap()
+        _allCategories.value = emptyMap()
     }
 
     fun invalidateCategoriesAndReload() {
         invalidateCategories()
         loadAllCategories()
+        //TODO fix here
+        //movementWithCategoryViewModel.invalidateMovementsAndReload()
     }
 }

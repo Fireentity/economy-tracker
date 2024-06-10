@@ -27,7 +27,6 @@ fun ShowCategoryBottomSheetButton(category: Category, categoryViewModel: Categor
         },
         modifier = modifier
             .padding(end = 15.dp)
-            .padding(24.dp),
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
