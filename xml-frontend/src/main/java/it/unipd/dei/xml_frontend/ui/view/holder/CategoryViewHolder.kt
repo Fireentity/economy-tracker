@@ -5,11 +5,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.bottomsheets.CategoryBottomSheetFragment
-import java.util.PrimitiveIterator
 
 class CategoryViewHolder(
     private val itemView: View,

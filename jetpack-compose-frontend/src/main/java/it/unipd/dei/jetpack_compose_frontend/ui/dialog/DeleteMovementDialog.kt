@@ -6,7 +6,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 
 @Composable

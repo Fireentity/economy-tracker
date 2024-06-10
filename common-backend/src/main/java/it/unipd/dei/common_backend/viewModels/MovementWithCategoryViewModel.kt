@@ -1,4 +1,4 @@
-package it.unipd.dei.common_backend.view
+package it.unipd.dei.common_backend.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +28,7 @@ class MovementWithCategoryViewModel @Inject constructor(
     private val earnedMoney = MutableLiveData<Double>()
     private val spentMoney = MutableLiveData<Double>()
     private val categoryToFilter = MutableLiveData<Category?>()
+    private val categori = movements.value.sor
 
     companion object {
         private const val PAGE_SIZE: Int = 20;

@@ -7,11 +7,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.input.MovementCategoryInput
 import it.unipd.dei.xml_frontend.ui.buttons.UpsertMovementButton
@@ -44,8 +43,8 @@ class UpsertMovementDialog(
             view.findViewById(R.id.input_movement_category)
         val updateMovementButton = UpsertMovementButton(
             movementBuilder,
-            movementWithCategoryViewModel,
             categoryViewModel,
+            movementWithCategoryViewModel,
             fragmentContext,
             this::dismiss
         )
@@ -91,8 +90,8 @@ class UpsertMovementDialog(
     }
 
     private fun getMovementAmount(): String = amountInputField.getAmount()
-    private fun getMovementCategory(): String? = categoryInputField.getCategory()
-    private fun getMovementDate(): String? = dateInputField.getDate()
+    private fun getMovementCategory(): String = categoryInputField.getCategory()
+    private fun getMovementDate(): String = dateInputField.getDate()
     override fun getFragmentContext() = fragmentContext
 
     override fun getResources(): Resources = fragmentContext.resources

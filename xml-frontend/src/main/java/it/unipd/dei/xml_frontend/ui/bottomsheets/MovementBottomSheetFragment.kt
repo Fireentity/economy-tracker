@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.dialog.DeleteMovementDialog
 import it.unipd.dei.xml_frontend.ui.dialog.UpsertMovementDialog

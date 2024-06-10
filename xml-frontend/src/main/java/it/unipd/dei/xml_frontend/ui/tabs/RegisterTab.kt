@@ -1,12 +1,10 @@
 package it.unipd.dei.xml_frontend.ui.tabs
 
 import android.view.View
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.ui.MovementCardAdapter
 
 abstract class RegisterTab(

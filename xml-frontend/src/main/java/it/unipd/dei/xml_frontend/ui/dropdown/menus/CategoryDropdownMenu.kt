@@ -1,12 +1,10 @@
 package it.unipd.dei.xml_frontend.ui.dropdown.menus
 
 import android.content.Context
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 
 class CategoryDropdownMenu(
@@ -19,18 +17,19 @@ class CategoryDropdownMenu(
     private var selectedCategoryIdentifier: String =
         context.getString(R.string.all_categories_identifier)
     init {
+        val allCategoryIdentifier = context.getString(R.string.all_categories_identifier)
         categoryViewModel.allCategories.value?.let {
             autoCompleteTextView.setSimpleItems(
-                arrayOf(context.getString(R.string.all_categories_identifier)) + it.keys.toTypedArray()
+                arrayOf(allCategoryIdentifier) + it.keys.toTypedArray()
             )
         }
 
         categoryViewModel.allCategories.observe(lifecycleOwner) {
             autoCompleteTextView.setSimpleItems(
-                arrayOf(context.getString(R.string.all_categories_identifier)) + it.keys.toTypedArray()
+                arrayOf(allCategoryIdentifier) + it.keys.toTypedArray()
             )
         }
-        autoCompleteTextView.setText(context.getString(R.string.all_categories_identifier), false)
+        autoCompleteTextView.setText(allCategoryIdentifier, false)
         autoCompleteTextView.setSelection(0)
 
         autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
@@ -41,7 +40,7 @@ class CategoryDropdownMenu(
             }
 
             selectedCategoryIdentifier = temp
-            if (selectedCategoryIdentifier == context.getString(R.string.all_categories_identifier)) {
+            if (selectedCategoryIdentifier == allCategoryIdentifier) {
                 movementWithCategoryViewModel.removeCategoryFilter()
             } else {
                 categoryViewModel.getCategoryByIdentifier(selectedCategoryIdentifier)

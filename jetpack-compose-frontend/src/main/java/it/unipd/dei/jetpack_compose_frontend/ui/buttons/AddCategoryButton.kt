@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.utils.DisplayToast
-import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import java.util.UUID
 

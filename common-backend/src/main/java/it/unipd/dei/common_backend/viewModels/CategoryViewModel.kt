@@ -1,4 +1,4 @@
-package it.unipd.dei.common_backend.view
+package it.unipd.dei.common_backend.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,12 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.CategoryDao
 import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.common_backend.models.Movement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.SQLException
-import java.util.PrimitiveIterator
 import java.util.TreeMap
 import javax.inject.Inject
 

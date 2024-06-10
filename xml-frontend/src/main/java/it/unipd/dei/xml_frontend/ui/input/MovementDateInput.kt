@@ -10,7 +10,7 @@ class MovementDateInput(
     view: TextInputEditText,
     movement: Movement? = null
 ) {
-    private var date = movement?.date?.let { DateHelper.convertFromMillisecondsToDateTime(it) }
+    private var date = movement?.date?.let { DateHelper.convertFromMillisecondsToDateTime(it) } ?: ""
 
     init {
         view.setOnClickListener {
@@ -25,5 +25,5 @@ class MovementDateInput(
         }
     }
 
-    fun getDate(): String? = date
+    fun getDate(): String = date
 }

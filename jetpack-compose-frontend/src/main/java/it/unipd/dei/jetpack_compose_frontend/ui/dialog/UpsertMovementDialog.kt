@@ -30,8 +30,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddMovementButton
 import it.unipd.dei.jetpack_compose_frontend.ui.input.MovementCategoryInput

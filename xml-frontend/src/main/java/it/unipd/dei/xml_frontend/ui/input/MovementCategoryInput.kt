@@ -4,9 +4,8 @@ import android.widget.AdapterView
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
-import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 
 class MovementCategoryInput(
     private val categoryViewModel: CategoryViewModel,
@@ -16,7 +15,7 @@ class MovementCategoryInput(
     movement: MovementWithCategory? = null
 ) {
 
-    private var category = movement?.category?.identifier
+    private var category = movement?.category?.identifier ?: ""
 
     init {
         setItemsInUI(textView)
@@ -29,7 +28,7 @@ class MovementCategoryInput(
         }
     }
 
-    fun getCategory() = category
+    fun getCategory(): String = category
 
     private fun setItemsInUI(view: MaterialAutoCompleteTextView) {
         val categories: Array<String> = categoryViewModel.allCategories
@@ -38,7 +37,7 @@ class MovementCategoryInput(
 
         view.setSimpleItems(categories)
 
-        if (category != null) {
+        if (category != "") {
             view.setText(category)
         }
 

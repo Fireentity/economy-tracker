@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.unipd.dei.common_backend.models.Movement
 import it.unipd.dei.common_backend.utils.DisplayToast
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 
 class DeleteMovementDialog(

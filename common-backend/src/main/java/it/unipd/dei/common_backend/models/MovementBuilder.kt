@@ -1,7 +1,7 @@
 package it.unipd.dei.common_backend.models
 
 import it.unipd.dei.common_backend.utils.DateHelper
-import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import java.util.UUID
 
 class MovementBuilder(

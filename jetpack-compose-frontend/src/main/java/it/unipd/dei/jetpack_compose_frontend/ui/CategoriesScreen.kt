@@ -8,7 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddCategoryDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
 

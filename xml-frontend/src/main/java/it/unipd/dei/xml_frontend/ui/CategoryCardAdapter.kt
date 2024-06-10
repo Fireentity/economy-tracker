@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 

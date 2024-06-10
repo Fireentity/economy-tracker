@@ -3,8 +3,8 @@ package it.unipd.dei.xml_frontend.ui.buttons
 import android.content.Context
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.dialog.UpsertMovementDialog
 

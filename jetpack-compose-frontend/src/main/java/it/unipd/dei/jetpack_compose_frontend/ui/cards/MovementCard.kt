@@ -21,8 +21,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.view.CategoryViewModel
-import it.unipd.dei.common_backend.view.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.TimeUtils
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowMovementBottomSheetButton

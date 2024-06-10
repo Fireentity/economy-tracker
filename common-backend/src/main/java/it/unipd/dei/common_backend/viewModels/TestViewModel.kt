@@ -1,4 +1,4 @@
-package it.unipd.dei.common_backend.view
+package it.unipd.dei.common_backend.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
