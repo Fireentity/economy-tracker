@@ -4,15 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.search.SearchBar
+import com.google.android.material.search.SearchView
+import com.google.android.material.search.SearchView.TransitionState
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddCategoryDialogButton
+import it.unipd.dei.xml_frontend.ui.input.SearchInput
+
 
 @AndroidEntryPoint
 class CategoriesFragment : Fragment() {
@@ -36,8 +42,10 @@ class CategoriesFragment : Fragment() {
             container,
             false
         )
-        val categoriesRecyclerView: RecyclerView = view.findViewById(R.id.all_categories_recycler_view)
+        val categoriesRecyclerView: RecyclerView =
+            view.findViewById(R.id.all_categories_recycler_view)
         categoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         val floatingActionButton: View = view.findViewById(R.id.show_add_category_dialog_button)
         val showAddCategoryDialogButton = ShowAddCategoryDialogButton(
             dialogView,
@@ -48,11 +56,29 @@ class CategoriesFragment : Fragment() {
             showAddCategoryDialogButton.onClick()
         }
 
-        categoriesRecyclerView.adapter = categoryViewModel.allCategories.value?.values?.toList()
-            ?.let { CategoryCardAdapter(it, parentFragmentManager, categoryViewModel) }
-        categoryViewModel.allCategories.observe(viewLifecycleOwner){
-            categoriesRecyclerView.adapter = CategoryCardAdapter(it.values.toList(), parentFragmentManager, categoryViewModel)
+        val categoryCardAdapter =
+            CategoryCardAdapter(emptyList(), parentFragmentManager, categoryViewModel)
+        categoriesRecyclerView.adapter = categoryCardAdapter
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+            categoryCardAdapter.updateCategories(it.values.toList())
         }
+
+        val searchRecyclerView: RecyclerView = view.findViewById(R.id.search_results_recyclerview)
+        searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        val searchRecyclerViewAdapter = CategoryCardAdapter(
+            emptyList(),
+            parentFragmentManager,
+            categoryViewModel
+        )
+        searchRecyclerView.adapter = searchRecyclerViewAdapter
+
+        SearchInput(
+            view.findViewById(R.id.search_view),
+            searchRecyclerViewAdapter,
+            categoryViewModel,
+            viewLifecycleOwner
+        )
         categoryViewModel.loadAllCategories()
         return view
     }
