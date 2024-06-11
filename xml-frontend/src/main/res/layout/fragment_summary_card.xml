@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/Widget.Material3.CardView.Elevated"
         android:id="@+id/card"
+        style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,63 +29,71 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Aprile 2024"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <com.google.android.material.chip.Chip
-                        android:layout_marginEnd="5dp"
+                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+                        android:id="@+id/revenue_chip_summary_card"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:clickable="false"
-                        app:chipIcon="@drawable/baseline_arrow_upward_24"
-                        app:chipIconEnabled="true"
+                        android:text="+200.000$"
                         android:textColor="#15803d"
                         app:chipBackgroundColor="#dcfce7"
-                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
-                        android:text="+200.000$"/>
+                        app:chipIcon="@drawable/baseline_arrow_upward_24"
+                        app:chipIconEnabled="true" />
+
                     <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+                        android:id="@+id/expense_chip_summary_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:clickable="false"
+                        android:text="-200.000$"
+                        android:textColor="#b91c1c"
+                        app:chipBackgroundColor="#fee2e2"
                         app:chipIcon="@drawable/baseline_arrow_downward_24"
-                        app:chipIconEnabled="true"
-                        android:textColor="#b91c1c"
-                        app:chipBackgroundColor="#fee2e2"
-                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
-                        android:text="-200.000$"/>
+                        app:chipIconEnabled="true" />
+
                     <com.google.android.material.chip.Chip
-                        android:layout_marginStart="5dp"
+                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+                        android:id="@+id/all_chip_summary_card"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
                         android:clickable="false"
-                        app:chipIcon="@drawable/baseline_stacked_bar_chart_24"
-                        app:chipIconEnabled="true"
+                        android:text="-200.000$"
                         android:textColor="#b91c1c"
                         app:chipBackgroundColor="#fee2e2"
-                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
-                        android:text="-200.000$"/>
+                        app:chipIcon="@drawable/baseline_stacked_bar_chart_24"
+                        app:chipIconEnabled="true" />
                 </LinearLayout>
+
                 <TextView
+                    android:id="@+id/title_summary_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Lorem ipsum "
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
+                    android:textColor="?android:attr/textColorSecondary" />
+
                 <TextView
+                    android:id="@+id/description_summary_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempor efficitur arcu et sagittis. Nulla vel est vel tortor varius varius. Vestibulum sollicitudin, tellus vel tincidun"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
+                    android:textColor="?android:attr/textColorSecondary" />
 
             </LinearLayout>
         </LinearLayout>

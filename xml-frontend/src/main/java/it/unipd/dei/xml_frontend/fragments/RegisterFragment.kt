@@ -79,7 +79,7 @@ class RegisterFragment : Fragment() {
         val tabs = listOf(
             RevenueRegisterTab(
                 movementWithCategoryViewModel,
-                view.findViewById(R.id.positive_movements_recycler_view),
+                view.findViewById(R.id.positive_movements_recyclerview),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
@@ -90,7 +90,7 @@ class RegisterFragment : Fragment() {
             ),
             AllRegisterTab(
                 movementWithCategoryViewModel,
-                view.findViewById(R.id.all_movements_recycler_view),
+                view.findViewById(R.id.all_movements_recyclerview),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getMovements().value ?: emptyList(),
                     parentFragmentManager,
@@ -101,7 +101,7 @@ class RegisterFragment : Fragment() {
             ),
             ExpensesRegisterTab(
                 movementWithCategoryViewModel,
-                view.findViewById(R.id.negative_movements_recycler_view),
+                view.findViewById(R.id.negative_movements_recyclerview),
                 MovementCardAdapter(
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,

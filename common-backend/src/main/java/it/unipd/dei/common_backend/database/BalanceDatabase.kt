@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper
 import it.unipd.dei.common_backend.daos.BalanceDao
 import it.unipd.dei.common_backend.daos.CategoryDao
 import it.unipd.dei.common_backend.daos.MovementDao
+import it.unipd.dei.common_backend.daos.SummaryCardDao
 import it.unipd.dei.common_backend.models.Balance
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.models.Movement
@@ -20,6 +21,9 @@ abstract class BalanceDatabase : RoomDatabase() {
     abstract fun getMovementDao(): MovementDao
 
     abstract fun getBalanceDao(): BalanceDao
+
+    abstract fun getSummaryCardDao() : SummaryCardDao
+
 
     override fun clearAllTables() {
         TODO("Not yet implemented")

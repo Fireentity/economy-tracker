@@ -1,4 +1,4 @@
-package it.unipd.dei.jetpack_compose_frontend
+package it.unipd.dei.common_backend.utils
 
 import java.sql.Timestamp
 import java.time.Instant

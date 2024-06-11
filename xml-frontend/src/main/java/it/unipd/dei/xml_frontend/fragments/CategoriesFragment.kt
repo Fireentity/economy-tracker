@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.search.SearchBar
-import com.google.android.material.search.SearchView
-import com.google.android.material.search.SearchView.TransitionState
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
@@ -43,7 +39,7 @@ class CategoriesFragment : Fragment() {
             false
         )
         val categoriesRecyclerView: RecyclerView =
-            view.findViewById(R.id.all_categories_recycler_view)
+            view.findViewById(R.id.all_categories_recyclerview)
         categoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val floatingActionButton: View = view.findViewById(R.id.show_add_category_dialog_button)
@@ -75,6 +71,7 @@ class CategoriesFragment : Fragment() {
 
         SearchInput(
             view.findViewById(R.id.search_view),
+            view.findViewById(R.id.search_bar),
             searchRecyclerViewAdapter,
             categoryViewModel,
             viewLifecycleOwner

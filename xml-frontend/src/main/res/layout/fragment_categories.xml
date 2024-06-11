@@ -47,7 +47,7 @@
             app:layout_constraintTop_toBottomOf="@id/dividerTop"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/all_categories_recycler_view"
+            android:id="@+id/all_categories_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/search" />

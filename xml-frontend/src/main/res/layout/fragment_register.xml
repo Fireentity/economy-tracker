@@ -107,7 +107,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:id="@+id/text_container_recycler_view"
+                android:id="@+id/text_container_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
@@ -135,7 +135,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/text_top_left_recycler_view"
+                        android:id="@+id/text_top_left_recyclerview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/no_movements"
@@ -162,7 +162,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/text_top_center_recycler_view"
+                        android:id="@+id/text_top_center_recyclerview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/no_movements"
@@ -190,7 +190,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/text_top_right_recycler_view"
+                        android:id="@+id/text_top_right_recyclerview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/no_movements"
@@ -209,23 +209,23 @@
                 android:background="@color/gray_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_container_recycler_view" />
+                app:layout_constraintTop_toBottomOf="@id/text_container_recyclerview" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/all_movements_recycler_view"
+                android:id="@+id/all_movements_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/horizontal_line" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/positive_movements_recycler_view"
+                android:id="@+id/positive_movements_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/horizontal_line" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/negative_movements_recycler_view"
+                android:id="@+id/negative_movements_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
@@ -235,7 +235,7 @@
                 android:id="@+id/socialsButtonsFlow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:constraint_referenced_ids="all_movements_recycler_view,positive_movements_recycler_view,negative_movements_recycler_view"
+                app:constraint_referenced_ids="all_movements_recyclerview,positive_movements_recyclerview,negative_movements_recyclerview"
                 app:flow_horizontalGap="4dp"
                 app:flow_horizontalStyle="spread_inside"
                 app:flow_verticalGap="2dp"

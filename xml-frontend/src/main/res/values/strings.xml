@@ -51,4 +51,6 @@
     <string name="all_categories_identifier">Tutte</string>
     <string name="insert_movement_date">Seleziona la data della transazione</string>
     <string name="categories">categorie</string>
+    <string name="how_did_it_go" type="id">Come è andata?</string>
+    <string name="how_is_it_going" type="id">Come sta andando?</string>
 </resources>

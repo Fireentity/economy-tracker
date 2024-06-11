@@ -4,12 +4,86 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
+import it.unipd.dei.common_backend.models.MonthInfo
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.GregorianCalendar
 import java.util.Locale
 
 object DateHelper {
+
+    fun getMonthInterval(month: Int, year: Int): Pair<Long, Long> {
+        val calendar = GregorianCalendar()
+
+        // Imposta il calendario al primo giorno del mese specificato e all'inizio del giorno
+        calendar.set(year, month - 1, 1, 0, 0, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val startDate = calendar.timeInMillis
+
+        // Imposta il calendario all'ultimo giorno del mese specificato e alla fine del giorno
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        val endDate = calendar.timeInMillis
+
+        return Pair(startDate, endDate)
+    }
+
+    fun getMonthlyIntervals(startMillis: Long, endMillis: Long): List<MonthInfo> {
+        val startCalendar = GregorianCalendar().apply { timeInMillis = startMillis }
+        val endCalendar = GregorianCalendar().apply { timeInMillis = endMillis }
+
+        // Set the start date to the beginning of the month
+        startCalendar.set(Calendar.DAY_OF_MONTH, 1)
+        // Adjust time to start of the day
+        startCalendar.set(Calendar.HOUR_OF_DAY, 0)
+        startCalendar.set(Calendar.MINUTE, 0)
+        startCalendar.set(Calendar.SECOND, 0)
+        startCalendar.set(Calendar.MILLISECOND, 0)
+
+        val monthlyIntervals = mutableListOf<MonthInfo>()
+
+        while (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
+            val currentStartMillis = startCalendar.timeInMillis
+
+            // Move to the end of the current month
+            startCalendar.set(
+                Calendar.DAY_OF_MONTH,
+                startCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+            )
+            // Adjust time to end of the day
+            startCalendar.set(Calendar.HOUR_OF_DAY, 23)
+            startCalendar.set(Calendar.MINUTE, 59)
+            startCalendar.set(Calendar.SECOND, 59)
+            startCalendar.set(Calendar.MILLISECOND, 999)
+
+            val currentEndMillis = startCalendar.timeInMillis
+
+            monthlyIntervals.add(
+                MonthInfo(
+                    startDate = currentStartMillis,
+                    endDate = currentEndMillis,
+                    month = startCalendar.get(Calendar.MONTH) + 1,
+                    year = startCalendar.get(Calendar.YEAR)
+                )
+            )
+
+            // Move to the start of the next month
+            startCalendar.add(Calendar.DAY_OF_MONTH, 1)
+            startCalendar.set(Calendar.DAY_OF_MONTH, 1)
+            startCalendar.set(Calendar.HOUR_OF_DAY, 0)
+            startCalendar.set(Calendar.MINUTE, 0)
+            startCalendar.set(Calendar.SECOND, 0)
+            startCalendar.set(Calendar.MILLISECOND, 0)
+        }
+
+        return monthlyIntervals
+    }
+
+
     fun convertFromDateTimeToMilliseconds(dateTime: String): Long? {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         return try {
@@ -29,7 +103,11 @@ object DateHelper {
         showDateTimePickerDialog(context, callback, onDismiss)
     }
 
-    private fun showDateTimePickerDialog(context: Context, callback: (String) -> Unit, onDismiss: () -> Unit = {}) {
+    private fun showDateTimePickerDialog(
+        context: Context,
+        callback: (String) -> Unit,
+        onDismiss: () -> Unit = {}
+    ) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)

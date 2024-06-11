@@ -46,6 +46,7 @@ class CategoryViewModel @Inject constructor(
                     categoryDao.upsertCategory(category);
                     viewModelScope.launch {
                         withContext(Dispatchers.Main) {
+                            //TODO inutile?
                             _allCategories.value = _allCategories.value?.plus(Pair(category.identifier, category))
                             invalidateCategoriesAndReload()
                             onSuccess()
@@ -73,6 +74,7 @@ class CategoryViewModel @Inject constructor(
                 try {
                     categoryDao.deleteCategory(category)
                     withContext(Dispatchers.Main) {
+                        //TODO inutile?
                         _allCategories.value = _allCategories.value?.minus(category.identifier)
                         invalidateCategoriesAndReload()
                         onSuccess()

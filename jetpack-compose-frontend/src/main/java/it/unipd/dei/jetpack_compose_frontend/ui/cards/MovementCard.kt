@@ -24,7 +24,7 @@ import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
-import it.unipd.dei.jetpack_compose_frontend.TimeUtils
+import it.unipd.dei.common_backend.utils.TimeUtils
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowMovementBottomSheetButton
 import java.time.format.DateTimeFormatter
 

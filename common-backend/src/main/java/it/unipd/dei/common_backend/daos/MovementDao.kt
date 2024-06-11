@@ -103,4 +103,12 @@ interface MovementDao {
         offset: Int
     ): List<MovementWithCategory>
 
+    @Transaction
+    @Query("SELECT date FROM movements ORDER BY date DESC LIMIT 1")
+    suspend fun getFirstMovementDate() : Long
+
+    @Transaction
+    @Query("SELECT date FROM movements ORDER BY date ASC LIMIT 1")
+    suspend fun getLastMovementDate(): Long
+
 }

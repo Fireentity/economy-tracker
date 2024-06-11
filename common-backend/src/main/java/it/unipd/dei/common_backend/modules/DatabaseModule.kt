@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import it.unipd.dei.common_backend.daos.CategoryDao
 import it.unipd.dei.common_backend.daos.MovementDao
+import it.unipd.dei.common_backend.daos.SummaryCardDao
 import it.unipd.dei.common_backend.database.BalanceDatabase
 import javax.inject.Singleton
 
@@ -34,5 +35,10 @@ object DatabaseModule {
     @Singleton
     fun provideMovementDao(database: BalanceDatabase): MovementDao {
         return database.getMovementDao()
+    }
+    @Provides
+    @Singleton
+    fun provideSummaryCardDao(database: BalanceDatabase): SummaryCardDao {
+        return database.getSummaryCardDao()
     }
 }
