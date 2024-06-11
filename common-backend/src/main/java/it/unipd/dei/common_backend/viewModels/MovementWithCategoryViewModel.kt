@@ -34,10 +34,6 @@ class MovementWithCategoryViewModel @Inject constructor(
         private const val PAGE_SIZE: Int = 20;
     }
 
-    fun getCategoryToFilter(): LiveData<Category?> {
-        return categoryToFilter
-    }
-
     fun getMovements(): LiveData<List<MovementWithCategory>> {
         return movements
     }
@@ -50,8 +46,9 @@ class MovementWithCategoryViewModel @Inject constructor(
         return negativeMovements
     }
 
-    fun addCategoryFilter(category: Category) {
+    fun addCategoryFilter(category: Category?) {
         categoryToFilter.value = category
+        invalidateMovementsAndReload()
     }
 
     fun removeCategoryFilter() {

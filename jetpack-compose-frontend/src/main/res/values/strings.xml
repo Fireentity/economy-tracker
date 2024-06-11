@@ -53,4 +53,8 @@
     <string name="ok">Ok</string>
     <string name="choose_movement_date">Scegli una data per il movimento</string>
     <string name="date">Data</string>
+    <string name="category_deleted_successfully">Categoria eliminata con successo</string>
+    <string name="category_deletion_failed">Errore nell\'eliminazione della categoria</string>
+    <string name="all">Tutto</string>
+    <string name="categories">Categorie</string>
 </resources>

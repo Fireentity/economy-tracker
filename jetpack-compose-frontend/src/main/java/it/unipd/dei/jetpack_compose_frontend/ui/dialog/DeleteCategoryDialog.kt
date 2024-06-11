@@ -19,8 +19,8 @@ fun DeleteCategoryDialog(
     onConfirm: () -> Unit
 ) {
     val context = LocalContext.current
-    val categorySuccessfullyAdded = stringResource(R.string.category_added_successfully)
-    val categoryCreationFailed = stringResource(R.string.category_creation_failed)
+    val categorySuccessfullyRemoved = stringResource(R.string.category_deleted_successfully)
+    val categoryCreationFailed = stringResource(R.string.category_deletion_failed)
     AlertDialog(
         onDismissRequest = { },
         title = { Text(text = stringResource(id = R.string.delete_category)) },
@@ -30,7 +30,7 @@ fun DeleteCategoryDialog(
                 categoryViewModel.deleteCategory(
                     category,
                     {
-                        DisplayToast.displayGeneric(context, categorySuccessfullyAdded)
+                        DisplayToast.displayGeneric(context, categorySuccessfullyRemoved)
                         onConfirm()
                     }
                 ) {

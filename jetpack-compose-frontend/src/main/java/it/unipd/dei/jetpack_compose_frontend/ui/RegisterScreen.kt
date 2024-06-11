@@ -6,7 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -25,11 +32,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddMovementDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
+import it.unipd.dei.jetpack_compose_frontend.ui.input.CategoryFilterInput
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.AllTab
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.ExpensesTab
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.RevenuesTab
@@ -56,7 +69,12 @@ fun RegisterScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                     },
-                    //scrollBehavior = scrollBehavior,
+                    actions = {
+                        CategoryFilterInput(
+                            movementWithCategoryViewModel = movementWithCategoryViewModel,
+                            categoryViewModel = categoryViewModel
+                        )
+                    }
                 )
             },
             floatingActionButton = {
