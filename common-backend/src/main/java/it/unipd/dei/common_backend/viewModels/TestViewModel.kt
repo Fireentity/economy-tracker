@@ -10,6 +10,7 @@ import it.unipd.dei.common_backend.models.Movement
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
+import kotlin.math.pow
 import kotlin.random.Random
 
 @HiltViewModel
@@ -55,7 +56,12 @@ class TestViewModel @Inject constructor(
                             uuid = UUID.randomUUID(),
                             amount = Random.nextInt(-100, 100) + Random.nextInt(0, 10) * 0.01,
                             categoryId = categoryId,
-                            date = currentTime + index * 100000L,
+                            date = currentTime + Random.nextLong(0, 31536000000) * (-1.0).pow(
+                                Random.nextInt(
+                                    0,
+                                    4
+                                ).toDouble()
+                            ).toLong(),
                             createdAt = currentTime, // Tempi leggermente diversi per ogni movimento
                             updatedAt = currentTime
                         )
@@ -81,7 +87,8 @@ class TestViewModel @Inject constructor(
             movementDao.deleteAllMovements()
         }
     }
-    private fun deleteAll(){
+
+    private fun deleteAll() {
         deleteAllCategories()
         deleteAllMovements()
     }

@@ -36,4 +36,8 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        summaryCardViewModel.loadAllSummaryCards()
+    }
 }

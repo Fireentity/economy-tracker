@@ -39,7 +39,7 @@ class SummaryCardViewModel @Inject constructor(
                         month.month,
                         month.year
                     )
-                    if (summaryCard.monthlyAll != 0.0 && summaryCard.monthlyPositive != 0.0 && summaryCard.monthlyNegative != 0.0) {
+                    if (summaryCard.monthlyPositive != 0.0 || summaryCard.monthlyNegative != 0.0) {
                         summaryCards.add(summaryCard)
                     }
                 }
@@ -50,8 +50,4 @@ class SummaryCardViewModel @Inject constructor(
 
     }
 
-
-    private fun getFirstMovementDate() {
-
-    }
 }

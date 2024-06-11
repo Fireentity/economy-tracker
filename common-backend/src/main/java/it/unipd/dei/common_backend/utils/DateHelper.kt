@@ -13,23 +13,21 @@ import java.util.Locale
 
 object DateHelper {
 
-    fun getMonthInterval(month: Int, year: Int): Pair<Long, Long> {
+    fun getMonthStartInMilliseconds(month: Int, year: Int): Long {
         val calendar = GregorianCalendar()
 
         // Imposta il calendario al primo giorno del mese specificato e all'inizio del giorno
         calendar.set(year, month - 1, 1, 0, 0, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        val startDate = calendar.timeInMillis
 
-        // Imposta il calendario all'ultimo giorno del mese specificato e alla fine del giorno
+        return calendar.timeInMillis
+    }
+
+    fun getMonthEndInMilliseconds(month: Int, year: Int): Long {
+        val calendar = GregorianCalendar(year, month - 1, 1, 23, 59, 59)
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        calendar.set(Calendar.HOUR_OF_DAY, 23)
-        calendar.set(Calendar.MINUTE, 59)
-        calendar.set(Calendar.SECOND, 59)
         calendar.set(Calendar.MILLISECOND, 999)
-        val endDate = calendar.timeInMillis
-
-        return Pair(startDate, endDate)
+        return calendar.timeInMillis
     }
 
     fun getMonthlyIntervals(startMillis: Long, endMillis: Long): List<MonthInfo> {
@@ -80,7 +78,9 @@ object DateHelper {
             startCalendar.set(Calendar.MILLISECOND, 0)
         }
 
-        return monthlyIntervals
+        return monthlyIntervals.apply {
+            reverse()
+        }
     }
 
 
