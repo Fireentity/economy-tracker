@@ -19,7 +19,7 @@ import it.unipd.dei.xml_frontend.ui.input.SearchInput
 class CategoriesFragment : Fragment() {
 
     private val categoryViewModel: CategoryViewModel by viewModels()
-    //TODO essenso diversi questo e quello del register bisogna trovare un modo per reloaddare i movimenti quando uno è stato eliminato con l'eliminazione della categoria
+    //TODO essendo diversi questo e quello del register bisogna trovare un modo per reloaddare i movimenti quando uno è stato eliminato con l'eliminazione della categoria
 
     override fun onCreateView(
         inflater: LayoutInflater,

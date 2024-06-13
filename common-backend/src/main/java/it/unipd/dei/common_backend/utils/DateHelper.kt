@@ -1,6 +1,7 @@
 package it.unipd.dei.common_backend.utils
 
 import android.text.format.DateFormat
+import it.unipd.dei.common_backend.converters.MonthTypeConverter
 import it.unipd.dei.common_backend.models.MonthInfo
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -22,6 +23,14 @@ object DateHelper {
         val calendar = GregorianCalendar(year, month.value, 1, 23, 59, 59)
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
         calendar.set(Calendar.MILLISECOND, 999)
+        return calendar.timeInMillis
+    }
+
+    fun getMonthStartInMilliseconds(month: Month, year: Int): Long {
+        val calendar = GregorianCalendar()
+        calendar.set(year, month.value, 1, 0, 0, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
         return calendar.timeInMillis
     }
 
@@ -54,12 +63,12 @@ object DateHelper {
             startCalendar.set(Calendar.MILLISECOND, 999)
 
             val currentEndMillis = startCalendar.timeInMillis
-
+            val monthTypeConverter = MonthTypeConverter()
             monthlyIntervals.add(
                 MonthInfo(
                     startDate = currentStartMillis,
                     endDate = currentEndMillis,
-                    month = startCalendar.get(Calendar.MONTH),
+                    month = monthTypeConverter.toMonth(startCalendar.get(Calendar.MONTH)),
                     year = startCalendar.get(Calendar.YEAR)
                 )
             )
@@ -93,4 +102,27 @@ object DateHelper {
         return DateFormat.format("dd/MM/yyyy hh:mm", milliseconds)
             .toString()
     }
+
+    fun getCurrentMonth(): Month {
+        val calendar = Calendar.getInstance()
+        val month = calendar.get(Calendar.MONTH)
+        return Month.of(month)
+    }
+
+    fun getCurrentYear(): Int {
+        val calendar = Calendar.getInstance()
+        return calendar.get(Calendar.YEAR)
+    }
+
+    fun getCurrentMonthInfo(): MonthInfo {
+        val month = getCurrentMonth()
+        val year = getCurrentYear()
+        return MonthInfo(
+            getMonthStartInMilliseconds(month, year),
+            getMonthEndInMilliseconds(month, year),
+            month,
+            year
+        )
+    }
+
 }

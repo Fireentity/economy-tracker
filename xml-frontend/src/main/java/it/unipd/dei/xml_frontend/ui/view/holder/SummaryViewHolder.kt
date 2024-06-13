@@ -36,7 +36,7 @@ class SummaryViewHolder(
             }
             text = context.getString(
                 R.string.monthly_total,
-                summary.monthlyNegative,
+                summary.monthlyAll,
                 Constants.CURRENCY
             )
         }
@@ -54,12 +54,7 @@ class SummaryViewHolder(
         val monthOfYear = this.readableDate(summary, context)
         titleTextView.text = monthOfYear
 
-        subTitleTextView.text = if (DateHelper.isMonthCurrent(summary.month, summary.year)
-        ) {
-            context.getString(R.string.how_is_it_going)
-        } else {
-            context.getString(R.string.how_did_it_go)
-        }
-        descriptionTextView.text = TextGenerator.generateText(summary)
+        subTitleTextView.text = headline(summary, context)
+        descriptionTextView.text = summaryDescription(summary, context)
     }
 }

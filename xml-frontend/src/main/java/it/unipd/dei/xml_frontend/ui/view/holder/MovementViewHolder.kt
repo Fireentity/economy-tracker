@@ -18,7 +18,7 @@ class MovementViewHolder(
     private val parentFragmentManager: FragmentManager,
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel,
     private val categoryViewModel: CategoryViewModel
-) {
+)  {
     private val categoryTextView: TextView = itemView.findViewById(R.id.movement_card_category)
     private val amountTextView: TextView = itemView.findViewById(R.id.movement_card_amount)
     private val dateTextView: TextView = itemView.findViewById(R.id.movement_card_date)

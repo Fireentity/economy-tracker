@@ -5,8 +5,8 @@ import java.time.Month
 
 class MonthTypeConverter {
     @TypeConverter
-    fun toHealth(value: Int) = Month.entries[value]
+    fun toMonth(value: Int) = Month.entries[value]
 
     @TypeConverter
-    fun fromHealth(value: Month) = value.ordinal
+    fun fromMonth(value: Month) = value.ordinal
 }

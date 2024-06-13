@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
@@ -31,12 +30,12 @@ class HomeFragment : Fragment() {
             summaryCardAdapter.updateSummaryCards(it)
         }
 
-        summaryViewModel.loadAllSummaryCards()
+        summaryViewModel.loadAllSummaries()
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        summaryViewModel.loadAllSummaryCards()
+        summaryViewModel.loadAllSummaries()
     }
 }
