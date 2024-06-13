@@ -23,10 +23,11 @@ class UpsertCategoryDialog(
 
     private val alertDialog: AlertDialog
     private val identifierInputField: CategoryIdentifierInput
+    private lateinit var updateCategoryButton: UpsertCategoryButton
 
     init {
         val inputFieldView: TextInputEditText = view.findViewById(R.id.input_category_identifier)
-        val updateCategoryButton = UpsertCategoryButton(
+        updateCategoryButton = UpsertCategoryButton(
             categoryViewModel,
             fragmentContext,
             this::dismiss,
@@ -43,10 +44,9 @@ class UpsertCategoryDialog(
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setTitle(title)
             .setView(view)
-            .setPositiveButton(
-                R.string.confirm
-            ) { _, _ -> updateCategoryButton.onClick() }
+            .setPositiveButton(R.string.confirm, null)
             .create()
+
 
         inputFieldView.doOnTextChanged { text, _, _, _ ->
             identifierInputField.onTextChanged(text)
@@ -63,7 +63,16 @@ class UpsertCategoryDialog(
 
     override fun getResources(): Resources = fragmentContext.resources
 
-    override fun show() = alertDialog.show()
+    override fun show(){
+        alertDialog.show()
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (identifierInputField.isIdentifierValid()) {
+                updateCategoryButton.onClick()
+                alertDialog.dismiss() // Dismiss the dialog if the input is valid
+            }
+        }
+    }
 
     override fun dismiss() = alertDialog.dismiss()
+
 }

@@ -1,6 +1,7 @@
 package it.unipd.dei.xml_frontend.ui.input
 
 import android.widget.AdapterView
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
@@ -26,6 +27,7 @@ class MovementCategoryInput(
             category = parent.getItemAtPosition(position) as String
             view.clearFocus()
         }
+        
     }
 
     fun getCategory(): String = category

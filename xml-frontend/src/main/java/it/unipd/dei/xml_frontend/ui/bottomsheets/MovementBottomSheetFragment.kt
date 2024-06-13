@@ -42,7 +42,7 @@ class MovementBottomSheetFragment(
         val showDeleteMovementDialogButtonView: View =
             view.findViewById(R.id.show_delete_movement_dialog_button)
 
-        movementViewHolder.bind(movement)
+        movementViewHolder.bind(movement, requireContext())
 
         showEditMovementDialogButtonView.setOnClickListener {
             UpsertMovementDialog(
@@ -52,6 +52,7 @@ class MovementBottomSheetFragment(
                 requireContext(),
                 viewLifecycleOwner,
                 requireContext().getString(R.string.edit_movement_title),
+                parentFragmentManager,
                 movement
             ).show()
             dismiss()

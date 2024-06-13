@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -24,6 +25,7 @@ class UpsertMovementDialog(
     private val fragmentContext: Context,
     lifecycleOwner: LifecycleOwner,
     title: String,
+    fragmentManager: FragmentManager,
     movementWithCategory: MovementWithCategory? = null
 ) : IDialog {
 
@@ -51,6 +53,7 @@ class UpsertMovementDialog(
         this.dateInputField = MovementDateInput(
             fragmentContext,
             view.findViewById(R.id.input_movement_date),
+            fragmentManager,
             movementWithCategory?.movement
         )
 

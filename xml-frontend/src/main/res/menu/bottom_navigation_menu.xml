@@ -8,11 +8,11 @@
     <item
         android:id="@+id/registerFragment"
         android:enabled="true"
-        android:icon="@drawable/baseline_music_note_24"
+        android:icon="@drawable/baseline_bar_chart_24"
         android:title="@string/register_nav_button" />
     <item
         android:id="@+id/recurrencesFragment"
         android:enabled="true"
-        android:icon="@drawable/baseline_search_24"
+        android:icon="@drawable/baseline_folder_open_24"
         android:title="@string/recurrences_nav_bottom" />
 </menu>

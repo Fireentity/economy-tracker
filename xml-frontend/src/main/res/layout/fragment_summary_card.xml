@@ -49,6 +49,7 @@
                         android:textColor="@color/green_700"
                         app:chipBackgroundColor="@color/green_100"
                         app:chipIcon="@drawable/baseline_arrow_upward_24"
+                        app:chipIconTint="@color/green_700"
                         app:chipIconEnabled="true"
                         />
 
@@ -64,6 +65,7 @@
                         android:textColor="@color/red_700"
                         app:chipBackgroundColor="@color/red_100"
                         app:chipIcon="@drawable/baseline_arrow_downward_24"
+                        app:chipIconTint="@color/red_700"
                         app:chipIconEnabled="true" />
 
                     <com.google.android.material.chip.Chip

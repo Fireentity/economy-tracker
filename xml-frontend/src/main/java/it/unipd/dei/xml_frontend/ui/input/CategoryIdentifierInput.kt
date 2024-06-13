@@ -14,16 +14,20 @@ class CategoryIdentifierInput(
 ) {
 
     private var text = category?.identifier
-
     fun getText(): String? = text
+
+    private var validIdentifier: Boolean = true
+    fun isIdentifierValid(): Boolean = validIdentifier
 
     fun onTextChanged(text: CharSequence?) {
         this.text = text.toString()
         val category = categoryViewModel.getCategoryByIdentifier(text.toString())
         if (category != null) {
+            validIdentifier = false
             view.error = resources.getString(R.string.category_already_exists)
             return
         }
+        validIdentifier = true
         view.error = null
     }
 }
