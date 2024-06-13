@@ -8,17 +8,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.common_backend.viewModels.TestViewModel
 import it.unipd.dei.xml_frontend.R
-import it.unipd.dei.xml_frontend.ui.adapters.MovementCardAdapter
+import it.unipd.dei.xml_frontend.ui.adapters.MovementWithSummaryHeaderCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddMovementDialogButton
 import it.unipd.dei.xml_frontend.ui.dropdown.menus.CategoryDropdownMenu
 import it.unipd.dei.xml_frontend.ui.tabs.AllRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.ExpensesRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.RevenueRegisterTab
-
+import androidx.fragment.app.activityViewModels
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
@@ -26,9 +28,10 @@ class RegisterFragment : Fragment() {
         const val DEFAULT_TAB_SELECTED = 1;
     }
 
-    private val testViewModel: TestViewModel by viewModels()
-    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
-    private val categoryViewModel: CategoryViewModel by viewModels()
+    private val testViewModel: TestViewModel by activityViewModels()
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
+    private val summaryViewModel: SummaryViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -75,37 +78,37 @@ class RegisterFragment : Fragment() {
 
         val tabs = listOf(
             RevenueRegisterTab(
+                summaryViewModel,
                 movementWithCategoryViewModel,
                 view.findViewById(R.id.positive_movements_recyclerview),
-                MovementCardAdapter(
+                MovementWithSummaryHeaderCardAdapter(
+                    summaryViewModel.currentMonthSummary.value ?: Summary.DEFAULT,
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
-                    movementWithCategoryViewModel,
-                    categoryViewModel,
                     requireContext()
                 ),
                 viewLifecycleOwner
             ),
             AllRegisterTab(
+                summaryViewModel,
                 movementWithCategoryViewModel,
                 view.findViewById(R.id.all_movements_recyclerview),
-                MovementCardAdapter(
+                MovementWithSummaryHeaderCardAdapter(
+                    summaryViewModel.currentMonthSummary.value ?: Summary.DEFAULT,
                     movementWithCategoryViewModel.getMovements().value ?: emptyList(),
                     parentFragmentManager,
-                    movementWithCategoryViewModel,
-                    categoryViewModel,
                     requireContext()
                 ),
                 viewLifecycleOwner
             ),
             ExpensesRegisterTab(
+                summaryViewModel,
                 movementWithCategoryViewModel,
                 view.findViewById(R.id.negative_movements_recyclerview),
-                MovementCardAdapter(
+                MovementWithSummaryHeaderCardAdapter(
+                    summaryViewModel.currentMonthSummary.value ?: Summary.DEFAULT,
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
-                    movementWithCategoryViewModel,
-                    categoryViewModel,
                     requireContext()
                 ),
                 viewLifecycleOwner
@@ -133,6 +136,11 @@ class RegisterFragment : Fragment() {
         // Create dummy data if no movement exists
         testViewModel.createDummyDataIfNoMovement()
         categoryViewModel.loadAllCategories()
+        summaryViewModel.loadSummaryForCurrentMonth()
+    }
+
+    override fun onResume() {
+        super.onResume()
 
     }
 }

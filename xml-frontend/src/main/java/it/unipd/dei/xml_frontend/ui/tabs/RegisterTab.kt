@@ -5,12 +5,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
-import it.unipd.dei.xml_frontend.ui.adapters.MovementCardAdapter
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
+import it.unipd.dei.xml_frontend.ui.adapters.MovementWithSummaryHeaderCardAdapter
 
 abstract class RegisterTab(
-    protected val viewModel: MovementWithCategoryViewModel,
+    private val summaryViewModel: SummaryViewModel,
+    protected val movementWithCategoryViewModel: MovementWithCategoryViewModel,
     private val recyclerView: RecyclerView,
-    protected val movementCardAdapter: MovementCardAdapter,
+    protected val movementWithSummaryHeaderCardAdapter: MovementWithSummaryHeaderCardAdapter,
     lifecycleOwner: LifecycleOwner
 ) {
     private var loading: Boolean = false
@@ -20,7 +22,7 @@ abstract class RegisterTab(
     }
 
     init {
-        recyclerView.adapter = movementCardAdapter
+        recyclerView.adapter = movementWithSummaryHeaderCardAdapter
         this.observeViewModel(lifecycleOwner)
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -46,12 +48,16 @@ abstract class RegisterTab(
     }
 
 
-    abstract fun observeViewModel(lifecycleOwner: LifecycleOwner)
+    open fun observeViewModel(lifecycleOwner: LifecycleOwner){
+        summaryViewModel.currentMonthSummary.observe(lifecycleOwner){
+            movementWithSummaryHeaderCardAdapter.updateSummary(it)
+        }
+    }
 
     abstract fun loadSomeMovementsByCategory(function: () -> Unit)
 
     fun show() {
-        if (movementCardAdapter.itemCount > 0) {
+        if (movementWithSummaryHeaderCardAdapter.itemCount > 0) {
             recyclerView.scrollToPosition(0)
         }
         recyclerView.visibility = View.VISIBLE;

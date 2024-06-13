@@ -29,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="Nome categoria"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="@id/category_card_image"

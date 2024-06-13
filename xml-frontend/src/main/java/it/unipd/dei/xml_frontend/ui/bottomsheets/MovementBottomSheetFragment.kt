@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.MovementWithCategory
@@ -17,11 +18,10 @@ import it.unipd.dei.xml_frontend.ui.view.holder.MovementViewHolder
 @AndroidEntryPoint
 class MovementBottomSheetFragment(
     private val movement: MovementWithCategory,
-    private val movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    private val categoryViewModel: CategoryViewModel
 ) : BottomSheetDialogFragment() {
 
-
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -33,9 +33,7 @@ class MovementBottomSheetFragment(
         )
         val movementViewHolder = MovementViewHolder(
             view.findViewById(R.id.movement_card),
-            parentFragmentManager,
-            movementWithCategoryViewModel,
-            categoryViewModel
+            parentFragmentManager
         )
         val showEditMovementDialogButtonView: View =
             view.findViewById(R.id.show_edit_movement_dialog_button)

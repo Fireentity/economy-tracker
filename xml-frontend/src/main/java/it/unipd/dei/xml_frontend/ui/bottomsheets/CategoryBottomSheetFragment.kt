@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.dialog.DeleteCategoryDialog
 import it.unipd.dei.xml_frontend.ui.dialog.UpsertCategoryDialog
@@ -16,9 +18,10 @@ import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 @AndroidEntryPoint
 class CategoryBottomSheetFragment(
     private val category: Category,
-    private val categoryViewModel: CategoryViewModel,
 ) : BottomSheetDialogFragment() {
 
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +61,7 @@ class CategoryBottomSheetFragment(
         }
         val deleteCategoryDialog = DeleteCategoryDialog(
             categoryViewModel,
+            movementWithCategoryViewModel,
             requireContext(),
             category
         )

@@ -28,4 +28,6 @@
     <string name="the_balance_for_this_month_is">Il bilancio di questo mese è %1$.2f %2$s</string>
     <string name="the_total_for_your_finances_this_month_is">Il totale delle tue finanze per questo mese è %1$.2f %2$s</string>
     <string name="month_date">%1$s %2$s</string>
+    <string name="how_is_it_going">Come sta andando?</string>
+    <string name="how_did_it_go">Com\'è andata?</string>
 </resources>

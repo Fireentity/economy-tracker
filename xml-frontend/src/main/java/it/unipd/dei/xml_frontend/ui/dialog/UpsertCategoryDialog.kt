@@ -23,11 +23,11 @@ class UpsertCategoryDialog(
 
     private val alertDialog: AlertDialog
     private val identifierInputField: CategoryIdentifierInput
-    private lateinit var updateCategoryButton: UpsertCategoryButton
+    private var upsertCategoryButton: UpsertCategoryButton
 
     init {
         val inputFieldView: TextInputEditText = view.findViewById(R.id.input_category_identifier)
-        updateCategoryButton = UpsertCategoryButton(
+        upsertCategoryButton = UpsertCategoryButton(
             categoryViewModel,
             fragmentContext,
             this::dismiss,
@@ -53,7 +53,7 @@ class UpsertCategoryDialog(
         }
 
         view.setOnClickListener {
-            updateCategoryButton.onClick()
+            upsertCategoryButton.onClick()
         }
     }
 
@@ -67,7 +67,7 @@ class UpsertCategoryDialog(
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             if (identifierInputField.isIdentifierValid()) {
-                updateCategoryButton.onClick()
+                upsertCategoryButton.onClick()
                 alertDialog.dismiss() // Dismiss the dialog if the input is valid
             }
         }

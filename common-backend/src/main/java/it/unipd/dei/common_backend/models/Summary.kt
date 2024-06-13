@@ -9,5 +9,9 @@ data class Summary(
     val month: Month,
     val year: Int
 ) {
-
+    companion object {
+        val DEFAULT = Summary(
+            0.0, 0.0, 0.0, Month.JANUARY, 1970
+        )
+    }
 }

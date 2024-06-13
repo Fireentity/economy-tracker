@@ -27,8 +27,7 @@ class CategoryViewHolder(
         categoryIdentifier.text = category.identifier
         categoryImageButton.setOnClickListener {
             CategoryBottomSheetFragment(
-                category,
-                categoryViewModel
+                category
             ).show(
                 parentFragmentManager,
                 "OptionCategoryModalBottomSheetFragment"

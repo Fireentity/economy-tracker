@@ -16,9 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
 ) : ViewModel() {
-
     private val _allCategories = MutableLiveData<Map<String, Category>>(LinkedHashMap())
     val allCategories: LiveData<Map<String, Category>> = _allCategories
 
@@ -63,6 +62,7 @@ class CategoryViewModel @Inject constructor(
 
     fun deleteCategory(
         category: Category,
+        movementWithCategoryViewModel: MovementWithCategoryViewModel,
         onSuccess: () -> Unit,
         onThrow: (e: SQLException) -> Unit
     ) {
@@ -72,6 +72,11 @@ class CategoryViewModel @Inject constructor(
                     categoryDao.deleteCategory(category)
                     withContext(Dispatchers.Main) {
                         invalidateCategoriesAndReload()
+                        val filteredCategory = movementWithCategoryViewModel.getCategoryFilter().value
+                        if(filteredCategory == null || filteredCategory == category){
+                            movementWithCategoryViewModel.removeCategoryFilter()
+                            movementWithCategoryViewModel.invalidateMovementsAndReload()
+                        }
                         onSuccess()
                     }
                 } catch (e: SQLException) {
@@ -92,6 +97,5 @@ class CategoryViewModel @Inject constructor(
     fun invalidateCategoriesAndReload() {
         invalidateCategories()
         loadAllCategories()
-        //movementWithCategoryViewModel.invalidateMovementsAndReload()
     }
 }
