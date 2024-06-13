@@ -1,6 +1,5 @@
 package it.unipd.dei.common_backend.viewModels
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.daos.SummaryCardDao
-import it.unipd.dei.common_backend.models.SummaryCard
+import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.DateHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,12 +15,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SummaryCardViewModel @Inject constructor(
+class SummaryViewModel @Inject constructor(
     private val summaryCardDao: SummaryCardDao,
     private val movementDao: MovementDao
 ) : ViewModel() {
-    private val _allSummaryCards = MutableLiveData<List<SummaryCard>>(emptyList())
-    val allSummaryCard: LiveData<List<SummaryCard>> = _allSummaryCards
+    private val _allSummaryCards = MutableLiveData<List<Summary>>(emptyList())
+    val allSummary: LiveData<List<Summary>> = _allSummaryCards
 
 
     fun loadAllSummaryCards() {
@@ -31,7 +30,7 @@ class SummaryCardViewModel @Inject constructor(
                     movementDao.getLastMovementDate(),
                     movementDao.getFirstMovementDate()
                 )
-                val summaryCards : MutableList<SummaryCard> = mutableListOf()
+                val summaries: MutableList<Summary> = mutableListOf()
                 for (month in months) {
                     val summaryCard = summaryCardDao.getSummaryCards(
                         month.startDate,
@@ -40,10 +39,12 @@ class SummaryCardViewModel @Inject constructor(
                         month.year
                     )
                     if (summaryCard.monthlyPositive != 0.0 || summaryCard.monthlyNegative != 0.0) {
-                        summaryCards.add(summaryCard)
+                        summaries.add(summaryCard)
                     }
                 }
-                _allSummaryCards.postValue(summaryCards)
+                if (_allSummaryCards.value != summaries) {
+                    _allSummaryCards.postValue(summaries)
+                }
             }
         }
 

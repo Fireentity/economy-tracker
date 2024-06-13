@@ -9,7 +9,8 @@
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -45,10 +46,11 @@
                         android:layout_marginEnd="5dp"
                         android:clickable="false"
                         android:text="+200.000$"
-                        android:textColor="#15803d"
-                        app:chipBackgroundColor="#dcfce7"
+                        android:textColor="@color/green_700"
+                        app:chipBackgroundColor="@color/green_100"
                         app:chipIcon="@drawable/baseline_arrow_upward_24"
-                        app:chipIconEnabled="true" />
+                        app:chipIconEnabled="true"
+                        />
 
                     <com.google.android.material.chip.Chip
                         style="@style/Widget.Material3.Chip.Suggestion.Elevated"
@@ -59,8 +61,8 @@
                         android:layout_marginEnd="5dp"
                         android:clickable="false"
                         android:text="-200.000$"
-                        android:textColor="#b91c1c"
-                        app:chipBackgroundColor="#fee2e2"
+                        android:textColor="@color/red_700"
+                        app:chipBackgroundColor="@color/red_100"
                         app:chipIcon="@drawable/baseline_arrow_downward_24"
                         app:chipIconEnabled="true" />
 
@@ -72,8 +74,6 @@
                         android:layout_marginStart="5dp"
                         android:clickable="false"
                         android:text="-200.000$"
-                        android:textColor="#b91c1c"
-                        app:chipBackgroundColor="#fee2e2"
                         app:chipIcon="@drawable/baseline_stacked_bar_chart_24"
                         app:chipIconEnabled="true" />
                 </LinearLayout>
@@ -98,6 +98,7 @@
 
             </LinearLayout>
         </LinearLayout>
+
 
     </com.google.android.material.card.MaterialCardView>
 

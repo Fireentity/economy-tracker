@@ -9,14 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import it.unipd.dei.common_backend.viewModels.SummaryCardViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.SummaryCardAdapter
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val summaryCardViewModel: SummaryCardViewModel by viewModels()
+    private val summaryViewModel: SummaryViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,16 +28,16 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val summaryCardAdapter = SummaryCardAdapter(emptyList(), requireContext())
         recyclerView.adapter = summaryCardAdapter
-        summaryCardViewModel.allSummaryCard.observe(viewLifecycleOwner){
+        summaryViewModel.allSummary.observe(viewLifecycleOwner){
             summaryCardAdapter.updateSummaryCards(it)
         }
 
-        summaryCardViewModel.loadAllSummaryCards()
+        summaryViewModel.loadAllSummaryCards()
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        summaryCardViewModel.loadAllSummaryCards()
+        summaryViewModel.loadAllSummaryCards()
     }
 }

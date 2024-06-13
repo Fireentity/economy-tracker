@@ -26,7 +26,9 @@
         android:id="@+id/summary_cards_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/app_bar" />
+        android:paddingBottom="?attr/actionBarSize"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,7 +34,7 @@ class MovementViewHolder(
         amountTextView.text = amount.toString()
         categoryTextView.text = movementWithCategory.category.identifier
         dateTextView.text =
-            DateFormat.format("dd/MM/yyyy hh:mm", movementWithCategory.movement.createdAt)
+            DateFormat.format("dd/MM/yyyy hh:mm", movementWithCategory.movement.date)
                 .toString()
 
         if (amount > 0) {

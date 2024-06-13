@@ -64,8 +64,8 @@ class MovementWithCategoryViewModel @Inject constructor(
                     PAGE_SIZE,
                     movements.value?.size ?: 0
                 )
+                movements.postValue(movements.value?.plus(result))
                 withContext(Dispatchers.Main) {
-                    movements.value = movements.value?.plus(result)
                     then()
                 }
             }
@@ -99,8 +99,8 @@ class MovementWithCategoryViewModel @Inject constructor(
                     PAGE_SIZE,
                     positiveMovements.value?.size ?: 0
                 )
+                positiveMovements.postValue(positiveMovements.value?.plus(result))
                 withContext(Dispatchers.Main) {
-                    positiveMovements.value = positiveMovements.value?.plus(result)
                     then()
                 }
             }
@@ -134,8 +134,8 @@ class MovementWithCategoryViewModel @Inject constructor(
                     PAGE_SIZE,
                     negativeMovements.value?.size ?: 0
                 )
+                negativeMovements.postValue(negativeMovements.value?.plus(result))
                 withContext(Dispatchers.Main) {
-                    negativeMovements.value = negativeMovements.value?.plus(result)
                     then()
                 }
             }

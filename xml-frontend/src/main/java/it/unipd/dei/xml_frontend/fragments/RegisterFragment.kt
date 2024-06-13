@@ -37,10 +37,6 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
 
-        // Create dummy data if no movement exists
-        testViewModel.createDummyDataIfNoMovement()
-        categoryViewModel.loadAllCategories()
-
         // Inflate the layout
         val view = inflater.inflate(R.layout.fragment_register, container, false)
         val floatingActionButton: View = view.findViewById(R.id.show_add_movement_dialog_button)
@@ -128,5 +124,11 @@ class RegisterFragment : Fragment() {
                 tabs[tab?.position ?: 0].show()
             }
         })
+
+
+        // Create dummy data if no movement exists
+        testViewModel.createDummyDataIfNoMovement()
+        categoryViewModel.loadAllCategories()
+
     }
 }
