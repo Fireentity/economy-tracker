@@ -52,7 +52,8 @@ class RegisterFragment : Fragment() {
             categoryViewModel,
             movementWithCategoryViewModel,
             requireContext(),
-            viewLifecycleOwner
+            viewLifecycleOwner,
+            parentFragmentManager
         )
         floatingActionButton.setOnClickListener {
             showAddMovementDialogButton.onClick()
@@ -80,7 +81,8 @@ class RegisterFragment : Fragment() {
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
                     movementWithCategoryViewModel,
-                    categoryViewModel
+                    categoryViewModel,
+                    requireContext()
                 ),
                 viewLifecycleOwner
             ),
@@ -91,7 +93,8 @@ class RegisterFragment : Fragment() {
                     movementWithCategoryViewModel.getMovements().value ?: emptyList(),
                     parentFragmentManager,
                     movementWithCategoryViewModel,
-                    categoryViewModel
+                    categoryViewModel,
+                    requireContext()
                 ),
                 viewLifecycleOwner
             ),
@@ -102,7 +105,8 @@ class RegisterFragment : Fragment() {
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
                     movementWithCategoryViewModel,
-                    categoryViewModel
+                    categoryViewModel,
+                    requireContext()
                 ),
                 viewLifecycleOwner
             )

@@ -1,5 +1,7 @@
 package it.unipd.dei.xml_frontend.ui.view.holder
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageView
@@ -27,7 +29,9 @@ class MovementViewHolder(
     }
 
     fun bind(
-        movementWithCategory: MovementWithCategory
+        movementWithCategory: MovementWithCategory,
+        context: Context
+
     ) {
 
         val amount = movementWithCategory.movement.amount
@@ -39,10 +43,12 @@ class MovementViewHolder(
 
         if (amount > 0) {
             imageView.setImageResource(R.drawable.baseline_trending_up_24)
-            imageView.setBackgroundResource(R.drawable.circle_up)
+            imageView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.green_100))
+            imageView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.green_700))
         } else if (amount < 0) {
             imageView.setImageResource(R.drawable.baseline_trending_down_24)
-            imageView.setBackgroundResource(R.drawable.circle_down)
+            imageView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.red_100))
+            imageView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.red_700))
         }
 
         itemView.setOnLongClickListener {

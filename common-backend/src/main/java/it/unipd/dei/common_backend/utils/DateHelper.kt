@@ -4,6 +4,11 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import it.unipd.dei.common_backend.models.MonthInfo
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -99,63 +104,67 @@ object DateHelper {
             .toString()
     }
 
-    fun selectDateTime(context: Context, onDismiss: () -> Unit = {}, callback: (String) -> Unit) {
-        showDateTimePickerDialog(context, callback, onDismiss)
+    fun selectDateTime(
+        context: Context,
+        fragmentManager: FragmentManager,
+        onDismiss: () -> Unit = {},
+        callback: (String) -> Unit
+    ) {
+        showDateTimePickerDialog(context, callback, fragmentManager, onDismiss)
     }
 
     private fun showDateTimePickerDialog(
         context: Context,
         callback: (String) -> Unit,
+        fragmentManager: FragmentManager,
         onDismiss: () -> Unit = {}
     ) {
         val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select Date")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
 
-        val datePickerDialog = DatePickerDialog(
-            context,
-            { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-                val selectedDate = String.format(
-                    "%02d/%02d/%04d",
-                    selectedDayOfMonth,
-                    selectedMonth + 1,
-                    selectedYear
-                )
-                showTimePickerDialog(selectedDate, context, callback)
-            },
-            year,
-            month,
-            dayOfMonth
-        )
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            val selectedDate = calendar.apply {
+                timeInMillis = selection
+            }
+            val formattedDate = String.format(
+                "%02d/%02d/%04d",
+                selectedDate.get(Calendar.DAY_OF_MONTH),
+                selectedDate.get(Calendar.MONTH) + 1,
+                selectedDate.get(Calendar.YEAR)
+            )
+            showTimePickerDialog(formattedDate, context, fragmentManager, callback)
+        }
 
-        datePickerDialog.setOnDismissListener {
+        datePicker.addOnDismissListener {
             onDismiss()
         }
-        datePickerDialog.show()
+
+        datePicker.show(fragmentManager, "MATERIAL_DATE_PICKER")
     }
 
     private fun showTimePickerDialog(
         selectedDate: String,
         context: Context,
+        fragmentManager: FragmentManager,
         callback: (String) -> Unit
     ) {
         val calendar = Calendar.getInstance()
-        val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-        val timePickerDialog = TimePickerDialog(
-            context,
-            { _, selectedHourOfDay, selectedMinute ->
-                val selectedTime = String.format("%02d:%02d", selectedHourOfDay, selectedMinute)
-                val selectedDateTime = "$selectedDate $selectedTime"
-                callback(selectedDateTime)
-            },
-            hourOfDay,
-            minute,
-            true
-        )
+        val timePicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(calendar.get(Calendar.HOUR_OF_DAY))
+            .setMinute(calendar.get(Calendar.MINUTE))
+            .setTitleText("Select Time")
+            .build()
 
-        timePickerDialog.show()
+        timePicker.addOnPositiveButtonClickListener {
+            val selectedTime = String.format("%02d:%02d", timePicker.hour, timePicker.minute)
+            val selectedDateTime = "$selectedDate $selectedTime"
+            callback(selectedDateTime)
+        }
+
+        timePicker.show(fragmentManager, "MATERIAL_TIME_PICKER")
     }
-
 }

@@ -12,7 +12,7 @@ class MovementAmountInput(
     view: TextInputEditText,
     movement: Movement? = null
 ) {
-    companion object{
+    companion object {
         private val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$")
     }
 
@@ -44,7 +44,7 @@ class MovementAmountInput(
                 onTextChanged(editable)
             }
         })
-        if(movement!=null){
+        if (movement != null) {
             view.setText(amount)
         }
     }

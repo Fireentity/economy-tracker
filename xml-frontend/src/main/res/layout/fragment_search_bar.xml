@@ -11,6 +11,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <com.google.android.material.search.SearchBar
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
@@ -27,9 +28,10 @@
 
             <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_results_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/search_results_recyclerview"/>
+                android:paddingBottom="?attr/actionBarSize" />
         </com.google.android.material.search.SearchView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
