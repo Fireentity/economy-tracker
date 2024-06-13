@@ -13,12 +13,14 @@ import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddCategoryDialogButton
 import it.unipd.dei.xml_frontend.ui.input.SearchInput
+import androidx.fragment.app.activityViewModels
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 
 
 @AndroidEntryPoint
 class CategoriesFragment : Fragment() {
 
-    private val categoryViewModel: CategoryViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
     //TODO essendo diversi questo e quello del register bisogna trovare un modo per reloaddare i movimenti quando uno è stato eliminato con l'eliminazione della categoria
 
     override fun onCreateView(

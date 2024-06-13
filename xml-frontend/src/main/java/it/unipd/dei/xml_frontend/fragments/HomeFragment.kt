@@ -11,11 +11,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.SummaryCardAdapter
+import androidx.fragment.app.activityViewModels
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val summaryViewModel: SummaryViewModel by viewModels()
+    private val summaryViewModel: SummaryViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

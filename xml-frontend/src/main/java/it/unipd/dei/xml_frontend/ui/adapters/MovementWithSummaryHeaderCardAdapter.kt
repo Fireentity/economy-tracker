@@ -17,8 +17,6 @@ class MovementWithSummaryHeaderCardAdapter(
     private var summary: Summary,
     private var movements: List<MovementWithCategory>,
     private val parentFragmentManager: FragmentManager,
-    private val movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    private val categoryViewModel: CategoryViewModel,
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -32,7 +30,7 @@ class MovementWithSummaryHeaderCardAdapter(
             HeaderViewHolder(SummaryViewHolder(view, context))
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_movement_card, parent, false)
-            ItemViewHolder(MovementViewHolder(view, parentFragmentManager, movementWithCategoryViewModel, categoryViewModel))
+            ItemViewHolder(MovementViewHolder(view, parentFragmentManager))
         }
     }
 

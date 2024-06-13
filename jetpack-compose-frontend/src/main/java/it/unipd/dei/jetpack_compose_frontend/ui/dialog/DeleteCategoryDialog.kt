@@ -32,11 +32,12 @@ fun DeleteCategoryDialog(
                     {
                         DisplayToast.displayGeneric(context, categorySuccessfullyRemoved)
                         onConfirm()
-                    }
-                ) {
-                    DisplayToast.displayGeneric(context, categoryCreationFailed)
-                    onDismiss()
-                }
+                    },
+                    {
+                        DisplayToast.displayGeneric(context, categoryCreationFailed)
+                        onDismiss()
+                    },
+                )
             }) {
                 Text(text = stringResource(R.string.delete))
             }

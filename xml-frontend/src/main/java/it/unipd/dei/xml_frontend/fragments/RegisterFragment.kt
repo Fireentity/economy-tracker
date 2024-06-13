@@ -20,7 +20,7 @@ import it.unipd.dei.xml_frontend.ui.dropdown.menus.CategoryDropdownMenu
 import it.unipd.dei.xml_frontend.ui.tabs.AllRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.ExpensesRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.RevenueRegisterTab
-
+import androidx.fragment.app.activityViewModels
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
@@ -28,10 +28,10 @@ class RegisterFragment : Fragment() {
         const val DEFAULT_TAB_SELECTED = 1;
     }
 
-    private val testViewModel: TestViewModel by viewModels()
-    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
-    private val categoryViewModel: CategoryViewModel by viewModels()
-    private val summaryViewModel: SummaryViewModel by viewModels()
+    private val testViewModel: TestViewModel by activityViewModels()
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
+    private val summaryViewModel: SummaryViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -85,8 +85,6 @@ class RegisterFragment : Fragment() {
                     summaryViewModel.currentMonthSummary.value ?: Summary.DEFAULT,
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
-                    movementWithCategoryViewModel,
-                    categoryViewModel,
                     requireContext()
                 ),
                 viewLifecycleOwner
@@ -99,8 +97,6 @@ class RegisterFragment : Fragment() {
                     summaryViewModel.currentMonthSummary.value ?: Summary.DEFAULT,
                     movementWithCategoryViewModel.getMovements().value ?: emptyList(),
                     parentFragmentManager,
-                    movementWithCategoryViewModel,
-                    categoryViewModel,
                     requireContext()
                 ),
                 viewLifecycleOwner
@@ -113,8 +109,6 @@ class RegisterFragment : Fragment() {
                     summaryViewModel.currentMonthSummary.value ?: Summary.DEFAULT,
                     movementWithCategoryViewModel.getPositiveMovements().value ?: emptyList(),
                     parentFragmentManager,
-                    movementWithCategoryViewModel,
-                    categoryViewModel,
                     requireContext()
                 ),
                 viewLifecycleOwner

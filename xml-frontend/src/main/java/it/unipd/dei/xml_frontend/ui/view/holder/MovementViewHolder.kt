@@ -15,9 +15,7 @@ import it.unipd.dei.xml_frontend.ui.bottomsheets.MovementBottomSheetFragment
 
 class MovementViewHolder(
     private val itemView: View,
-    private val parentFragmentManager: FragmentManager,
-    private val movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    private val categoryViewModel: CategoryViewModel
+    private val parentFragmentManager: FragmentManager
 )  {
     private val categoryTextView: TextView = itemView.findViewById(R.id.movement_card_category)
     private val amountTextView: TextView = itemView.findViewById(R.id.movement_card_amount)
@@ -53,9 +51,7 @@ class MovementViewHolder(
 
         itemView.setOnLongClickListener {
             MovementBottomSheetFragment(
-                movementWithCategory,
-                movementWithCategoryViewModel,
-                categoryViewModel
+                movementWithCategory
             ).show(
                 parentFragmentManager,
                 "OptionCategoryModalBottomSheetFragment"
