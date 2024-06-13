@@ -3,8 +3,7 @@ package it.unipd.dei.common_backend.daos
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import it.unipd.dei.common_backend.models.SummaryCard
-import java.time.YearMonth
+import it.unipd.dei.common_backend.models.Summary
 
 @Dao
 interface SummaryCardDao {
@@ -19,7 +18,7 @@ interface SummaryCardDao {
         FROM movements
         WHERE date BETWEEN :startDate AND :endDate
     """)
-    suspend fun getSummaryCards(startDate: Long, endDate: Long, month: Int, year: Int): SummaryCard
+    suspend fun getSummaryCards(startDate: Long, endDate: Long, month: Int, year: Int): Summary
 
 
 }

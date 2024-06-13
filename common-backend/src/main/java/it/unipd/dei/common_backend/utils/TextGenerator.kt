@@ -1,6 +1,6 @@
 package it.unipd.dei.common_backend.utils
 
-import it.unipd.dei.common_backend.models.SummaryCard
+import it.unipd.dei.common_backend.models.Summary
 
 object TextGenerator {
 
@@ -28,11 +28,11 @@ object TextGenerator {
         "Il totale delle tue finanze per questo mese è "
     )
 
-    fun generateText(summaryCard: SummaryCard): String {
+    fun generateText(summary: Summary): String {
 
-        val positivePhrase = positivePhrases.random() + "${String.format("%.2f", summaryCard.monthlyPositive)} €.\n"
-        val negativePhrase = negativePhrases.random() + "${String.format("%.2f", summaryCard.monthlyNegative)} €.\n"
-        val totalPhrase = totalPhrases.random() + "${String.format("%.2f", summaryCard.monthlyAll)} €.\n"
+        val positivePhrase = positivePhrases.random() + "${String.format("%.2f", summary.monthlyPositive)} €.\n"
+        val negativePhrase = negativePhrases.random() + "${String.format("%.2f", summary.monthlyNegative)} €.\n"
+        val totalPhrase = totalPhrases.random() + "${String.format("%.2f", summary.monthlyAll)} €.\n"
         
         return positivePhrase + negativePhrase + totalPhrase
     }

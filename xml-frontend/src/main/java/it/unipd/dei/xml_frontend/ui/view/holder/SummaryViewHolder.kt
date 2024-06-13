@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.View
 import android.widget.TextView
-import androidx.core.graphics.toColor
 import com.google.android.material.chip.Chip
-import it.unipd.dei.common_backend.models.SummaryCard
+import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.common_backend.utils.TextGenerator
 import it.unipd.dei.xml_frontend.R
-import java.time.Month
 
 class SummaryViewHolder(
     private val itemView: View,
@@ -25,35 +23,35 @@ class SummaryViewHolder(
     private val descriptionTextView: TextView = itemView.findViewById(R.id.description_summary_card)
     fun getItemView(): View = itemView
 
-    fun bind(summaryCard: SummaryCard) {
+    fun bind(summary: Summary) {
 
         allChip.apply {
-            if (summaryCard.monthlyAll > 0) {
+            if (summary.monthlyAll > 0) {
                 setTextColor(context.getColor(R.color.green_700))
                 chipBackgroundColor = ColorStateList.valueOf(context.getColor(R.color.green_100))
-            } else if (summaryCard.monthlyAll < 0) {
+            } else if (summary.monthlyAll < 0) {
                 setTextColor(context.getColor(R.color.red_700))
                 chipBackgroundColor = ColorStateList.valueOf(context.getColor(R.color.red_100))
             }
-            text = String.format("%.2f", summaryCard.monthlyAll)
+            text = String.format("%.2f", summary.monthlyAll)
         }
-        revenueChip.text = String.format("%.2f", summaryCard.monthlyPositive)
-        expensesChip.text = String.format("%.2f", summaryCard.monthlyNegative)
+        revenueChip.text = String.format("%.2f", summary.monthlyPositive)
+        expensesChip.text = String.format("%.2f", summary.monthlyNegative)
 
-        val monthOfYear = Constants.monthOf(summaryCard.month) + " " + summaryCard.year.toString()
+        val monthOfYear = Constants.monthOf(summary.month) + " " + summary.year.toString()
         titleTextView.text = monthOfYear
 
         subTitleTextView.text =
             if (DateHelper.getMonthEndInMilliseconds(
-                    summaryCard.month,
-                    summaryCard.year
+                    summary.month,
+                    summary.year
                 ) > System.currentTimeMillis()
             ) {
                 context.getString(R.string.how_is_it_going)
             } else {
                 context.getString(R.string.how_did_it_go)
             }
-        descriptionTextView.text = TextGenerator.generateText(summaryCard)
+        descriptionTextView.text = TextGenerator.generateText(summary)
     }
 
 
