@@ -1,11 +1,15 @@
 package it.unipd.dei.xml_frontend.ui.view.holder
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.View
 import android.widget.TextView
+import androidx.core.graphics.toColor
 import com.google.android.material.chip.Chip
 import it.unipd.dei.common_backend.models.SummaryCard
+import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.utils.DateHelper
+import it.unipd.dei.common_backend.utils.TextGenerator
 import it.unipd.dei.xml_frontend.R
 import java.time.Month
 
@@ -22,11 +26,21 @@ class SummaryViewHolder(
     fun getItemView(): View = itemView
 
     fun bind(summaryCard: SummaryCard) {
-        allChip.text = String.format("%.2f", summaryCard.monthlyAll)
+
+        allChip.apply {
+            if (summaryCard.monthlyAll > 0) {
+                setTextColor(context.getColor(R.color.green_700))
+                chipBackgroundColor = ColorStateList.valueOf(context.getColor(R.color.green_100))
+            } else if (summaryCard.monthlyAll < 0) {
+                setTextColor(context.getColor(R.color.red_700))
+                chipBackgroundColor = ColorStateList.valueOf(context.getColor(R.color.red_100))
+            }
+            text = String.format("%.2f", summaryCard.monthlyAll)
+        }
         revenueChip.text = String.format("%.2f", summaryCard.monthlyPositive)
         expensesChip.text = String.format("%.2f", summaryCard.monthlyNegative)
 
-        val monthOfYear = Month.of(summaryCard.month).toString() + " " + summaryCard.year.toString()
+        val monthOfYear = Constants.monthOf(summaryCard.month) + " " + summaryCard.year.toString()
         titleTextView.text = monthOfYear
 
         subTitleTextView.text =
@@ -39,11 +53,8 @@ class SummaryViewHolder(
             } else {
                 context.getString(R.string.how_did_it_go)
             }
-        descriptionTextView.text = generateText()
+        descriptionTextView.text = TextGenerator.generateText(summaryCard)
     }
 
-    private fun generateText(): String {
-        return ""
-        //TODO implementala
-    }
+
 }

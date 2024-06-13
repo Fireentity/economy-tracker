@@ -16,12 +16,9 @@ class SearchInput(
     lifecycleOwner: LifecycleOwner
 ) {
     init {
+
         val searchLayout = searchView.layoutParams.height
         searchView.layoutParams.height = 0
-
-        searchView.setOnClickListener {
-            searchView.setBackgroundColor(Color.YELLOW)
-        }
 
         searchView.addTransitionListener { _, _, newState ->
             if (newState === SearchView.TransitionState.SHOWING) {

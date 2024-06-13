@@ -31,7 +31,7 @@ class SummaryCardViewModel @Inject constructor(
                     movementDao.getLastMovementDate(),
                     movementDao.getFirstMovementDate()
                 )
-                val summaryCards : MutableList<SummaryCard> = mutableListOf()
+                val summaryCards: MutableList<SummaryCard> = mutableListOf()
                 for (month in months) {
                     val summaryCard = summaryCardDao.getSummaryCards(
                         month.startDate,
@@ -43,7 +43,9 @@ class SummaryCardViewModel @Inject constructor(
                         summaryCards.add(summaryCard)
                     }
                 }
-                _allSummaryCards.postValue(summaryCards)
+                if (_allSummaryCards.value != summaryCards) {
+                    _allSummaryCards.postValue(summaryCards)
+                }
             }
         }
 
