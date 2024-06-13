@@ -24,7 +24,7 @@
 
     <string name="insert_category_identifier">Nome della categoria</string>
     <string name="insert_movement_amount">Importo del movimento</string>
-    <string name="insert_movement_date">Seleziona la data della transazione</string>
+    <string name="insert_movement_date">Seleziona la data</string>
 
     <string name="category_operation_successfully_executed">Operazione sulla categoria avvenuta con successo</string>
     <string name="movement_operation_successfully_executed">Operazione sul movimento avvenuta con successo</string>

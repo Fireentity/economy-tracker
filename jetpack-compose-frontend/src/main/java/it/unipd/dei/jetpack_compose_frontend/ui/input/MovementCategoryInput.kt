@@ -34,6 +34,7 @@ fun MovementCategoryInput(
         onExpandedChange = { expanded = !expanded },
     ) {
         OutlinedTextField(
+            readOnly = true,
             modifier = Modifier.menuAnchor(),
             value = category,
             onValueChange = {

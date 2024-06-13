@@ -69,12 +69,14 @@ fun MovementDateInput(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { showDatePicker = true },
-        label = { Text(text = stringResource(R.string.date)) },
+        label = {
+            Text(stringResource(R.string.insert_movement_date))
+        },
         trailingIcon = {
             IconButton(onClick = { showDatePicker = true }) {
                 Icon(
                     imageVector = Icons.Filled.DateRange,
-                    contentDescription = stringResource(R.string.choose_movement_date)
+                    contentDescription = "Movement date"
                 )
             }
         }
@@ -88,7 +90,7 @@ fun MovementDateInput(
                     showDatePicker = false
                     showTimePicker = true
                 }) {
-                    Text(stringResource(R.string.ok))
+                    Text(stringResource(R.string.confirm))
                 }
             },
             dismissButton = {

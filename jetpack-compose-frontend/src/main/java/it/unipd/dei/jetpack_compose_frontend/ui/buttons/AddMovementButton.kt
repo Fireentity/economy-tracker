@@ -19,8 +19,8 @@ fun AddMovementButton(
     onClick: () -> Unit
 ) {
     val context = LocalContext.current
-    val movementSuccessfullyAdded = stringResource(R.string.movement_added_successfully)
-    val movementCreationFailed = stringResource(R.string.movement_creation_failed)
+    val movementSuccessfullyAdded = stringResource(R.string.movement_operation_successfully_executed)
+    val movementCreationFailed = stringResource(R.string.movement_operation_failed)
     Button(onClick = {
         movementBuilder.toMovement(categoryViewModel)?.let {
             movementWithCategoryViewModel.upsertMovement(

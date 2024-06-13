@@ -18,8 +18,8 @@ fun AddCategoryButton(
     categoryViewMode: CategoryViewModel
 ) {
     val context = LocalContext.current
-    val categorySuccessfullyAdded = stringResource(R.string.category_added_successfully)
-    val categoryCreationFailed = stringResource(R.string.category_creation_failed)
+    val categorySuccessfullyAdded = stringResource(R.string.category_operation_successfully_executed)
+    val categoryCreationFailed = stringResource(R.string.category_operation_failed)
     Button(onClick = { categoryViewMode.upsertCategory(
         Category(
             category.uuid,

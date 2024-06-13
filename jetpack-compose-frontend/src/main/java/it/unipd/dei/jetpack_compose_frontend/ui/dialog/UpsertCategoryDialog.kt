@@ -16,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,16 @@ fun UpsertCategoryDialog(
     category: Category? = null
 ) {
     var categoryIdentifier by remember { mutableStateOf(category?.identifier ?: "") }
+    val modifiedCategory: Category by remember {
+        derivedStateOf {
+            category?.withCategoryIdentifier(categoryIdentifier)?:Category(
+                UUID.randomUUID(),
+                categoryIdentifier,
+                System.currentTimeMillis(),
+                System.currentTimeMillis()
+            )
+        }
+    }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -51,13 +62,15 @@ fun UpsertCategoryDialog(
                     modifier = Modifier.padding(24.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.new_category_title),
+                        //TODO fix here
+                        text = stringResource(R.string.create_category),
                         style = MaterialTheme.typography.titleMedium
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedTextField(
+                        label = { Text(text = stringResource(R.string.category)) },
                         value = categoryIdentifier,
                         onValueChange = { categoryIdentifier = it },
                         modifier = Modifier.fillMaxWidth()
@@ -76,14 +89,9 @@ fun UpsertCategoryDialog(
                         Spacer(modifier = Modifier.width(8.dp))
 
                         AddCategoryButton(
-                            category ?: Category(
-                                UUID.randomUUID(),
-                                categoryIdentifier,
-                                System.currentTimeMillis(),
-                                System.currentTimeMillis()
-                            ),
-                            { onDismiss() },
-                            { onDismiss() },
+                            modifiedCategory,
+                            onDismiss,
+                            onDismiss,
                             categoryViewModel
                         )
                     }

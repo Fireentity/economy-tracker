@@ -3,13 +3,6 @@ package it.unipd.dei.jetpack_compose_frontend.ui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -24,28 +17,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import it.unipd.dei.common_backend.models.BottomNavigationItem
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.common_backend.viewModels.TestViewModel
-
-
-enum class AppScreen() {
-    Home,
-    Registro,
-    Ricorrenze
-}
-
-data class BottomNavigationItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
-)
+import it.unipd.dei.jetpack_compose_frontend.R
 
 
 @Composable
@@ -58,21 +42,22 @@ fun AppScreen(
 ) {
     testViewModel.createDummyDataIfNoMovement()
     categoryViewModel.loadAllCategories()
+
     val bottomNavigationIcons = listOf(
         BottomNavigationItem(
-            title = AppScreen.entries[0].name,
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
+            route = "home",
+            title = stringResource(id = R.string.home),
+            icon = R.drawable.baseline_home_24
         ),
         BottomNavigationItem(
-            title = AppScreen.entries[1].name,
-            selectedIcon = Icons.Filled.Create,
-            unselectedIcon = Icons.Outlined.Create,
+            route = "register",
+            title = stringResource(id = R.string.register),
+            icon = R.drawable.baseline_bar_chart_24
         ),
         BottomNavigationItem(
-            title = AppScreen.entries[2].name,
-            selectedIcon = Icons.Filled.Search,
-            unselectedIcon = Icons.Outlined.Search,
+            route = "categories",
+            title = stringResource(id = R.string.categories),
+            icon = R.drawable.baseline_folder_open_24
         ),
     )
 
@@ -92,7 +77,7 @@ fun AppScreen(
                             selected = selectedIconIndex == index,
                             onClick = {
                                 selectedIconIndex = index
-                                navController.navigate(item.title)
+                                navController.navigate(item.route)
                             },
                             label = {
                                 Text(text = item.title)
@@ -101,9 +86,7 @@ fun AppScreen(
                             icon = {
                                 Box {
                                     Icon(
-                                        imageVector = if(index == selectedIconIndex) {
-                                            item.selectedIcon
-                                        } else item.unselectedIcon,
+                                        imageVector = ImageVector.vectorResource(id = item.icon),
                                         contentDescription = item.title
                                     )
                                 }
@@ -115,18 +98,22 @@ fun AppScreen(
         ) { paddingValues ->
             NavHost(
                 navController = navController,
-                startDestination = AppScreen.entries[0].name, // Start page (Home) at app launch
+                startDestination = stringResource(id = R.string.home),
                 modifier = Modifier.padding(paddingValues)
             ) {
-                composable(route = AppScreen.entries[0].name) {
+                composable(route = bottomNavigationIcons[0].route) {
                     HomeScreen(summaryViewModel)
                 }
 
-                composable(route = AppScreen.entries[1].name) {
-                    RegisterScreen(categoryViewModel, movementWithCategoryViewModel, summaryViewModel.allSummary.value!![0])
+                composable(route = bottomNavigationIcons[1].route) {
+                    RegisterScreen(
+                        categoryViewModel,
+                        movementWithCategoryViewModel,
+                        summaryViewModel.allSummary.value!![0]
+                    )
                 }
 
-                composable(route = AppScreen.entries[2].name) {
+                composable(route = bottomNavigationIcons[2].route) {
                     CategoriesScreen(categoryViewModel)
                 }
             }

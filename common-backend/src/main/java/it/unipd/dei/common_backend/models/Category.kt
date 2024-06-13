@@ -17,6 +17,10 @@ data class Category(
         return Category(uuid, identifier, createdAt, updatedAt);
     }
 
+    fun withCategoryIdentifier(identifier: String): Category {
+        return Category(uuid, identifier, createdAt, updatedAt);
+    }
+
     override fun toString(): String {
         return identifier
     }

@@ -19,12 +19,12 @@ fun DeleteMovementDialog(
     onConfirm: () -> Unit
 ) {
     val context = LocalContext.current
-    val movementSuccessfullyAdded = stringResource(R.string.movement_added_successfully)
-    val movementCreationFailed = stringResource(R.string.movement_creation_failed)
+    val movementSuccessfullyAdded = stringResource(R.string.movement_deleted_successfully)
+    val movementCreationFailed = stringResource(R.string.movement_deletion_failed)
     AlertDialog(
         onDismissRequest = { },
         title = { Text(text = stringResource(R.string.delete_movement)) },
-        text = { Text(text = stringResource(R.string.movement_deletion_confirmation)) },
+        text = { Text(text = stringResource(R.string.are_you_sure_you_want_to_delete_this_movement)) },
         confirmButton = {
             TextButton(onClick = {
                 movementWithCategoryViewModel.deleteMovement(

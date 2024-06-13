@@ -24,7 +24,7 @@ fun DeleteCategoryDialog(
     AlertDialog(
         onDismissRequest = { },
         title = { Text(text = stringResource(id = R.string.delete_category)) },
-        text = { Text(text = stringResource(id = R.string.category_deletion_confirmation)) },
+        text = { Text(text = stringResource(id = R.string.are_you_sure_you_want_to_delete_this_category)) },
         confirmButton = {
             TextButton(onClick = {
                 categoryViewModel.deleteCategory(
