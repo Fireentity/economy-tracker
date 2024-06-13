@@ -17,7 +17,7 @@ import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.bottomsheets.CategoryBottomSheet
 
 @Composable
-fun ShowCategoryBottomSheetButton(category: Category, categoryViewModel: CategoryViewModel, modifier: Modifier) {
+fun ShowCategoryBottomSheetButton(category: Category, categoryViewModel: CategoryViewModel) {
 
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -25,8 +25,7 @@ fun ShowCategoryBottomSheetButton(category: Category, categoryViewModel: Categor
         onClick = {
             showBottomSheet = true
         },
-        modifier = modifier
-            .padding(end = 15.dp)
+        modifier = Modifier.padding(end = 15.dp)
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

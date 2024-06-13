@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
@@ -13,6 +14,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        SummaryCard()
+        SummaryCard()
+        SummaryCard()
     }
 }

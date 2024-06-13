@@ -28,6 +28,7 @@ import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddCategoryButton
+import java.util.UUID
 
 @Composable
 fun UpsertCategoryDialog(
@@ -35,7 +36,7 @@ fun UpsertCategoryDialog(
     onDismiss: () -> Unit = {},
     category: Category? = null
 ) {
-    var categoryIdentifier by remember { mutableStateOf(category?.identifier?:"") }
+    var categoryIdentifier by remember { mutableStateOf(category?.identifier ?: "") }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -75,7 +76,12 @@ fun UpsertCategoryDialog(
                         Spacer(modifier = Modifier.width(8.dp))
 
                         AddCategoryButton(
-                            categoryIdentifier = categoryIdentifier,
+                            category ?: Category(
+                                UUID.randomUUID(),
+                                categoryIdentifier,
+                                System.currentTimeMillis(),
+                                System.currentTimeMillis()
+                            ),
                             { onDismiss() },
                             { onDismiss() },
                             categoryViewModel
