@@ -43,6 +43,7 @@ import it.unipd.dei.jetpack_compose_frontend.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovementDateInput(
+    date: String,
     onDateChange: (String) -> Unit
 ) {
     val datePickerState = rememberDatePickerState()
@@ -55,7 +56,7 @@ fun MovementDateInput(
                 DateHelper.convertFromMillisecondsToDateTime(
                     it
                 )
-            } ?: ""
+            } ?: date
 
             onDateChange(computedDate)
             computedDate

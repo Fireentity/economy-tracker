@@ -16,9 +16,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementWithCategory
+import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
@@ -67,7 +69,11 @@ fun MovementCard(
         trailingContent = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = movementWithCategory.movement.amount.toString(),
+                    text = stringResource(
+                        id = R.string.amount,
+                        movementWithCategory.movement.amount,
+                        Constants.CURRENCY
+                    ),
                     style = MaterialTheme.typography.headlineSmall,
                 )
 

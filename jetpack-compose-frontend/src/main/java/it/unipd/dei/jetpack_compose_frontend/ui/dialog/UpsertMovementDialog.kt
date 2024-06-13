@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.models.MovementWithCategory
+import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
@@ -45,15 +46,24 @@ fun UpsertMovementDialog(
     onDismiss: () -> Unit = {},
 ) {
 
-    var amount by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("") }
+    var amount by remember { mutableStateOf(movement?.movement?.amount?.toString() ?: "") }
+    var category by remember { mutableStateOf(movement?.category?.identifier ?: "") }
+    var date by remember {
+        mutableStateOf(movement?.movement?.date?.let {
+            DateHelper.convertFromMillisecondsToDateTime(
+                it
+            )
+        } ?: "")
+    }
     val movementBuilder by remember {
-        mutableStateOf(MovementBuilder(
-            { amount },
-            { category },
-            { date }
-        ))
+        mutableStateOf(
+            MovementBuilder(
+                { amount },
+                { category },
+                { date },
+                movement?.movement
+            )
+        )
     }
     val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$");
 
@@ -89,7 +99,7 @@ fun UpsertMovementDialog(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                MovementDateInput {
+                MovementDateInput(date) {
                     date = it
                 }
 

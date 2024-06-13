@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val categoryDao: CategoryDao,
+    private val categoryDao: CategoryDao
 ) : ViewModel() {
 
     private val _allCategories = MutableLiveData<Map<String, Category>>(LinkedHashMap())
@@ -85,7 +85,6 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-
     fun invalidateCategories() {
         _allCategories.value = emptyMap()
     }
@@ -93,7 +92,6 @@ class CategoryViewModel @Inject constructor(
     fun invalidateCategoriesAndReload() {
         invalidateCategories()
         loadAllCategories()
-        //TODO fix here
         //movementWithCategoryViewModel.invalidateMovementsAndReload()
     }
 }
