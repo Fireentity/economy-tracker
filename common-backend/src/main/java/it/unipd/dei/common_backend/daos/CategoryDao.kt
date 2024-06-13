@@ -26,8 +26,4 @@ interface CategoryDao {
     @Transaction
     @Query("DELETE FROM categories")
     suspend fun deleteAllCategories()
-
-    @Transaction
-    @Query("SELECT * FROM categories WHERE identifier = :identifier")
-    suspend fun getCategoriesByIdentifier(identifier: String): List<Category>
 }

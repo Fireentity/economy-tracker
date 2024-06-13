@@ -1,20 +1,20 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.cards
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
@@ -22,46 +22,28 @@ import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowCategoryBottomSheetB
 
 @Composable
 fun CategoryCard(category: Category, categoryViewModel: CategoryViewModel) {
-    ConstraintLayout(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight()
-    ) {
-        val (image, text, showBottomSheetButton) = createRefs()
-        val icon = ImageVector.vectorResource(id = R.drawable.baseline_folder_open_24)
+    val icon = ImageVector.vectorResource(id = R.drawable.baseline_folder_open_24)
+    val background: Color = colorResource(id = R.color.blue_100)
+    val colorFilter = ColorFilter.tint(colorResource(id = R.color.blue_700))
 
-        Image(
-            painter = rememberVectorPainter(icon),
-            contentDescription = "Category card icon",
-            modifier = Modifier
-                .constrainAs(image) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                }
-                .padding(24.dp)
-        )
-
-        Text(
-            text = category.identifier,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .constrainAs(text) {
-                    start.linkTo(image.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                }
-        )
-
-        ShowCategoryBottomSheetButton(
-            category,
-            categoryViewModel,
-            modifier = Modifier.constrainAs(showBottomSheetButton) {
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom)
-                top.linkTo(parent.top)
-            })
-    }
-    HorizontalDivider(
-        modifier = Modifier.padding(horizontal = 10.dp),
-        thickness = 1.dp,
+    ListItem(
+        headlineContent = { Text(category.identifier) },
+        leadingContent = {
+            Image(
+                painter = rememberVectorPainter(icon),
+                contentDescription = "Category card icon",
+                colorFilter = colorFilter,
+                modifier =  Modifier
+                    .background(
+                        background,
+                        CircleShape
+                    ).padding(10.dp)
+            )
+        },
+        trailingContent = {
+            ShowCategoryBottomSheetButton(
+                category,
+                categoryViewModel)
+        }
     )
 }

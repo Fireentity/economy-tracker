@@ -9,11 +9,10 @@ import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
-import java.util.UUID
 
 @Composable
 fun AddCategoryButton(
-    categoryIdentifier: String,
+    category: Category,
     onSuccess: () -> Unit,
     onFailure: () -> Unit,
     categoryViewMode: CategoryViewModel
@@ -23,10 +22,10 @@ fun AddCategoryButton(
     val categoryCreationFailed = stringResource(R.string.category_creation_failed)
     Button(onClick = { categoryViewMode.upsertCategory(
         Category(
-            UUID.randomUUID(),
-            categoryIdentifier,
-            System.currentTimeMillis(),
-            System.currentTimeMillis()
+            category.uuid,
+            category.identifier,
+            category.createdAt,
+            category.updatedAt
         ),
         {
             DisplayToast.displayGeneric(context, categorySuccessfullyAdded)

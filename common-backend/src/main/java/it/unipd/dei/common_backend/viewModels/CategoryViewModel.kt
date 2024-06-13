@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.CategoryDao
-import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.models.Category
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +19,7 @@ class CategoryViewModel @Inject constructor(
     private val categoryDao: CategoryDao,
 ) : ViewModel() {
 
-    private val _allCategories = MutableLiveData<Map<String, Category>>(emptyMap())
+    private val _allCategories = MutableLiveData<Map<String, Category>>(LinkedHashMap())
     val allCategories: LiveData<Map<String, Category>> = _allCategories
 
     fun loadAllCategories() {
@@ -43,11 +42,9 @@ class CategoryViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    categoryDao.upsertCategory(category);
+                    categoryDao.upsertCategory(category)
                     viewModelScope.launch {
                         withContext(Dispatchers.Main) {
-                            //TODO inutile?
-                            _allCategories.value = _allCategories.value?.plus(Pair(category.identifier, category))
                             invalidateCategoriesAndReload()
                             onSuccess()
                         }
@@ -74,8 +71,6 @@ class CategoryViewModel @Inject constructor(
                 try {
                     categoryDao.deleteCategory(category)
                     withContext(Dispatchers.Main) {
-                        //TODO inutile?
-                        _allCategories.value = _allCategories.value?.minus(category.identifier)
                         invalidateCategoriesAndReload()
                         onSuccess()
                     }
