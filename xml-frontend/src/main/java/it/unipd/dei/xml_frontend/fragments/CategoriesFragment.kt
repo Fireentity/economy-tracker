@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
@@ -40,7 +39,6 @@ class CategoriesFragment : Fragment() {
         )
         val categoriesRecyclerView: RecyclerView =
             view.findViewById(R.id.all_categories_recyclerview)
-        categoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val floatingActionButton: View = view.findViewById(R.id.show_add_category_dialog_button)
         val showAddCategoryDialogButton = ShowAddCategoryDialogButton(
@@ -60,7 +58,6 @@ class CategoriesFragment : Fragment() {
         }
 
         val searchRecyclerView: RecyclerView = view.findViewById(R.id.search_results_recyclerview)
-        searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val searchRecyclerViewAdapter = CategoryCardAdapter(
             emptyList(),

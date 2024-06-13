@@ -14,7 +14,7 @@ class ShowAddCategoryDialogButton(
     private val addCategoryDialog = UpsertCategoryDialog(
         categoryViewModel,
         dialogView, fragmentContext,
-        fragmentContext.getString(R.string.new_category_title)
+        fragmentContext.getString(R.string.create_category)
     )
 
     override fun onClick() {

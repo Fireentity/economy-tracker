@@ -42,11 +42,11 @@ class UpsertCategoryButton(
         categoryViewModel.upsertCategory(
             newCategory,
             {
-                DisplayToast.displaySuccess(fragmentContext)
+                DisplayToast.displayGeneric(fragmentContext, fragmentContext.getString(R.string.category_operation_successfully_executed))
                 onClickRunnable()
             },
             {
-                DisplayToast.displayFailure(fragmentContext)
+                DisplayToast.displayGeneric(fragmentContext, fragmentContext.getString(R.string.category_operation_failed))
                 onClickRunnable()
             }
         )

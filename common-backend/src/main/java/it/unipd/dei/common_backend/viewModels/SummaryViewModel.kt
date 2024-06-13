@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.unipd.dei.common_backend.daos.MovementDao
-import it.unipd.dei.common_backend.daos.SummaryCardDao
+import it.unipd.dei.common_backend.daos.SummaryDao
 import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.DateHelper
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
-    private val summaryCardDao: SummaryCardDao,
+    private val summaryDao: SummaryDao,
     private val movementDao: MovementDao
 ) : ViewModel() {
     private val _allSummaryCards = MutableLiveData<List<Summary>>(emptyList())
@@ -32,7 +32,7 @@ class SummaryViewModel @Inject constructor(
                 )
                 val summaries: MutableList<Summary> = mutableListOf()
                 for (month in months) {
-                    val summaryCard = summaryCardDao.getSummaryCards(
+                    val summaryCard = summaryDao.getSummaryCards(
                         month.startDate,
                         month.endDate,
                         month.month,

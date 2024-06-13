@@ -21,7 +21,7 @@ materialVersion = "1.7.0"
 navigationUiKtx = "2.7.7"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.6.7"
-material3Android = "1.2.1"
+material3Android = "1.3.0-beta03"
 
 [libraries]
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }

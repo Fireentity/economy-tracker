@@ -8,12 +8,14 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
+import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
+import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
 @Composable
-fun RevenuesTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categoryViewModel: CategoryViewModel) {
+fun RevenuesTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categoryViewModel: CategoryViewModel, summary: Summary) {
     movementWithCategoryViewModel.loadInitialMovementsByCategory()
     val movements by movementWithCategoryViewModel.getPositiveMovements()
         .observeAsState(initial = emptyList())
@@ -29,6 +31,9 @@ fun RevenuesTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, ca
         if (reachedBottom) movementWithCategoryViewModel.loadSomePositiveMovementsByCategory { }
     }
     LazyColumn(state = listState) {
+        item {
+            SummaryCard(summary = summary)
+        }
         items(movements.size) { index ->
             MovementCard(
                 movements[index],

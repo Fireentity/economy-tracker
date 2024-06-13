@@ -4,16 +4,7 @@ package it.unipd.dei.jetpack_compose_frontend.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -23,25 +14,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
+import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
-import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddMovementDialogButton
-import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
 import it.unipd.dei.jetpack_compose_frontend.ui.input.CategoryFilterInput
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.AllTab
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.ExpensesTab
@@ -52,7 +34,8 @@ import it.unipd.dei.jetpack_compose_frontend.ui.tabs.RevenuesTab
 @Composable
 fun RegisterScreen(
     categoryViewModel: CategoryViewModel,
-    movementWithCategoryViewModel: MovementWithCategoryViewModel
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summary: Summary
 ) {
     Surface {
         Scaffold(
@@ -123,17 +106,22 @@ fun RegisterScreen(
                 when (selectedTabIndex) {
                     0 -> RevenuesTab(
                         movementWithCategoryViewModel = movementWithCategoryViewModel,
-                        categoryViewModel = categoryViewModel
+                        categoryViewModel = categoryViewModel,
+                        summary
                     )
 
                     1 -> AllTab(
                         movementWithCategoryViewModel = movementWithCategoryViewModel,
-                        categoryViewModel = categoryViewModel
+                        categoryViewModel = categoryViewModel,
+                        summary
+
                     )
 
                     2 -> ExpensesTab(
                         movementWithCategoryViewModel = movementWithCategoryViewModel,
-                        categoryViewModel = categoryViewModel
+                        categoryViewModel = categoryViewModel,
+                        summary
+
                     )
                 }
             }

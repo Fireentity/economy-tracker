@@ -25,7 +25,6 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.summary_cards_recyclerview)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val summaryCardAdapter = SummaryCardAdapter(emptyList(), requireContext())
         recyclerView.adapter = summaryCardAdapter
         summaryViewModel.allSummary.observe(viewLifecycleOwner){

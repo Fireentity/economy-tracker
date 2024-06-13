@@ -31,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.common_backend.viewModels.TestViewModel
 
 
@@ -52,7 +53,8 @@ fun AppScreen(
     navController: NavHostController = rememberNavController(),
     testViewModel: TestViewModel = hiltViewModel(),
     categoryViewModel: CategoryViewModel = hiltViewModel(),
-    movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel()
+    movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel(),
+    summaryViewModel: SummaryViewModel = hiltViewModel()
 ) {
     testViewModel.createDummyDataIfNoMovement()
     categoryViewModel.loadAllCategories()
@@ -117,11 +119,11 @@ fun AppScreen(
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable(route = AppScreen.entries[0].name) {
-                    HomeScreen(modifier = Modifier.fillMaxSize())
+                    HomeScreen(summaryViewModel)
                 }
 
                 composable(route = AppScreen.entries[1].name) {
-                    RegisterScreen(categoryViewModel, movementWithCategoryViewModel)
+                    RegisterScreen(categoryViewModel, movementWithCategoryViewModel, summaryViewModel.allSummary.value!![0])
                 }
 
                 composable(route = AppScreen.entries[2].name) {

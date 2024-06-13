@@ -6,7 +6,7 @@ import androidx.room.Transaction
 import it.unipd.dei.common_backend.models.Summary
 
 @Dao
-interface SummaryCardDao {
+interface SummaryDao {
     @Transaction
     @Query("""
         SELECT 

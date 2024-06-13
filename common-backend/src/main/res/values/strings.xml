@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="january">Gennaio</string>
+    <string name="february">Febbraio</string>
+    <string name="march">Marzo</string>
+    <string name="april">Aprile</string>
+    <string name="may">Maggio</string>
+    <string name="june">Giugno</string>
+    <string name="july">Luglio</string>
+    <string name="august">Agosto</string>
+    <string name="september">Settembre</string>
+    <string name="october">Ottobre</string>
+    <string name="november">Novembre</string>
+    <string name="december">Dicembre</string>
+    <string name="great_job_this_month_you_earned">Ottimo lavoro! Questo mese hai guadagnato %1$.2f %2$s</string>
+    <string name="fantastic_your_monthly_earnings_are">Fantastico! I tuoi guadagni mensili ammontano a %1$.2f %2$s</string>
+    <string name="congratulations_you_have_accumulated">Congratulazioni! Hai accumulato ben %1$.2f %2$s</string>
+    <string name="excellent_you_have_taken_home">Eccellente! Hai portato a casa %1.2f %2$s</string>
+    <string name="super_your_earnings_this_month_have_been">Super! Il tuo guadagno di questo mese è stato di %1$.2f %2$s</string>
+    <string name="watch_out_for_expenses_this_month_you_spent">Attenzione alle spese! Questo mese hai speso %1$.2f %2$s</string>
+    <string name="your_monthly_costs_have_been">I tuoi costi mensili sono stati %1$.2f %2$s</string>
+    <string name="remember_to_watch_your_expenses_they_amount_to">Ricorda di tenere d\'occhio le tue spese: ammontano a %1$.2f %2$s</string>
+    <string name="your_expenses_this_month_have_been">Le tue uscite questo mese sono state di %1$.2f %2$s</string>
+    <string name="control_your_expenses_you_spent">Controlla le tue spese, hai speso %1$.2f %2$s</string>
+    <string name="the_net_total_for_the_month_is">Il totale netto per il mese è %1$.2f %2$s</string>
+    <string name="the_overall_monthly_balance_is">Il saldo mensile complessivo è %1$.2f %2$s</string>
+    <string name="the_final_result_for_this_month_is">Il risultato finale di questo mese è %1$.2f %2$s</string>
+    <string name="the_balance_for_this_month_is">Il bilancio di questo mese è %1$.2f %2$s</string>
+    <string name="the_total_for_your_finances_this_month_is">Il totale delle tue finanze per questo mese è %1$.2f %2$s</string>
+    <string name="month_date">%1$s %2$s</string>
+</resources>

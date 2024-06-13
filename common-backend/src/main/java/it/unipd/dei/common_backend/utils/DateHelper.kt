@@ -1,35 +1,25 @@
 package it.unipd.dei.common_backend.utils
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.Context
 import android.text.format.DateFormat
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import it.unipd.dei.common_backend.models.MonthInfo
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.Month
 import java.util.Calendar
 import java.util.GregorianCalendar
 import java.util.Locale
 
 object DateHelper {
 
-    fun getMonthStartInMilliseconds(month: Int, year: Int): Long {
-        val calendar = GregorianCalendar()
-
-        // Imposta il calendario al primo giorno del mese specificato e all'inizio del giorno
-        calendar.set(year, month - 1, 1, 0, 0, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        return calendar.timeInMillis
+    fun isMonthCurrent(month: Month, year: Int): Boolean {
+        return getMonthEndInMilliseconds(
+            month,
+            year
+        ) > System.currentTimeMillis()
     }
 
-    fun getMonthEndInMilliseconds(month: Int, year: Int): Long {
-        val calendar = GregorianCalendar(year, month - 1, 1, 23, 59, 59)
+    fun getMonthEndInMilliseconds(month: Month, year: Int): Long {
+        val calendar = GregorianCalendar(year, month.value, 1, 23, 59, 59)
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
         calendar.set(Calendar.MILLISECOND, 999)
         return calendar.timeInMillis
@@ -69,7 +59,7 @@ object DateHelper {
                 MonthInfo(
                     startDate = currentStartMillis,
                     endDate = currentEndMillis,
-                    month = startCalendar.get(Calendar.MONTH) + 1,
+                    month = startCalendar.get(Calendar.MONTH),
                     year = startCalendar.get(Calendar.YEAR)
                 )
             )
@@ -102,69 +92,5 @@ object DateHelper {
     fun convertFromMillisecondsToDateTime(milliseconds: Long): String {
         return DateFormat.format("dd/MM/yyyy hh:mm", milliseconds)
             .toString()
-    }
-
-    fun selectDateTime(
-        context: Context,
-        fragmentManager: FragmentManager,
-        onDismiss: () -> Unit = {},
-        callback: (String) -> Unit
-    ) {
-        showDateTimePickerDialog(context, callback, fragmentManager, onDismiss)
-    }
-
-    private fun showDateTimePickerDialog(
-        context: Context,
-        callback: (String) -> Unit,
-        fragmentManager: FragmentManager,
-        onDismiss: () -> Unit = {}
-    ) {
-        val calendar = Calendar.getInstance()
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select Date")
-            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-            .build()
-
-        datePicker.addOnPositiveButtonClickListener { selection ->
-            val selectedDate = calendar.apply {
-                timeInMillis = selection
-            }
-            val formattedDate = String.format(
-                "%02d/%02d/%04d",
-                selectedDate.get(Calendar.DAY_OF_MONTH),
-                selectedDate.get(Calendar.MONTH) + 1,
-                selectedDate.get(Calendar.YEAR)
-            )
-            showTimePickerDialog(formattedDate, context, fragmentManager, callback)
-        }
-
-        datePicker.addOnDismissListener {
-            onDismiss()
-        }
-
-        datePicker.show(fragmentManager, "MATERIAL_DATE_PICKER")
-    }
-
-    private fun showTimePickerDialog(
-        selectedDate: String,
-        context: Context,
-        fragmentManager: FragmentManager,
-        callback: (String) -> Unit
-    ) {
-        val calendar = Calendar.getInstance()
-        val timePicker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(calendar.get(Calendar.HOUR_OF_DAY))
-            .setMinute(calendar.get(Calendar.MINUTE))
-            .setTitleText("Select Time")
-            .build()
-
-        timePicker.addOnPositiveButtonClickListener {
-            val selectedTime = String.format("%02d:%02d", timePicker.hour, timePicker.minute)
-            val selectedDateTime = "$selectedDate $selectedTime"
-            callback(selectedDateTime)
-        }
-
-        timePicker.show(fragmentManager, "MATERIAL_TIME_PICKER")
     }
 }

@@ -15,9 +15,9 @@ class CategoryDropdownMenu(
     private val context: Context
 ) {
     private var selectedCategoryIdentifier: String =
-        context.getString(R.string.all_categories_identifier)
+        context.getString(R.string.all)
     init {
-        val allCategoryIdentifier = context.getString(R.string.all_categories_identifier)
+        val allCategoryIdentifier = context.getString(R.string.all)
         categoryViewModel.allCategories.value?.let {
             autoCompleteTextView.setSimpleItems(
                 arrayOf(allCategoryIdentifier) + it.keys.toTypedArray()

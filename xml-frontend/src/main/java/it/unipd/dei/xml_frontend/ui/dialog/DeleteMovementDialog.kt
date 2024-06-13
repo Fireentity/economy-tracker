@@ -20,15 +20,22 @@ class DeleteMovementDialog(
     init {
         alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setTitle(fragmentContext.resources.getString(R.string.delete_movement))
-            .setMessage(fragmentContext.resources.getString(R.string.movement_deletion_confirmation))
+            .setMessage(fragmentContext.resources.getString(R.string.are_you_sure_you_want_to_delete_this_movement))
             .setNeutralButton(fragmentContext.resources.getString(R.string.cancel)) { _, _ -> }
             .setPositiveButton(fragmentContext.resources.getString(R.string.confirm)) { _, _ ->
                 movementWithCategoryViewModel.deleteMovement(
                     movement,
                     {
-                        DisplayToast.displaySuccess(fragmentContext)
+                        DisplayToast.displayGeneric(
+                            fragmentContext,
+                            fragmentContext.getString(R.string.movement_deleted_successfully)
+                        )
                     },
-                    { DisplayToast.displayFailure(fragmentContext) }
+                    {
+                        DisplayToast.displayGeneric(
+                            fragmentContext,
+                            fragmentContext.getString(R.string.category_deleted_successfully)
+                        )                    }
                 )
             }
             .create()

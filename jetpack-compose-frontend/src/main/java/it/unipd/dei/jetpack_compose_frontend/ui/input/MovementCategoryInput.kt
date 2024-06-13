@@ -12,7 +12,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.jetpack_compose_frontend.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,6 +24,10 @@ fun MovementCategoryInput(
     categoryViewModel: CategoryViewModel
 ) {
     var error by remember { mutableStateOf(false) }
+    val onChange: (String) -> Unit = {
+        onCategoryChange(it)
+        error = categoryViewModel.getCategoryByIdentifier(it) == null
+    }
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -31,10 +37,9 @@ fun MovementCategoryInput(
             modifier = Modifier.menuAnchor(),
             value = category,
             onValueChange = {
-                onCategoryChange(it)
-                error = categoryViewModel.getCategoryByIdentifier(it) == null
+                onChange(it)
             },
-            label = { Text("Label") },
+            label = { Text(stringResource(id = R.string.category)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
@@ -55,7 +60,7 @@ fun MovementCategoryInput(
                     modifier = Modifier.menuAnchor(),
                     text = { Text(text = selectionOption) },
                     onClick = {
-                        onCategoryChange(selectionOption)
+                        onChange(selectionOption)
                         expanded = false
                     }
                 )

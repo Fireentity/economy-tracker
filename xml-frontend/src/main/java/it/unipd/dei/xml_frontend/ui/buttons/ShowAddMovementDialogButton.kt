@@ -24,7 +24,7 @@ class ShowAddMovementDialogButton(
         dialogView,
         fragmentContext,
         lifecycleOwner,
-        fragmentContext.getString(R.string.new_movement_title),
+        fragmentContext.getString(R.string.create_movement),
         fragmentManager
     )
 

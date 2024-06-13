@@ -20,10 +20,7 @@ abstract class RegisterTab(
     }
 
     init {
-        recyclerView.apply {
-            adapter = movementCardAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
+        recyclerView.adapter = movementCardAdapter
         this.observeViewModel(lifecycleOwner)
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -41,12 +38,11 @@ abstract class RegisterTab(
                 }
             }
         })
+
         loading = true
         this.loadSomeMovementsByCategory {
             loading = false
         }
-
-
     }
 
 

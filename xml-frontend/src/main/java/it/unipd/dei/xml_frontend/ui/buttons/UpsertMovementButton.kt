@@ -5,6 +5,7 @@ import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.xml_frontend.R
 
 class UpsertMovementButton(
     private val movementBuilder: MovementBuilder,
@@ -19,11 +20,11 @@ class UpsertMovementButton(
             movementWithCategoryViewModel.upsertMovement(
                 it,
                 {
-                    DisplayToast.displaySuccess(fragmentContext)
+                    DisplayToast.displayGeneric(fragmentContext, fragmentContext.getString(R.string.movement_operation_successfully_executed))
                     onClickRunnable()
                 },
                 {
-                    DisplayToast.displayFailure(fragmentContext)
+                    DisplayToast.displayGeneric(fragmentContext, fragmentContext.getString(R.string.movement_operation_failed))
                     onClickRunnable()
                 }
             )

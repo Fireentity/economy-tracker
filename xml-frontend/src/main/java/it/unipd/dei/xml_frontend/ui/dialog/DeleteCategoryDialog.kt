@@ -21,14 +21,21 @@ class DeleteCategoryDialog(
         alertDialog = MaterialAlertDialogBuilder(fragmentContext).setTitle(
             fragmentContext.resources.getString(R.string.delete_category)
         )
-            .setMessage(fragmentContext.resources.getString(R.string.category_deletion_confirmation))
+            .setMessage(fragmentContext.resources.getString(R.string.are_you_sure_you_want_to_delete_this_category))
             .setNeutralButton(fragmentContext.resources.getString(R.string.cancel)) { _, _ -> }
             .setPositiveButton(fragmentContext.resources.getString(R.string.confirm)) { _, _ ->
                 categoryViewModel.deleteCategory(category, {
-                    DisplayToast.displaySuccess(fragmentContext)
+                    DisplayToast.displayGeneric(
+                        fragmentContext,
+                        fragmentContext.getString(R.string.category_deleted_successfully)
+                    )
                     categoryViewModel.invalidateCategoriesAndReload()
-                },
-                    { DisplayToast.displayFailure(fragmentContext) })
+                }, {
+                    DisplayToast.displayGeneric(
+                        fragmentContext,
+                        fragmentContext.getString(R.string.category_deletion_failed)
+                    )
+                })
             }.create()
     }
 

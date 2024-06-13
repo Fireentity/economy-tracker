@@ -49,7 +49,7 @@ class CategoryBottomSheetFragment(
             categoryViewModel,
             editCategoryDialogView,
             requireContext(),
-            getString(R.string.edit_category_title),
+            getString(R.string.edit_category),
             category,
         )
         showEditCategoryDialogButtonView.setOnClickListener {

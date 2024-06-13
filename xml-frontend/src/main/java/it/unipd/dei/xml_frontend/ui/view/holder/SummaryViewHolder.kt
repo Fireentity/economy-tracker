@@ -9,12 +9,13 @@ import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.common_backend.utils.TextGenerator
+import it.unipd.dei.common_backend.viewholder.ISummaryViewHolder
 import it.unipd.dei.xml_frontend.R
 
 class SummaryViewHolder(
     private val itemView: View,
     private val context: Context
-) {
+) : ISummaryViewHolder {
     private val allChip: Chip = itemView.findViewById(R.id.all_chip_summary_card)
     private val revenueChip: Chip = itemView.findViewById(R.id.revenue_chip_summary_card)
     private val expensesChip: Chip = itemView.findViewById(R.id.expense_chip_summary_card)
@@ -33,26 +34,32 @@ class SummaryViewHolder(
                 setTextColor(context.getColor(R.color.red_700))
                 chipBackgroundColor = ColorStateList.valueOf(context.getColor(R.color.red_100))
             }
-            text = String.format("%.2f", summary.monthlyAll)
+            text = context.getString(
+                R.string.monthly_total,
+                summary.monthlyNegative,
+                Constants.CURRENCY
+            )
         }
-        revenueChip.text = String.format("%.2f", summary.monthlyPositive)
-        expensesChip.text = String.format("%.2f", summary.monthlyNegative)
+        revenueChip.text = context.getString(
+            R.string.monthly_revenues,
+            summary.monthlyPositive,
+            Constants.CURRENCY
+        )
+        expensesChip.text = context.getString(
+            R.string.monthly_expenses,
+            summary.monthlyNegative,
+            Constants.CURRENCY
+        )
 
-        val monthOfYear = Constants.monthOf(summary.month) + " " + summary.year.toString()
+        val monthOfYear = this.readableDate(summary, context)
         titleTextView.text = monthOfYear
 
-        subTitleTextView.text =
-            if (DateHelper.getMonthEndInMilliseconds(
-                    summary.month,
-                    summary.year
-                ) > System.currentTimeMillis()
-            ) {
-                context.getString(R.string.how_is_it_going)
-            } else {
-                context.getString(R.string.how_did_it_go)
-            }
+        subTitleTextView.text = if (DateHelper.isMonthCurrent(summary.month, summary.year)
+        ) {
+            context.getString(R.string.how_is_it_going)
+        } else {
+            context.getString(R.string.how_did_it_go)
+        }
         descriptionTextView.text = TextGenerator.generateText(summary)
     }
-
-
 }

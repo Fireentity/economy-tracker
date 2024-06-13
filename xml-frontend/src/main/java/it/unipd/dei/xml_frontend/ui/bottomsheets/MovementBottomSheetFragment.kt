@@ -51,7 +51,7 @@ class MovementBottomSheetFragment(
                 editMovementDialogView,
                 requireContext(),
                 viewLifecycleOwner,
-                requireContext().getString(R.string.edit_movement_title),
+                requireContext().getString(R.string.edit_movement),
                 parentFragmentManager,
                 movement
             ).show()

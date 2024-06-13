@@ -4,33 +4,37 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import it.unipd.dei.common_backend.models.Summary
+import it.unipd.dei.common_backend.utils.Constants
+import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.jetpack_compose_frontend.R
+import it.unipd.dei.jetpack_compose_frontend.ui.viewholder.SummaryViewHolder
 
 @Composable
-fun SummaryCard() {
-    val arrowUpward = Icons.Filled.KeyboardArrowUp
-    val arrowDownward = Icons.Filled.KeyboardArrowUp
-    val stackedBarChart = Icons.Filled.KeyboardArrowUp
+fun SummaryCard(summary: Summary) {
+    val arrowUpward = ImageVector.vectorResource(id = R.drawable.baseline_trending_up_24)
+    val arrowDownward = ImageVector.vectorResource(id = R.drawable.baseline_trending_down_24)
+    val stackedBarChart = ImageVector.vectorResource(id = R.drawable.baseline_bar_chart_24)
+    val summaryViewHolder = SummaryViewHolder()
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp) // Or use CardDefaults.elevatedCardElevation()
     ) {
         Column(
             modifier = Modifier
@@ -38,7 +42,7 @@ fun SummaryCard() {
                 .padding(16.dp)
         ) {
             Text(
-                text = "Aprile 2024",
+                text = summaryViewHolder.readableDate(summary, context = LocalContext.current),
                 style = MaterialTheme.typography.titleMedium
             )
             Row(
@@ -47,58 +51,92 @@ fun SummaryCard() {
 
                 ElevatedAssistChip(
                     onClick = { /* Do nothing, as chip is not clickable */ },
-                    label = { Text("+200.000$") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = arrowUpward,
-                            contentDescription = "Positive",
-                            tint = Color(0xFF15803D)
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.monthly_total,
+                                summary.monthlyAll,
+                                Constants.CURRENCY
+                            )
                         )
                     },
-                    colors = AssistChipDefaults.assistChipColors().copy(containerColor = colorResource(
-                        id = R.color.green_100
-                    )),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = stackedBarChart,
+                            contentDescription = "Monthly revenues",
+                            tint = colorResource(id = R.color.green_700)
+                        )
+                    },
+                    colors = AssistChipDefaults.assistChipColors().copy(
+                        containerColor = colorResource(
+                            id = R.color.green_100
+                        )
+                    ),
                     modifier = Modifier.padding(end = 5.dp)
                 )
                 ElevatedAssistChip(
                     onClick = { /* Do nothing, as chip is not clickable */ },
-                    label = { Text("-200.000$") },
-                    leadingIcon = {
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.monthly_expenses,
+                                summary.monthlyNegative,
+                                Constants.CURRENCY
+                            )
+                        )
+                    },                    leadingIcon = {
                         Icon(
-                            imageVector = arrowUpward,
-                            contentDescription = "Negative",
-                            tint = Color(0xFFB91C1C)
+                            imageVector = arrowDownward,
+                            contentDescription = "Monthly expenses",
+                            tint = colorResource(id = R.color.red_700)
                         )
                     },
-                    colors = AssistChipDefaults.assistChipColors().copy(containerColor = colorResource(
-                        id = R.color.green_100
-                    )),
+                    colors = AssistChipDefaults.assistChipColors().copy(
+                        containerColor = colorResource(
+                            id = R.color.red_100
+                        )
+                    ),
                     modifier = Modifier.padding(horizontal = 5.dp)
                 )
                 ElevatedAssistChip(
                     onClick = { /* Do nothing, as chip is not clickable */ },
-                    label = { Text("-200.000$") },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.monthly_revenues,
+                                summary.monthlyPositive,
+                                Constants.CURRENCY
+                            )
+                        )
+                    },
                     leadingIcon = {
                         Icon(
                             imageVector = arrowUpward,
-                            contentDescription = "Chart",
-                            tint = Color(0xFFB91C1C)
+                            contentDescription = "Monthly revenues",
+                            tint = colorResource(id = R.color.green_700)
                         )
                     },
-                    colors = AssistChipDefaults.assistChipColors().copy(containerColor = colorResource(
-                        id = R.color.green_100
-                    )),
+                    colors = AssistChipDefaults.assistChipColors().copy(
+                        containerColor = colorResource(
+                            id = R.color.green_100
+                        )
+                    ),
                     modifier = Modifier.padding(start = 5.dp)
                 )
             }
             Text(
-                text = "Lorem ipsum",
+                text = if (DateHelper.isMonthCurrent(summary.month, summary.year)
+                ) {
+                    LocalContext.current.getString(R.string.how_is_it_going)
+                } else {
+                    LocalContext.current.getString(R.string.how_did_it_go)
+                },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 8.dp)
             )
             Text(
-                text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempor efficitur arcu et sagittis. Nulla vel est vel tortor varius varius. Vestibulum sollicitudin, tellus vel tincidun",
+                text = summaryViewHolder.summaryDescription(summary, LocalContext.current),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 16.dp)
