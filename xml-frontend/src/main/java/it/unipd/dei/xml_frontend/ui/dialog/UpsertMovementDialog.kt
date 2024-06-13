@@ -43,7 +43,7 @@ class UpsertMovementDialog(
     init {
         val inputFieldView: MaterialAutoCompleteTextView =
             view.findViewById(R.id.input_movement_category)
-        val updateMovementButton = UpsertMovementButton(
+        val upsertMovementButton = UpsertMovementButton(
             movementBuilder,
             categoryViewModel,
             movementWithCategoryViewModel,
@@ -77,7 +77,7 @@ class UpsertMovementDialog(
             .setView(view)
             .setPositiveButton(
                 R.string.confirm
-            ) { _, _ -> updateMovementButton.onClick() }
+            ) { _, _ -> upsertMovementButton.onClick() }
             .create()
 
         inputFieldView.setOnItemClickListener { parent, _, position, _ ->
@@ -88,7 +88,7 @@ class UpsertMovementDialog(
         }
 
         view.setOnClickListener {
-            updateMovementButton.onClick()
+            upsertMovementButton.onClick()
         }
     }
 
