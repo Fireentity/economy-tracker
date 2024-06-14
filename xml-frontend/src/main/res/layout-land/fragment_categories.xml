@@ -12,7 +12,7 @@
             android:id="@+id/all_categories_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="25dp"
+            android:paddingTop="150dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/searchbar_scrolling_view_behavior"
             app:layout_constraintTop_toBottomOf="@id/app_bar" />
