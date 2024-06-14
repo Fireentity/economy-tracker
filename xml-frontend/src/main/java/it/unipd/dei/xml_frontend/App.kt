@@ -16,6 +16,7 @@ class App: Application() {
     @Provides
     @Singleton
     fun provideApp(): App {
+
         return this;
     }
 

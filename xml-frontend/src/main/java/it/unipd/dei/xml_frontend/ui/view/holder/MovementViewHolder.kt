@@ -37,7 +37,7 @@ class MovementViewHolder(
         amountTextView.text = context.getString(
             R.string.amount,
             amount,
-            Constants.CURRENCY
+            Constants.CURRENCY.getSymbol(context.resources)
         )
         categoryTextView.text = movementWithCategory.category.identifier
         dateTextView.text =

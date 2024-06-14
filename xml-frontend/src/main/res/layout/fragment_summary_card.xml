@@ -31,8 +31,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/revenue_chip_summary_card"
@@ -49,6 +48,19 @@
                     app:chipIconTint="@color/green_700" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/all_chip_summary_card"
+                    style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:clickable="false"
+                    android:singleLine="true"
+                    android:textColor="@color/gray_700"
+                    app:chipBackgroundColor="@color/gray_100"
+                    app:chipIcon="@drawable/baseline_stacked_bar_chart_24"
+                    app:chipIconEnabled="true" />
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/expense_chip_summary_card"
                     style="@style/Widget.Material3.Chip.Suggestion.Elevated"
                     android:layout_width="wrap_content"
@@ -63,16 +75,6 @@
                     app:chipIconEnabled="true"
                     app:chipIconTint="@color/red_700" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/all_chip_summary_card"
-                    style="@style/Widget.Material3.Chip.Suggestion.Elevated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:clickable="false"
-                    android:singleLine="true"
-                    app:chipIcon="@drawable/baseline_stacked_bar_chart_24"
-                    app:chipIconEnabled="true" />
             </LinearLayout>
 
             <TextView
