@@ -18,6 +18,7 @@ interface SummaryDao {
             CAST(STRFTIME('%Y', datetime(date/1000, 'unixepoch')) AS INTEGER) AS year
         FROM movements
         GROUP BY month, year
+        ORDER BY year DESC, month DESC
     """
     )
     suspend fun getSummary(): List<Summary>

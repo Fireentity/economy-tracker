@@ -56,35 +56,6 @@ fun SummaryCard(summary: Summary) {
                     label = {
                         Text(
                             stringResource(
-                                R.string.monthly_total,
-                                summary.monthlyAll,
-                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = stackedBarChart,
-                            contentDescription = "Monthly revenues",
-                            tint = colorResource(id = R.color.green_700)
-                        )
-                    },
-                    colors = AssistChipDefaults.assistChipColors().copy(
-                        labelColor = colorResource(
-                            id = R.color.green_700
-                        ),
-                        containerColor = colorResource(
-                            id = R.color.green_100
-                        )
-                    ),
-                )
-                ElevatedAssistChip(
-                    onClick = { /* Do nothing, as chip is not clickable */ },
-                    label = {
-                        Text(
-                            stringResource(
                                 R.string.monthly_expenses,
                                 summary.monthlyNegative,
                                 Constants.CURRENCY.getSymbol(LocalContext.current.resources)
@@ -107,6 +78,35 @@ fun SummaryCard(summary: Summary) {
                             id = R.color.red_100
                         )
                     )
+                )
+                ElevatedAssistChip(
+                    onClick = { /* Do nothing, as chip is not clickable */ },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.monthly_total,
+                                summary.monthlyAll,
+                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = stackedBarChart,
+                            contentDescription = "Monthly all",
+                            tint = colorResource(id = R.color.gray_700)
+                        )
+                    },
+                    colors = AssistChipDefaults.assistChipColors().copy(
+                        labelColor = colorResource(
+                            id = R.color.gray_700
+                        ),
+                        containerColor = colorResource(
+                            id = R.color.gray_100
+                        )
+                    ),
                 )
                 ElevatedAssistChip(
                     onClick = { /* Do nothing, as chip is not clickable */ },
