@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.SummaryCardAdapter
-import androidx.fragment.app.activityViewModels
-import it.unipd.dei.xml_frontend.ui.buttons.ShowSettingsIconButton
-import it.unipd.dei.xml_frontend.ui.dialog.SettingsDialog
+import it.unipd.dei.xml_frontend.ui.buttons.ShowSettingsDialogButton
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -35,14 +33,14 @@ class HomeFragment : Fragment() {
 
         val settingsDialogView = inflater.inflate(R.layout.fragment_settings_dialog, container, false)
 
-        val showSettingsIconButton = ShowSettingsIconButton(
+        val showSettingsDialogButton = ShowSettingsDialogButton(
             requireActivity(),
             requireContext(),
             settingsDialogView
         )
         val settingsIcon = view.findViewById<View>(R.id.settings_icon_button)
         settingsIcon.setOnClickListener {
-            showSettingsIconButton.onClick()
+            showSettingsDialogButton.onClick()
         }
 
         return view

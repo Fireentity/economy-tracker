@@ -29,6 +29,7 @@ class DeleteCategoryDialog(
                 categoryViewModel.deleteCategory(
                     category,
                     movementWithCategoryViewModel,
+                    summaryViewModel,
                     {
                         DisplayToast.displayGeneric(
                             fragmentContext,
