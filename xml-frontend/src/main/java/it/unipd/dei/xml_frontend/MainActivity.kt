@@ -14,15 +14,11 @@ import it.unipd.dei.common_backend.database.BalanceDatabase
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.TestViewModel
+import it.unipd.dei.xml_frontend.fragments.RegisterFragment.Companion.DEFAULT_TAB_SELECTED
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    private val testViewModel: TestViewModel by viewModels()
-    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
-    private val categoryViewModel: CategoryViewModel by viewModels()
-
 
     @Inject
     lateinit var database: BalanceDatabase
@@ -35,5 +31,16 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController: NavController = navHostFragment.findNavController();
         bottomNavigationView.setupWithNavController(navController)
+
+        val sharedPref = getPreferences(MODE_PRIVATE)
+
+        try {
+            val isDarkModeEnable =
+                sharedPref.getBoolean(getString(R.string.is_dark_mode_enable), false)
+            if(isDarkModeEnable){
+                setTheme(R.style.Theme_EconomyTracker_Dark)
+            }
+        } catch (_: ClassCastException) {
+        }
     }
 }

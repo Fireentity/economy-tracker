@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import it.unipd.dei.common_backend.models.MovementWithCategory
+import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
@@ -16,7 +17,7 @@ import it.unipd.dei.xml_frontend.ui.bottomsheets.MovementBottomSheetFragment
 class MovementViewHolder(
     private val itemView: View,
     private val parentFragmentManager: FragmentManager
-)  {
+) {
     private val categoryTextView: TextView = itemView.findViewById(R.id.movement_card_category)
     private val amountTextView: TextView = itemView.findViewById(R.id.movement_card_amount)
     private val dateTextView: TextView = itemView.findViewById(R.id.movement_card_date)
@@ -33,7 +34,11 @@ class MovementViewHolder(
     ) {
 
         val amount = movementWithCategory.movement.amount
-        amountTextView.text = amount.toString()
+        amountTextView.text = context.getString(
+            R.string.amount,
+            amount,
+            Constants.CURRENCY
+        )
         categoryTextView.text = movementWithCategory.category.identifier
         dateTextView.text =
             DateFormat.format("dd/MM/yyyy hh:mm", movementWithCategory.movement.date)
@@ -41,7 +46,8 @@ class MovementViewHolder(
 
         if (amount > 0) {
             imageView.setImageResource(R.drawable.baseline_trending_up_24)
-            imageView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.green_100))
+            imageView.backgroundTintList =
+                ColorStateList.valueOf(context.getColor(R.color.green_100))
             imageView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.green_700))
         } else if (amount < 0) {
             imageView.setImageResource(R.drawable.baseline_trending_down_24)

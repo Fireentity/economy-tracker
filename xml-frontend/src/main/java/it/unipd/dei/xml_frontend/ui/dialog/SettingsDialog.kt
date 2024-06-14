@@ -17,15 +17,11 @@ import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.fragments.RegisterFragment.Companion.DEFAULT_TAB_SELECTED
 
 class SettingsDialog(
-    activity: Activity,
+    private val activity: Activity,
     private val fragmentContext: Context,
     dialogView: View
 ) : IDialog {
-    private val alertDialog: AlertDialog = MaterialAlertDialogBuilder(fragmentContext)
-        .setTitle(fragmentContext.getString(R.string.settings))
-        .setView(dialogView)
-        .setMessage(fragmentContext.getString(R.string.changes_will_be_valid_at_next_opening))
-        .create()
+    private val alertDialog: AlertDialog
     private val textView: TextView = dialogView.findViewById(R.id.theme_text)
     private val switchView: MaterialSwitch = dialogView.findViewById(R.id.theme_switch)
     private val dollarButton: MaterialButton = dialogView.findViewById(R.id.button_dollar)
@@ -36,8 +32,16 @@ class SettingsDialog(
     private var selectedCurrency: Currency? = null
 
     init {
-
+        alertDialog = MaterialAlertDialogBuilder(fragmentContext)
+            .setTitle(fragmentContext.getString(R.string.settings))
+            .setView(dialogView)
+            .setMessage(fragmentContext.getString(R.string.changes_will_be_valid_at_next_opening))
+            .setOnDismissListener {
+                saveSharedPreferences()
+            }
+            .create()
         val sharedPref = activity.getPreferences(MODE_PRIVATE)
+        var isDarkModeEnable = false
         sharedPref?.let {
             try {
                 selectedCurrency = Currency.fromInt(
@@ -46,6 +50,8 @@ class SettingsDialog(
                         Currency.EURO.value
                     )
                 )
+                isDarkModeEnable =
+                    sharedPref.getBoolean(fragmentContext.getString(R.string.is_dark_mode_enable), false)
             } catch (_: ClassCastException) {
             }
         }
@@ -55,6 +61,10 @@ class SettingsDialog(
             Currency.DOLLAR -> dollarButton.isChecked = true
             Currency.POUND -> poundButton.isChecked = true
             null -> {}
+        }
+
+        if(isDarkModeEnable) {
+            switchView.isChecked = true
         }
 
 
@@ -70,6 +80,41 @@ class SettingsDialog(
         }
 
 
+    }
+
+    private fun saveSharedPreferences() {
+
+        val sharedPref = activity.getPreferences(MODE_PRIVATE)
+        if (sharedPref == null) {
+            DisplayToast.displayGeneric(
+                fragmentContext,
+                fragmentContext.getString(R.string.settings_update_failed)
+            )
+            return
+        }
+        if (selectedCurrency == null) {
+            DisplayToast.displayGeneric(
+                fragmentContext,
+                fragmentContext.getString(R.string.settings_update_failed)
+            )
+            return
+        }
+
+        with(sharedPref.edit()) {
+            putInt(
+                fragmentContext.getString(R.string.saved_selected_currency),
+                selectedCurrency!!.value
+            )
+            putBoolean(
+                fragmentContext.getString(R.string.is_dark_mode_enable),
+                switchView.isChecked
+            )
+            apply()
+        }
+        DisplayToast.displayGeneric(
+            fragmentContext,
+            fragmentContext.getString(R.string.settings_update_successful)
+        )
     }
 
     override fun getFragmentContext(): Context = fragmentContext
