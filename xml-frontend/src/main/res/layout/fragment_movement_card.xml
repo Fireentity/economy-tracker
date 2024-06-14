@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/circle"
-            android:contentDescription="Stonks or Not stonks"
+            android:contentDescription="@string/movement_card_icon"
             android:padding="10dp"
             android:src="@drawable/baseline_trending_up_24"
             app:layout_constraintLeft_toLeftOf="parent"

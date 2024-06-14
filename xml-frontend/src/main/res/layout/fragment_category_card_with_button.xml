@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/open_category_option"
             android:padding="24dp"
             android:src="@drawable/baseline_arrow_forward_ios_24"
             app:layout_constraintBottom_toBottomOf="@id/category_card"
