@@ -43,6 +43,7 @@ fun UpsertMovementDialog(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
     summaryViewModel: SummaryViewModel,
+    title: String,
     movement: MovementWithCategory? = null,
     onDismiss: () -> Unit = {},
 ) {
@@ -69,7 +70,7 @@ fun UpsertMovementDialog(
             ) {
                 Text(
                     style = MaterialTheme.typography.titleMedium,
-                    text = stringResource(R.string.create_movement),
+                    text = title,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 OutlinedTextField(

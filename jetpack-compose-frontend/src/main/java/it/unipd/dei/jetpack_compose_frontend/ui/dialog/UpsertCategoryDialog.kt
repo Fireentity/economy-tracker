@@ -36,6 +36,7 @@ import java.util.UUID
 fun UpsertCategoryDialog(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    title: String,
     onDismiss: () -> Unit = {},
     category: Category? = null
 ) {
@@ -64,8 +65,7 @@ fun UpsertCategoryDialog(
                     modifier = Modifier.padding(24.dp)
                 ) {
                     Text(
-                        //TODO fix here
-                        text = stringResource(R.string.create_category),
+                        text = title,
                         style = MaterialTheme.typography.titleMedium
                     )
 

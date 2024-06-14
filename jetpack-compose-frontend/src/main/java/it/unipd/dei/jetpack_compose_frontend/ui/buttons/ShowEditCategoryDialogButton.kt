@@ -57,6 +57,7 @@ fun ShowEditCategoryDialogButton(
         UpsertCategoryDialog(
             categoryViewModel,
             movementWithCategoryViewModel,
+            stringResource(id = R.string.edit_category),
             { showEditCategoryDialog = false },
             category
         )

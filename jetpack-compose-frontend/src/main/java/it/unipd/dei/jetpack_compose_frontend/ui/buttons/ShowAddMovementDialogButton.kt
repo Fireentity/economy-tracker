@@ -9,9 +9,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
+import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.dialog.UpsertMovementDialog
 
 @Composable
@@ -30,7 +32,8 @@ fun ShowAddMovementDialogButton(
         UpsertMovementDialog(
             categoryViewModel,
             movementWithCategoryViewModel,
-            summaryViewModel
+            summaryViewModel,
+            stringResource(id = R.string.create_movement)
         ) { showDialog = false }
     }
 }

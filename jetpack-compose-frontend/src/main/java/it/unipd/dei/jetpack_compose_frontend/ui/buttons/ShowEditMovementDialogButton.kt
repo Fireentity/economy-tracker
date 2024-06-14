@@ -60,6 +60,7 @@ fun ShowEditMovementDialogButton(
             categoryViewModel,
             movementWithCategoryViewModel,
             summaryViewModel,
+            stringResource(id = R.string.edit_movement),
             movement,
         ) { showEditMovementDialog = false }
     }
