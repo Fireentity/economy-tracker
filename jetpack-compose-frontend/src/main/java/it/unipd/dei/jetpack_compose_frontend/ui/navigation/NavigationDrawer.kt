@@ -20,7 +20,11 @@ import androidx.navigation.NavHostController
 import it.unipd.dei.jetpack_compose_frontend.R
 
 @Composable
-fun NavigationDrawer(drawerState: DrawerState, navController: NavHostController, content: @Composable () -> Unit) {
+fun NavigationDrawer(
+    drawerState: DrawerState,
+    navController: NavHostController,
+    content: @Composable () -> Unit
+) {
     val homeRoute = stringResource(id = R.string.home_route)
     val categoriesRoute = stringResource(id = R.string.categories_route)
     val registerRoute = stringResource(id = R.string.register_route)
@@ -28,25 +32,49 @@ fun NavigationDrawer(drawerState: DrawerState, navController: NavHostController,
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
+                Column(
+                    modifier = Modifier.fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center
+                ) {
                     NavigationDrawerItem(
                         modifier = Modifier.padding(horizontal = 10.dp),
                         label = { Text(text = stringResource(id = R.string.home)) },
-                        icon = { Icon(imageVector = ImageVector.vectorResource(id = R.drawable.baseline_home_24), contentDescription = "") },
+                        icon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_home_24),
+                                contentDescription = stringResource(
+                                    id = R.string.home
+                                )
+                            )
+                        },
                         selected = false,
                         onClick = { navController.navigate(homeRoute) }
                     )
                     NavigationDrawerItem(
                         modifier = Modifier.padding(horizontal = 10.dp),
                         label = { Text(text = stringResource(id = R.string.register)) },
-                        icon = { Icon(imageVector = ImageVector.vectorResource(id = R.drawable.baseline_bar_chart_24), contentDescription = "") },
+                        icon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_bar_chart_24),
+                                contentDescription = stringResource(
+                                    id = R.string.register
+                                )
+                            )
+                        },
                         selected = false,
                         onClick = { navController.navigate(registerRoute) }
                     )
                     NavigationDrawerItem(
                         modifier = Modifier.padding(horizontal = 10.dp),
                         label = { Text(text = stringResource(id = R.string.categories)) },
-                        icon = { Icon(imageVector = ImageVector.vectorResource(id = R.drawable.baseline_folder_open_24), contentDescription = "") },
+                        icon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_folder_open_24),
+                                contentDescription = stringResource(
+                                    id = R.string.categories
+                                )
+                            )
+                        },
                         selected = false,
                         onClick = { navController.navigate(categoriesRoute) }
                     )

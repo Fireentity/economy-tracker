@@ -72,4 +72,5 @@
     <string name="movement_card_icon">Icona della card del movimento</string>
     <string name="back">Indietro</string>
     <string name="categories_filter">Filtro per categorie</string>
+    <string name="drawer_button">Bottone per drawer</string>
 </resources>

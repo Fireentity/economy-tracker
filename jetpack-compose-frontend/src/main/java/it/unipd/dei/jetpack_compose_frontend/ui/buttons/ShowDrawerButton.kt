@@ -7,6 +7,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
+import it.unipd.dei.jetpack_compose_frontend.R
 import kotlinx.coroutines.launch
 
 @Composable
@@ -20,7 +22,6 @@ fun ShowDrawerButton(drawerState: DrawerState) {
             }
         }
     }) {
-        //TODO add content description
-        Icon(imageVector = Icons.Default.Menu, contentDescription = null)
+        Icon(imageVector = Icons.Default.Menu, contentDescription = stringResource(id = R.string.drawer_button))
     }
 }
