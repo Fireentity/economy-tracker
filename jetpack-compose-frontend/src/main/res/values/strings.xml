@@ -58,9 +58,9 @@
     <string name="saved_selected_theme">it.unipd.dei.economy-tracker.selected-theme</string>
     <string name="settings">Impostazioni</string>
 
-    <string name="choose_the_currency_for_your_movements">Scegli la valuta per i tuoi movimenti</string>
-    <string name="euro">Euro: </string>
-    <string name="dollar">Dollar: </string>
-    <string name="pound">Pound: </string>
+    <string name="choose_the_currency_for_your_movements">Scegli la valuta per i tuoi movimenti:</string>
+    <string name="euro">Euro</string>
+    <string name="dollar">Dollar</string>
+    <string name="pound">Pound</string>
     <string name="dark_mode">Dark mode:</string>
 </resources>
