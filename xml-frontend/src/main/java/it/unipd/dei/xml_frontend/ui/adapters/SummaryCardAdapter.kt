@@ -23,7 +23,6 @@ class SummaryCardAdapter(private var summaries: List<Summary>, private val conte
 
     fun updateSummaryCards(summaries: List<Summary>){
         this.summaries = summaries
-        //TODO check here
         notifyDataSetChanged()
     }
 

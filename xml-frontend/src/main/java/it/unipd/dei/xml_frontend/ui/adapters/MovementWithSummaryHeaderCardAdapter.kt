@@ -18,7 +18,6 @@ class MovementWithSummaryHeaderCardAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    //TODO check here
     private val _header = 0
     private val _item = 1
 
@@ -52,7 +51,6 @@ class MovementWithSummaryHeaderCardAdapter(
 
     fun updateMovements(movements: List<MovementWithCategory>){
         this.movements = movements
-        //TODO check here
         notifyDataSetChanged()
     }
 

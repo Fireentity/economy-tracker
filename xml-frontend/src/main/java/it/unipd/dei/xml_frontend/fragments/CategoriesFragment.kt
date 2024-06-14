@@ -73,7 +73,6 @@ class CategoriesFragment : Fragment() {
 
         SearchInput(
             view.findViewById(R.id.search_view),
-            view.findViewById(R.id.search_bar),
             searchRecyclerViewAdapter,
             categoryViewModel,
             viewLifecycleOwner
