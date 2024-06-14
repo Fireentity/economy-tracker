@@ -63,4 +63,7 @@
     <string name="dollar">Dollar</string>
     <string name="pound">Pound</string>
     <string name="dark_mode">Dark mode:</string>
+    <string name="home_route">home</string>
+    <string name="register_route">register</string>
+    <string name="categories_route">categories</string>
 </resources>

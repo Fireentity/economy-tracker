@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -22,12 +23,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
+import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowDrawerButton
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowSettingsDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(summaryViewModel: SummaryViewModel, sharedPreferences: SharedPreferences) {
+fun HomeScreen(summaryViewModel: SummaryViewModel, sharedPreferences: SharedPreferences, drawerState: DrawerState) {
     Surface {
         Scaffold(
             topBar = {
@@ -45,6 +47,7 @@ fun HomeScreen(summaryViewModel: SummaryViewModel, sharedPreferences: SharedPref
                     },
                     actions = {
                         ShowSettingsDialogButton(sharedPreferences = sharedPreferences)
+                        ShowDrawerButton(drawerState = drawerState)
                     }
                 )
             },

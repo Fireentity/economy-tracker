@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -27,11 +28,11 @@ import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddMovementDialogButton
+import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowDrawerButton
 import it.unipd.dei.jetpack_compose_frontend.ui.input.CategoryFilterInput
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.AllTab
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.ExpensesTab
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.RevenuesTab
-import kotlinx.coroutines.withContext
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +41,8 @@ fun RegisterScreen(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
     summaryViewModel: SummaryViewModel,
-    preferences: SharedPreferences
+    preferences: SharedPreferences,
+    drawerState: DrawerState
 ) {
     val selectedTabPreferenceKey = stringResource(R.string.saved_selected_tab);
     Surface {
@@ -63,6 +65,7 @@ fun RegisterScreen(
                             movementWithCategoryViewModel = movementWithCategoryViewModel,
                             categoryViewModel = categoryViewModel
                         )
+                        ShowDrawerButton(drawerState = drawerState)
                     }
                 )
             },

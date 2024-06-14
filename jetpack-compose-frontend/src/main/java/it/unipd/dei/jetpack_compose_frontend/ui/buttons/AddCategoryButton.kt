@@ -16,7 +16,7 @@ fun AddCategoryButton(
     category: Category,
     onSuccess: () -> Unit,
     onFailure: () -> Unit,
-    categoryViewMode: CategoryViewModel,
+    categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel
 ) {
     val context = LocalContext.current
@@ -25,11 +25,15 @@ fun AddCategoryButton(
     val categoryCreationFailed = stringResource(R.string.category_operation_failed)
     TextButton(onClick = {
 
+        if(categoryViewModel.getCategoryByIdentifier(category.identifier) != null) {
+            return@TextButton
+        }
+
         if(category.identifier.isEmpty()) {
             return@TextButton
         }
 
-        categoryViewMode.upsertCategory(
+        categoryViewModel.upsertCategory(
             Category(
                 category.uuid,
                 category.identifier,

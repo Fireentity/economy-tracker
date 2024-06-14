@@ -1,9 +1,11 @@
 package it.unipd.dei.jetpack_compose_frontend.ui
 
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -11,6 +13,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -18,6 +21,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,6 +36,7 @@ import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.common_backend.viewModels.TestViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
+import it.unipd.dei.jetpack_compose_frontend.ui.navigation.NavigationDrawer
 
 
 @Composable
@@ -52,22 +57,22 @@ fun AppScreen(
 
     val bottomNavigationIcons = listOf(
         BottomNavigationItem(
-            route = "home",
+            route = stringResource(id = R.string.home_route),
             title = stringResource(id = R.string.home),
             icon = R.drawable.baseline_home_24
         ),
         BottomNavigationItem(
-            route = "register",
+            route = stringResource(id = R.string.register_route),
             title = stringResource(id = R.string.register),
             icon = R.drawable.baseline_bar_chart_24
         ),
         BottomNavigationItem(
-            route = "categories",
+            route = stringResource(id = R.string.categories_route),
             title = stringResource(id = R.string.categories),
             icon = R.drawable.baseline_folder_open_24
         ),
     )
-
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var selectedIconIndex by rememberSaveable {
         mutableIntStateOf(0)
     }
@@ -78,29 +83,30 @@ fun AppScreen(
     ) {
         Scaffold(
             bottomBar = {
-                NavigationBar {
-                    bottomNavigationIcons.forEachIndexed { index, item ->
-                        NavigationBarItem(
-                            selected = selectedIconIndex == index,
-                            onClick = {
-                                selectedIconIndex = index
-                                navController.navigate(item.route)
-                            },
-                            label = {
-                                Text(text = item.title)
-                            },
-                            alwaysShowLabel = true,
-                            icon = {
-                                Box {
-                                    Icon(
-                                        imageVector = ImageVector.vectorResource(id = item.icon),
-                                        contentDescription = item.title
-                                    )
+                if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT)
+                    NavigationBar {
+                        bottomNavigationIcons.forEachIndexed { index, item ->
+                            NavigationBarItem(
+                                selected = selectedIconIndex == index,
+                                onClick = {
+                                    selectedIconIndex = index
+                                    navController.navigate(item.route)
+                                },
+                                label = {
+                                    Text(text = item.title)
+                                },
+                                alwaysShowLabel = true,
+                                icon = {
+                                    Box {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(id = item.icon),
+                                            contentDescription = item.title
+                                        )
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
-                }
             }
         ) { paddingValues ->
             NavHost(
@@ -109,24 +115,33 @@ fun AppScreen(
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable(route = bottomNavigationIcons[0].route) {
-                    HomeScreen(summaryViewModel, preferences)
+                    NavigationDrawer(drawerState = drawerState, navController) {
+                        HomeScreen(summaryViewModel, preferences, drawerState)
+                    }
                 }
 
                 composable(route = bottomNavigationIcons[1].route) {
-                    RegisterScreen(
-                        categoryViewModel,
-                        movementWithCategoryViewModel,
-                        summaryViewModel,
-                        preferences
-                    )
+                    NavigationDrawer(drawerState = drawerState, navController) {
+                        RegisterScreen(
+                            categoryViewModel,
+                            movementWithCategoryViewModel,
+                            summaryViewModel,
+                            preferences,
+                            drawerState
+                        )
+                    }
+
                 }
 
                 composable(route = bottomNavigationIcons[2].route) {
-                    CategoriesScreen(
-                        categoryViewModel,
-                        movementWithCategoryViewModel,
-                        summaryViewModel
-                    )
+                    NavigationDrawer(drawerState = drawerState, navController) {
+                        CategoriesScreen(
+                            categoryViewModel,
+                            movementWithCategoryViewModel,
+                            summaryViewModel,
+                            drawerState
+                        )
+                    }
                 }
             }
 
