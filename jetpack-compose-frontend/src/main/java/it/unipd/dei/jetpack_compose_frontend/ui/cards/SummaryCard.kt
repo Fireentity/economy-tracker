@@ -83,37 +83,6 @@ fun SummaryCard(summary: Summary) {
                         )
                     )
                 }
-                item {
-                    ElevatedAssistChip(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        onClick = { /* Do nothing, as chip is not clickable */ },
-                        label = {
-                            Text(
-                                stringResource(
-                                    R.string.monthly_expenses,
-                                    summary.monthlyNegative,
-                                    Constants.CURRENCY.getSymbol(LocalContext.current.resources)
-                                ),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }, leadingIcon = {
-                            Icon(
-                                imageVector = arrowDownward,
-                                contentDescription = "Monthly expenses",
-                                tint = colorResource(id = R.color.red_700)
-                            )
-                        },
-                        colors = AssistChipDefaults.assistChipColors().copy(
-                            labelColor = colorResource(
-                                id = R.color.red_700
-                            ),
-                            containerColor = colorResource(
-                                id = R.color.red_100
-                            )
-                        )
-                    )
-                }
 
                 item {
                     ElevatedAssistChip(
@@ -144,6 +113,38 @@ fun SummaryCard(summary: Summary) {
                                 id = R.color.gray_100
                             )
                         ),
+                    )
+                }
+
+                item {
+                    ElevatedAssistChip(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        onClick = { /* Do nothing, as chip is not clickable */ },
+                        label = {
+                            Text(
+                                stringResource(
+                                    R.string.monthly_expenses,
+                                    summary.monthlyNegative,
+                                    Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }, leadingIcon = {
+                            Icon(
+                                imageVector = arrowDownward,
+                                contentDescription = "Monthly expenses",
+                                tint = colorResource(id = R.color.red_700)
+                            )
+                        },
+                        colors = AssistChipDefaults.assistChipColors().copy(
+                            labelColor = colorResource(
+                                id = R.color.red_700
+                            ),
+                            containerColor = colorResource(
+                                id = R.color.red_100
+                            )
+                        )
                     )
                 }
             }

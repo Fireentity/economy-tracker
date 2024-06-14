@@ -17,15 +17,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import it.unipd.dei.jetpack_compose_frontend.MainActivity
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.CurrencySettingsButton
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ThemeModeSettingsButton
 
 @Composable
 fun SettingsDialog(sharedPreferences: SharedPreferences, onDismiss: () -> Unit) {
+
+    val context = LocalContext.current
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -63,9 +67,9 @@ fun SettingsDialog(sharedPreferences: SharedPreferences, onDismiss: () -> Unit) 
                         }
 
                         Spacer(modifier = Modifier.width(8.dp))
-
                         TextButton(onClick = {
                             onDismiss()
+                            (context as? MainActivity)?.recreate()
                         }) {
                             Text(text = stringResource(id = R.string.confirm))
                         }
