@@ -7,8 +7,6 @@ import android.widget.TextView
 import com.google.android.material.chip.Chip
 import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.Constants
-import it.unipd.dei.common_backend.utils.DateHelper
-import it.unipd.dei.common_backend.utils.TextGenerator
 import it.unipd.dei.common_backend.viewholder.ISummaryViewHolder
 import it.unipd.dei.xml_frontend.R
 

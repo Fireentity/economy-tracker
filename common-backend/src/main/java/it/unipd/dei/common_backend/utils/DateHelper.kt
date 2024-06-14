@@ -73,7 +73,6 @@ object DateHelper {
                 )
             )
 
-            // Move to the start of the next month
             startCalendar.add(Calendar.DAY_OF_MONTH, 1)
             startCalendar.set(Calendar.DAY_OF_MONTH, 1)
             startCalendar.set(Calendar.HOUR_OF_DAY, 0)

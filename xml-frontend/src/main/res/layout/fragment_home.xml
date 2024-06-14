@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:menu="@menu/top_app_bar"
-            app:title="Page title" />
+            app:title="@string/home" />
         <!-- Mettere una selezione del periodo? -->
 
     </com.google.android.material.appbar.AppBarLayout>

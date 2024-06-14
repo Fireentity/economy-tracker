@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 
 @Composable
@@ -29,6 +30,7 @@ fun DeleteCategoryDialog(
             TextButton(onClick = {
                 categoryViewModel.deleteCategory(
                     category,
+                    movementWithCategoryViewModel
                     {
                         DisplayToast.displayGeneric(context, categorySuccessfullyRemoved)
                         onConfirm()

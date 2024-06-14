@@ -1,14 +1,18 @@
 package it.unipd.dei.xml_frontend.fragments
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.Summary
+import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
@@ -20,7 +24,8 @@ import it.unipd.dei.xml_frontend.ui.dropdown.menus.CategoryDropdownMenu
 import it.unipd.dei.xml_frontend.ui.tabs.AllRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.ExpensesRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.RevenueRegisterTab
-import androidx.fragment.app.activityViewModels
+
+
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
@@ -32,7 +37,7 @@ class RegisterFragment : Fragment() {
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
     private val summaryViewModel: SummaryViewModel by activityViewModels()
-
+    private var selectedTab = DEFAULT_TAB_SELECTED
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,15 +125,16 @@ class RegisterFragment : Fragment() {
         tabLayout.getTabAt(DEFAULT_TAB_SELECTED)?.select()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                tabs[tab?.position ?: 0].show()
+                selectedTab = tab?.position ?: DEFAULT_TAB_SELECTED
+                tabs[tab?.position ?: DEFAULT_TAB_SELECTED].show()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                tabs[tab?.position ?: 0].hide()
+                tabs[tab?.position ?: DEFAULT_TAB_SELECTED].hide()
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                tabs[tab?.position ?: 0].show()
+                tabs[tab?.position ?: DEFAULT_TAB_SELECTED].show()
             }
         })
 
@@ -139,8 +145,22 @@ class RegisterFragment : Fragment() {
         summaryViewModel.loadSummaryForCurrentMonth()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        DisplayToast.displayGeneric(requireContext(),"DISTRUTTOOOOOOOOO")
+    }
+
     override fun onResume() {
         super.onResume()
+        DisplayToast.displayGeneric(requireContext(),"RESUMEEEEEEEEEE")
+    }
 
+    override fun onPause() {
+        super.onPause()
+        val sharedPref = activity?.getPreferences(MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putInt(getString(R.string.saved_selected_category), selectedTab)
+            apply()
+        }
     }
 }
