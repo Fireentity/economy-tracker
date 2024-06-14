@@ -16,19 +16,6 @@ class SearchInput(
     lifecycleOwner: LifecycleOwner
 ) {
     init {
-
-        val searchLayout = searchView.layoutParams.height
-        searchView.layoutParams.height = 0
-
-        searchView.addTransitionListener { _, _, newState ->
-            if (newState === SearchView.TransitionState.SHOWING) {
-                searchView.layoutParams.height = searchLayout
-            }
-            if (newState === SearchView.TransitionState.HIDDEN) {
-                searchView.layoutParams.height = 0
-            }
-        }
-
         searchView.editText.addTextChangedListener { text ->
             val allCategories = categoryViewModel.allCategories.value?.values?.toList()
                 ?: return@addTextChangedListener
