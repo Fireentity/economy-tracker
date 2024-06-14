@@ -20,7 +20,7 @@ Economy Tracker è un'applicazione progettata per monitorare e gestire le spese 
 1. Clona il repository:
 
     ```bash
-    git clone https://github.com/tuo-username/economy-tracker.git
+    git clone https://github.com/Fireentity/economy-tracker.git
     ```
 
 2. Apri il progetto in Android Studio.
