@@ -1,5 +1,6 @@
 package it.unipd.dei.jetpack_compose_frontend.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
@@ -55,7 +57,9 @@ fun CategoriesScreen(
                         )
                     },
                     actions = {
-                        ShowDrawerButton(drawerState = drawerState)
+                        val orientation = LocalConfiguration.current.orientation
+                        if (orientation == Configuration.ORIENTATION_LANDSCAPE)
+                            ShowDrawerButton(drawerState = drawerState)
                     }
                 )
             },

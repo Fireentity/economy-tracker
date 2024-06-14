@@ -1,6 +1,7 @@
 package it.unipd.dei.jetpack_compose_frontend.ui
 
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
@@ -29,7 +31,11 @@ import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(summaryViewModel: SummaryViewModel, sharedPreferences: SharedPreferences, drawerState: DrawerState) {
+fun HomeScreen(
+    summaryViewModel: SummaryViewModel,
+    sharedPreferences: SharedPreferences,
+    drawerState: DrawerState
+) {
     Surface {
         Scaffold(
             topBar = {
@@ -47,7 +53,9 @@ fun HomeScreen(summaryViewModel: SummaryViewModel, sharedPreferences: SharedPref
                     },
                     actions = {
                         ShowSettingsDialogButton(sharedPreferences = sharedPreferences)
-                        ShowDrawerButton(drawerState = drawerState)
+                        val orientation = LocalConfiguration.current.orientation
+                        if (orientation == Configuration.ORIENTATION_LANDSCAPE)
+                            ShowDrawerButton(drawerState = drawerState)
                     }
                 )
             },

@@ -2,6 +2,7 @@ package it.unipd.dei.jetpack_compose_frontend.ui
 
 
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
@@ -65,7 +67,9 @@ fun RegisterScreen(
                             movementWithCategoryViewModel = movementWithCategoryViewModel,
                             categoryViewModel = categoryViewModel
                         )
-                        ShowDrawerButton(drawerState = drawerState)
+                        val orientation = LocalConfiguration.current.orientation
+                        if (orientation == Configuration.ORIENTATION_LANDSCAPE)
+                            ShowDrawerButton(drawerState = drawerState)
                     }
                 )
             },
