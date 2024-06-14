@@ -2,9 +2,9 @@ package it.unipd.dei.jetpack_compose_frontend.ui.cards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedAssistChip
@@ -46,97 +46,106 @@ fun SummaryCard(summary: Summary) {
                 text = summaryViewHolder.readableDate(summary, context = LocalContext.current),
                 style = MaterialTheme.typography.titleMedium
             )
-            Row(
+            LazyRow(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(top = 8.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .fillMaxWidth()
             ) {
+                item {
+                    ElevatedAssistChip(
+                        onClick = { /* Do nothing, as chip is not clickable */ },
+                        label = {
+                            Text(
+                                stringResource(
+                                    R.string.monthly_revenues,
+                                    summary.monthlyPositive,
+                                    Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = arrowUpward,
+                                contentDescription = "Monthly revenues",
+                                tint = colorResource(id = R.color.green_700)
+                            )
+                        },
+                        colors = AssistChipDefaults.assistChipColors().copy(
+                            labelColor = colorResource(
+                                id = R.color.green_700
+                            ),
+                            containerColor = colorResource(
+                                id = R.color.green_100
+                            )
+                        )
+                    )
+                }
+                item {
+                    ElevatedAssistChip(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        onClick = { /* Do nothing, as chip is not clickable */ },
+                        label = {
+                            Text(
+                                stringResource(
+                                    R.string.monthly_expenses,
+                                    summary.monthlyNegative,
+                                    Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }, leadingIcon = {
+                            Icon(
+                                imageVector = arrowDownward,
+                                contentDescription = "Monthly expenses",
+                                tint = colorResource(id = R.color.red_700)
+                            )
+                        },
+                        colors = AssistChipDefaults.assistChipColors().copy(
+                            labelColor = colorResource(
+                                id = R.color.red_700
+                            ),
+                            containerColor = colorResource(
+                                id = R.color.red_100
+                            )
+                        )
+                    )
+                }
 
-                ElevatedAssistChip(
-                    onClick = { /* Do nothing, as chip is not clickable */ },
-                    label = {
-                        Text(
-                            stringResource(
-                                R.string.monthly_expenses,
-                                summary.monthlyNegative,
-                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                item {
+                    ElevatedAssistChip(
+                        onClick = { /* Do nothing, as chip is not clickable */ },
+                        label = {
+                            Text(
+                                stringResource(
+                                    R.string.monthly_total,
+                                    summary.monthlyAll,
+                                    Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = stackedBarChart,
+                                contentDescription = "Monthly all",
+                                tint = colorResource(id = R.color.gray_700)
+                            )
+                        },
+                        colors = AssistChipDefaults.assistChipColors().copy(
+                            labelColor = colorResource(
+                                id = R.color.gray_700
                             ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },                    leadingIcon = {
-                        Icon(
-                            imageVector = arrowDownward,
-                            contentDescription = "Monthly expenses",
-                            tint = colorResource(id = R.color.red_700)
-                        )
-                    },
-                    colors = AssistChipDefaults.assistChipColors().copy(
-                        labelColor = colorResource(
-                            id = R.color.red_700
+                            containerColor = colorResource(
+                                id = R.color.gray_100
+                            )
                         ),
-                        containerColor = colorResource(
-                            id = R.color.red_100
-                        )
                     )
-                )
-                ElevatedAssistChip(
-                    onClick = { /* Do nothing, as chip is not clickable */ },
-                    label = {
-                        Text(
-                            stringResource(
-                                R.string.monthly_total,
-                                summary.monthlyAll,
-                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = stackedBarChart,
-                            contentDescription = "Monthly all",
-                            tint = colorResource(id = R.color.gray_700)
-                        )
-                    },
-                    colors = AssistChipDefaults.assistChipColors().copy(
-                        labelColor = colorResource(
-                            id = R.color.gray_700
-                        ),
-                        containerColor = colorResource(
-                            id = R.color.gray_100
-                        )
-                    ),
-                )
-                ElevatedAssistChip(
-                    onClick = { /* Do nothing, as chip is not clickable */ },
-                    label = {
-                        Text(
-                            stringResource(
-                                R.string.monthly_revenues,
-                                summary.monthlyPositive,
-                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = arrowUpward,
-                            contentDescription = "Monthly revenues",
-                            tint = colorResource(id = R.color.green_700)
-                        )
-                    },
-                    colors = AssistChipDefaults.assistChipColors().copy(
-                        labelColor = colorResource(
-                            id = R.color.green_700
-                        ),
-                        containerColor = colorResource(
-                            id = R.color.green_100
-                        )
-                    )
-                )
+                }
             }
             Text(
                 text = summaryViewHolder.headline(summary, LocalContext.current),
