@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.Constants
-import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.viewholder.SummaryViewHolder
 
@@ -59,7 +58,7 @@ fun SummaryCard(summary: Summary) {
                             stringResource(
                                 R.string.monthly_total,
                                 summary.monthlyAll,
-                                Constants.CURRENCY
+                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
                             ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -85,7 +84,7 @@ fun SummaryCard(summary: Summary) {
                             stringResource(
                                 R.string.monthly_expenses,
                                 summary.monthlyNegative,
-                                Constants.CURRENCY
+                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
                             ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -110,7 +109,7 @@ fun SummaryCard(summary: Summary) {
                             stringResource(
                                 R.string.monthly_revenues,
                                 summary.monthlyPositive,
-                                Constants.CURRENCY
+                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
                             ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis

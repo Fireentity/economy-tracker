@@ -71,9 +71,6 @@ dependencies {
     implementation libs.hilt.android
     ksp libs.hilt.compiler
 
-/*
-    implementation libs.androidx.material3
-*/
     implementation libs.material.v170
 
 }

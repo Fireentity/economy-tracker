@@ -1,5 +1,6 @@
 package it.unipd.dei.jetpack_compose_frontend.ui
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import it.unipd.dei.common_backend.models.BottomNavigationItem
+import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
@@ -38,12 +40,15 @@ fun AppScreen(
     testViewModel: TestViewModel = hiltViewModel(),
     categoryViewModel: CategoryViewModel = hiltViewModel(),
     movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel(),
-    summaryViewModel: SummaryViewModel = hiltViewModel()
+    summaryViewModel: SummaryViewModel = hiltViewModel(),
+    preferences: SharedPreferences
 ) {
     testViewModel.createDummyDataIfNoMovement()
     categoryViewModel.loadAllCategories()
     summaryViewModel.loadSummaryForCurrentMonth()
     summaryViewModel.loadAllSummaries()
+
+    Constants.setCurrency(preferences, stringResource(id = R.string.saved_selected_currency))
 
     val bottomNavigationIcons = listOf(
         BottomNavigationItem(
@@ -104,14 +109,15 @@ fun AppScreen(
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable(route = bottomNavigationIcons[0].route) {
-                    HomeScreen(summaryViewModel)
+                    HomeScreen(summaryViewModel, preferences)
                 }
 
                 composable(route = bottomNavigationIcons[1].route) {
                     RegisterScreen(
                         categoryViewModel,
                         movementWithCategoryViewModel,
-                        summaryViewModel
+                        summaryViewModel,
+                        preferences
                     )
                 }
 

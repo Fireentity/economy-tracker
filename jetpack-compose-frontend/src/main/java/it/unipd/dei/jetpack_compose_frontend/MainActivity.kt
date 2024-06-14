@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             EconomyTrackerTheme {
-                AppScreen()
+                AppScreen(preferences = this.getPreferences(MODE_PRIVATE))
             }
         }
     }

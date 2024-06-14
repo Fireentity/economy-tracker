@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.EconomyTracker" parent="Theme.Material3.Light" >
+    <style name="Theme.EconomyTracker.Light" parent="Theme.Material3.Light" >
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="Theme.EconomyTracker.Dark" parent="Theme.Material3.Dark" >
         <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
