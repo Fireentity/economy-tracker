@@ -1,5 +1,6 @@
 package it.unipd.dei.xml_frontend.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -79,11 +80,12 @@ class CategoriesFragment : Fragment() {
         )
         categoryViewModel.loadAllCategories()
 
-
-        val menuIcon = view.findViewById<View>(R.id.menu_icon_button)
-        val showDrawerButton = ShowDrawerButton(requireActivity() as MainActivity)
-        menuIcon.setOnClickListener {
-            showDrawerButton.onClick()
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val menuIcon = view.findViewById<View>(R.id.menu_icon_button)
+            val showDrawerButton = ShowDrawerButton(requireActivity() as MainActivity)
+            menuIcon.setOnClickListener {
+                showDrawerButton.onClick()
+            }
         }
         return view
     }
