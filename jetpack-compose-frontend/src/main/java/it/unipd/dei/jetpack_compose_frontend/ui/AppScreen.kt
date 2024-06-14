@@ -115,33 +115,57 @@ fun AppScreen(
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable(route = bottomNavigationIcons[0].route) {
-                    NavigationDrawer(drawerState = drawerState, navController) {
+                    val orientation = LocalConfiguration.current.orientation
+                    if (orientation == Configuration.ORIENTATION_PORTRAIT)
                         HomeScreen(summaryViewModel, preferences, drawerState)
-                    }
+                    else
+                        NavigationDrawer(drawerState, navController) {
+                            HomeScreen(summaryViewModel, preferences, drawerState)
+                        }
                 }
 
                 composable(route = bottomNavigationIcons[1].route) {
-                    NavigationDrawer(drawerState = drawerState, navController) {
+
+                    val orientation = LocalConfiguration.current.orientation
+                    if (orientation == Configuration.ORIENTATION_PORTRAIT)
                         RegisterScreen(
                             categoryViewModel,
                             movementWithCategoryViewModel,
                             summaryViewModel,
                             preferences,
                             drawerState
-                        )
-                    }
+                        ) else
+                        NavigationDrawer(drawerState = drawerState, navController) {
+                            RegisterScreen(
+                                categoryViewModel,
+                                movementWithCategoryViewModel,
+                                summaryViewModel,
+                                preferences,
+                                drawerState
+                            )
+                        }
 
                 }
 
                 composable(route = bottomNavigationIcons[2].route) {
-                    NavigationDrawer(drawerState = drawerState, navController) {
+
+                    val orientation = LocalConfiguration.current.orientation
+                    if (orientation == Configuration.ORIENTATION_PORTRAIT)
                         CategoriesScreen(
                             categoryViewModel,
                             movementWithCategoryViewModel,
                             summaryViewModel,
                             drawerState
                         )
-                    }
+                    else
+                        NavigationDrawer(drawerState = drawerState, navController) {
+                            CategoriesScreen(
+                                categoryViewModel,
+                                movementWithCategoryViewModel,
+                                summaryViewModel,
+                                drawerState
+                            )
+                        }
                 }
             }
 

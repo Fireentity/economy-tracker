@@ -1,7 +1,9 @@
 package it.unipd.dei.jetpack_compose_frontend
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.res.stringResource
@@ -11,6 +13,7 @@ import it.unipd.dei.jetpack_compose_frontend.ui.theme.EconomyTrackerTheme
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_EconomyTracker)
