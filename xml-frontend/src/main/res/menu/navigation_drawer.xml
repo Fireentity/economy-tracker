@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_item"
+        android:title="@string/pages">
+        <menu>
+            <item
+                android:id="@+id/inbox_item"
+                android:checkable="true"
+                android:icon="@drawable/baseline_home_24"
+                android:title="@string/home" />
+            <item
+                android:id="@+id/outbox_item"
+                android:checkable="true"
+                android:icon="@drawable/baseline_stacked_bar_chart_24"
+                android:title="@string/register" />
+            <item
+                android:id="@+id/favourites_item"
+                android:checkable="true"
+                android:icon="@drawable/baseline_folder_open_24"
+                android:title="@string/categories" />
+        </menu>
+    </item>
+</menu>
