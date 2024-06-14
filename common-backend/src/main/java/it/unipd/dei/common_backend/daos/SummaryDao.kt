@@ -30,7 +30,7 @@ interface SummaryDao {
             SUM(amount) AS monthlyAll,
             SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS monthlyPositive,
             SUM(CASE WHEN amount < 0 THEN amount ELSE 0 END) AS monthlyNegative,
-            CAST(STRFTIME('%M', datetime(date/1000, 'unixepoch')) AS INTEGER) AS month,
+            CAST(STRFTIME('%m', datetime(date/1000, 'unixepoch')) AS INTEGER) AS month,
             CAST(STRFTIME('%Y', datetime(date/1000, 'unixepoch')) AS INTEGER) AS year
         FROM movements
         WHERE month = :month AND year = :year
