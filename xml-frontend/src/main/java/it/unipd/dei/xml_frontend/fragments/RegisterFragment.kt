@@ -1,9 +1,6 @@
 package it.unipd.dei.xml_frontend.fragments
 
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +10,15 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.Summary
-import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.common_backend.viewModels.TestViewModel
+import it.unipd.dei.xml_frontend.MainActivity
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.MovementWithSummaryHeaderCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddMovementDialogButton
+import it.unipd.dei.xml_frontend.ui.buttons.ShowDrawerButton
 import it.unipd.dei.xml_frontend.ui.dropdown.menus.CategoryDropdownMenu
 import it.unipd.dei.xml_frontend.ui.tabs.AllRegisterTab
 import it.unipd.dei.xml_frontend.ui.tabs.ExpensesRegisterTab
@@ -75,6 +73,14 @@ class RegisterFragment : Fragment() {
         floatingActionButton.setOnClickListener {
             showAddMovementDialogButton.onClick()
         }
+
+
+        val menuIcon = view.findViewById<View>(R.id.menu_icon_button)
+        val showDrawerButton = ShowDrawerButton(requireActivity() as MainActivity)
+        menuIcon.setOnClickListener {
+            showDrawerButton.onClick()
+        }
+
 
         return view
     }

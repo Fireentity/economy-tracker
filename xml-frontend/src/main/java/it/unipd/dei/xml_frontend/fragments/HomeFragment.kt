@@ -9,8 +9,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
+import it.unipd.dei.xml_frontend.MainActivity
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.SummaryCardAdapter
+import it.unipd.dei.xml_frontend.ui.buttons.ShowDrawerButton
 import it.unipd.dei.xml_frontend.ui.buttons.ShowSettingsDialogButton
 
 @AndroidEntryPoint
@@ -41,6 +43,11 @@ class HomeFragment : Fragment() {
         val settingsIcon = view.findViewById<View>(R.id.settings_icon_button)
         settingsIcon.setOnClickListener {
             showSettingsDialogButton.onClick()
+        }
+        val menuIcon = view.findViewById<View>(R.id.menu_icon_button)
+        val showDrawerButton = ShowDrawerButton(requireActivity() as MainActivity)
+        menuIcon.setOnClickListener {
+            showDrawerButton.onClick()
         }
 
         return view
