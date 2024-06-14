@@ -12,6 +12,8 @@ import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.SummaryCardAdapter
 import androidx.fragment.app.activityViewModels
+import it.unipd.dei.xml_frontend.ui.buttons.ShowSettingsIconButton
+import it.unipd.dei.xml_frontend.ui.dialog.SettingsDialog
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -31,7 +33,18 @@ class HomeFragment : Fragment() {
             summaryCardAdapter.updateSummaryCards(it)
         }
 
-        summaryViewModel.loadAllSummaries()
+        val settingsDialogView = inflater.inflate(R.layout.fragment_settings_dialog, container, false)
+
+        val showSettingsIconButton = ShowSettingsIconButton(
+            requireActivity(),
+            requireContext(),
+            settingsDialogView
+        )
+        val settingsIcon = view.findViewById<View>(R.id.settings_icon_button)
+        settingsIcon.setOnClickListener {
+            showSettingsIconButton.onClick()
+        }
+
         return view
     }
 

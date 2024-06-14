@@ -53,13 +53,12 @@ class SummaryViewModel @Inject constructor(
     fun loadSummaryForCurrentMonth() {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                val month = DateHelper.getCurrentMonth()
-                val year = DateHelper.getCurrentYear()
+                val monthInfo = DateHelper.getCurrentMonthInfo()
                 val loadedData = summaryDao.getSummary(
-                    DateHelper.getMonthStartInMilliseconds(month, year),
-                    DateHelper.getMonthEndInMilliseconds(month, year),
-                    month,
-                    year
+                    monthInfo.startDate,
+                    monthInfo.endDate,
+                    monthInfo.month,
+                    monthInfo.year
                 )
                 _currentMonthSummary.postValue(loadedData)
             }
