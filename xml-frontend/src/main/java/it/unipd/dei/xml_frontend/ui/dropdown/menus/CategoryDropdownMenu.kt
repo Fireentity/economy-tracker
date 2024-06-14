@@ -12,7 +12,7 @@ class CategoryDropdownMenu(
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel,
     private val autoCompleteTextView: MaterialAutoCompleteTextView,
     lifecycleOwner: LifecycleOwner,
-    private val context: Context
+    context: Context
 ) {
     private var selectedCategoryIdentifier: String =
         context.getString(R.string.all)

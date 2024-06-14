@@ -7,8 +7,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.models.Summary
-import it.unipd.dei.common_backend.viewModels.CategoryViewModel
-import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.view.holder.MovementViewHolder
 import it.unipd.dei.xml_frontend.ui.view.holder.SummaryViewHolder
@@ -20,16 +18,25 @@ class MovementWithSummaryHeaderCardAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    //TODO check here
     private val _header = 0
     private val _item = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return if (viewType == _header) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_summary_card, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.fragment_summary_card,
+                parent,
+                false
+            )
             HeaderViewHolder(SummaryViewHolder(view, context))
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_movement_card, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.fragment_movement_card,
+                parent,
+                false
+            )
             ItemViewHolder(MovementViewHolder(view, parentFragmentManager))
         }
     }
@@ -45,6 +52,7 @@ class MovementWithSummaryHeaderCardAdapter(
 
     fun updateMovements(movements: List<MovementWithCategory>){
         this.movements = movements
+        //TODO check here
         notifyDataSetChanged()
     }
 

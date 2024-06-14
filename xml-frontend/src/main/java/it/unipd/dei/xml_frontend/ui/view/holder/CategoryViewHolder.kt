@@ -21,6 +21,7 @@ class CategoryViewHolder(
 
     fun bindWithButton(
         category: Category,
+        //TODO check here
         categoryViewModel: CategoryViewModel,
     ) {
         val categoryImageButton: ImageButton = itemView.findViewById(R.id.view_category_button)
@@ -30,6 +31,7 @@ class CategoryViewHolder(
                 category
             ).show(
                 parentFragmentManager,
+                //TODO check here
                 "OptionCategoryModalBottomSheetFragment"
             )
         }

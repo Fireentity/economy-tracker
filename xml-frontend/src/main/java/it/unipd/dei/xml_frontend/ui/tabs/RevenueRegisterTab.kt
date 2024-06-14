@@ -9,7 +9,8 @@ import it.unipd.dei.xml_frontend.ui.adapters.MovementWithSummaryHeaderCardAdapte
 class RevenueRegisterTab(
     summaryViewModel: SummaryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    recyclerView: RecyclerView, movementWithSummaryHeaderCardAdapter: MovementWithSummaryHeaderCardAdapter,
+    recyclerView: RecyclerView,
+    movementWithSummaryHeaderCardAdapter: MovementWithSummaryHeaderCardAdapter,
     lifecycleOwner: LifecycleOwner,
 ) : RegisterTab(
     summaryViewModel,
@@ -20,7 +21,7 @@ class RevenueRegisterTab(
 ) {
     override fun observeViewModel(lifecycleOwner: LifecycleOwner) {
         super.observeViewModel(lifecycleOwner)
-        movementWithCategoryViewModel.getPositiveMovements().observe(lifecycleOwner){
+        movementWithCategoryViewModel.getPositiveMovements().observe(lifecycleOwner) {
             movementWithSummaryHeaderCardAdapter.updateMovements(it)
         }
     }

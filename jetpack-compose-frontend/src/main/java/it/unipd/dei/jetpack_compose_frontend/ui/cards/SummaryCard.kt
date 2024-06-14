@@ -1,5 +1,6 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.cards
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,10 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.Constants
-import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.viewholder.SummaryViewHolder
 
@@ -46,7 +47,8 @@ fun SummaryCard(summary: Summary) {
                 style = MaterialTheme.typography.titleMedium
             )
             Row(
-                modifier = Modifier.padding(top = 8.dp)
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.padding(top = 8.dp).fillMaxWidth()
             ) {
 
                 ElevatedAssistChip(
@@ -56,8 +58,10 @@ fun SummaryCard(summary: Summary) {
                             stringResource(
                                 R.string.monthly_total,
                                 summary.monthlyAll,
-                                Constants.CURRENCY
-                            )
+                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     },
                     leadingIcon = {
@@ -72,7 +76,6 @@ fun SummaryCard(summary: Summary) {
                             id = R.color.green_100
                         )
                     ),
-                    modifier = Modifier.padding(end = 5.dp)
                 )
                 ElevatedAssistChip(
                     onClick = { /* Do nothing, as chip is not clickable */ },
@@ -81,8 +84,10 @@ fun SummaryCard(summary: Summary) {
                             stringResource(
                                 R.string.monthly_expenses,
                                 summary.monthlyNegative,
-                                Constants.CURRENCY
-                            )
+                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     },                    leadingIcon = {
                         Icon(
@@ -95,8 +100,7 @@ fun SummaryCard(summary: Summary) {
                         containerColor = colorResource(
                             id = R.color.red_100
                         )
-                    ),
-                    modifier = Modifier.padding(horizontal = 5.dp)
+                    )
                 )
                 ElevatedAssistChip(
                     onClick = { /* Do nothing, as chip is not clickable */ },
@@ -105,8 +109,10 @@ fun SummaryCard(summary: Summary) {
                             stringResource(
                                 R.string.monthly_revenues,
                                 summary.monthlyPositive,
-                                Constants.CURRENCY
-                            )
+                                Constants.CURRENCY.getSymbol(LocalContext.current.resources)
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     },
                     leadingIcon = {
@@ -120,17 +126,11 @@ fun SummaryCard(summary: Summary) {
                         containerColor = colorResource(
                             id = R.color.green_100
                         )
-                    ),
-                    modifier = Modifier.padding(start = 5.dp)
+                    )
                 )
             }
             Text(
-                text = if (DateHelper.isMonthNotFinishedYet(summary.month, summary.year)
-                ) {
-                    LocalContext.current.getString(R.string.how_is_it_going)
-                } else {
-                    LocalContext.current.getString(R.string.how_did_it_go)
-                },
+                text = summaryViewHolder.headline(summary, LocalContext.current),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 8.dp)

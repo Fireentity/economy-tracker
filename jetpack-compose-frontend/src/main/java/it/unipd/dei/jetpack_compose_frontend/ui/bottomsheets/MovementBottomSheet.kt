@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowDeleteMovementDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowEditMovementDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
@@ -23,6 +24,7 @@ fun MovementBottomSheet(
     movement: MovementWithCategory,
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     onDismissRequest: () -> Unit
 
 ) {
@@ -31,15 +33,32 @@ fun MovementBottomSheet(
             modifier = Modifier.padding(5.dp)
         ) {
 
-            MovementCard(movement, categoryViewModel, movementWithCategoryViewModel)
+            MovementCard(
+                movement,
+                categoryViewModel,
+                movementWithCategoryViewModel,
+                summaryViewModel,
+                false
+            )
 
-            ShowDeleteMovementDialogButton(movementWithCategoryViewModel, movement)
+            ShowDeleteMovementDialogButton(
+                movementWithCategoryViewModel,
+                movement,
+                summaryViewModel
+            )
 
-            ShowEditMovementDialogButton(categoryViewModel, movementWithCategoryViewModel, movement)
+            ShowEditMovementDialogButton(
+                categoryViewModel,
+                movementWithCategoryViewModel,
+                summaryViewModel,
+                movement
+            )
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(30.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(30.dp)
+            )
         }
     }
 }

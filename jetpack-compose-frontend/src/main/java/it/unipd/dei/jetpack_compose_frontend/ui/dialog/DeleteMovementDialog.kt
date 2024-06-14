@@ -9,12 +9,14 @@ import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 
 @Composable
 fun DeleteMovementDialog(
     movement: MovementWithCategory,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -29,6 +31,7 @@ fun DeleteMovementDialog(
             TextButton(onClick = {
                 movementWithCategoryViewModel.deleteMovement(
                     movement,
+                    summaryViewModel,
                     {
                         DisplayToast.displayGeneric(context, movementSuccessfullyAdded)
                         onConfirm()

@@ -20,11 +20,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.dialog.DeleteMovementDialog
 
 @Composable
-fun ShowDeleteMovementDialogButton(movementWithCategoryViewModel: MovementWithCategoryViewModel, movement: MovementWithCategory) {
+fun ShowDeleteMovementDialogButton(
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    movement: MovementWithCategory,
+    summaryViewModel: SummaryViewModel
+) {
     var showDeleteMovementDialog by remember { mutableStateOf(false) }
 
     TextButton(
@@ -49,7 +54,7 @@ fun ShowDeleteMovementDialogButton(movementWithCategoryViewModel: MovementWithCa
     }
 
     if (showDeleteMovementDialog) {
-        DeleteMovementDialog(movement, movementWithCategoryViewModel, {
+        DeleteMovementDialog(movement, movementWithCategoryViewModel, summaryViewModel, {
             showDeleteMovementDialog = false
         }) {
             showDeleteMovementDialog = false

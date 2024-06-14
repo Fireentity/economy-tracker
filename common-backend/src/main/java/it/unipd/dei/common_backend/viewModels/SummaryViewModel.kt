@@ -27,25 +27,8 @@ class SummaryViewModel @Inject constructor(
     fun loadAllSummaries() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val months = DateHelper.getMonthlyIntervals(
-                    movementDao.getLastMovementDate(),
-                    movementDao.getFirstMovementDate()
-                )
-                val summaries: MutableList<Summary> = mutableListOf()
-                for (month in months) {
-                    val summaryCard = summaryDao.getSummary(
-                        month.startDate,
-                        month.endDate,
-                        month.month,
-                        month.year
-                    )
-                    if (summaryCard.monthlyPositive != 0.0 || summaryCard.monthlyNegative != 0.0) {
-                        summaries.add(summaryCard)
-                    }
-                }
-                if (_allSummaryCards.value != summaries) {
-                    _allSummaryCards.postValue(summaries)
-                }
+                val summaries: List<Summary> = summaryDao.getSummary()
+                _allSummaryCards.postValue(summaries)
             }
         }
     }
@@ -53,16 +36,17 @@ class SummaryViewModel @Inject constructor(
     fun loadSummaryForCurrentMonth() {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                val monthInfo = DateHelper.getCurrentMonthInfo()
-                val loadedData = summaryDao.getSummary(
-                    monthInfo.startDate,
-                    monthInfo.endDate,
-                    monthInfo.month,
-                    monthInfo.year
-                )
+                val month = DateHelper.getCurrentMonth()
+                val year = DateHelper.getCurrentYear()
+                val loadedData = summaryDao.getSummaryByMonthAndYear(month.value, year)
                 _currentMonthSummary.postValue(loadedData)
             }
         }
+    }
+
+    fun invalidateSummariesAndReload() {
+        loadAllSummaries()
+        loadSummaryForCurrentMonth()
     }
 
 }

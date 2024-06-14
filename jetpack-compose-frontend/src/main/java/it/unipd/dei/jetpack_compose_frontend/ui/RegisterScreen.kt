@@ -1,6 +1,7 @@
 package it.unipd.dei.jetpack_compose_frontend.ui
 
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import it.unipd.dei.jetpack_compose_frontend.ui.input.CategoryFilterInput
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.AllTab
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.ExpensesTab
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.RevenuesTab
+import kotlinx.coroutines.withContext
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,8 +39,10 @@ import it.unipd.dei.jetpack_compose_frontend.ui.tabs.RevenuesTab
 fun RegisterScreen(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    summaryViewModel: SummaryViewModel
+    summaryViewModel: SummaryViewModel,
+    preferences: SharedPreferences
 ) {
+    val selectedTabPreferenceKey = stringResource(R.string.saved_selected_tab);
     Surface {
         Scaffold(
             topBar = {
@@ -63,7 +67,11 @@ fun RegisterScreen(
                 )
             },
             floatingActionButton = {
-                ShowAddMovementDialogButton(categoryViewModel, movementWithCategoryViewModel)
+                ShowAddMovementDialogButton(
+                    categoryViewModel,
+                    movementWithCategoryViewModel,
+                    summaryViewModel
+                )
             }
         ) { paddingValues ->
             Column(
@@ -72,7 +80,7 @@ fun RegisterScreen(
                     .fillMaxSize()
             ) {
                 var selectedTabIndex by rememberSaveable {
-                    mutableIntStateOf(1)
+                    mutableIntStateOf(preferences.getInt(selectedTabPreferenceKey,1))
                 }
 
                 TabRow(
@@ -83,7 +91,10 @@ fun RegisterScreen(
                         selected = selectedTabIndex == 0,
                         onClick = {
                             selectedTabIndex = 0
-
+                            with(preferences.edit()) {
+                                putInt(selectedTabPreferenceKey, 0)
+                                apply()
+                            }
                         },
                         text = { Text(text = stringResource(id = R.string.revenues)) },
                     )
@@ -91,7 +102,10 @@ fun RegisterScreen(
                         selected = selectedTabIndex == 1,
                         onClick = {
                             selectedTabIndex = 1
-
+                            with(preferences.edit()) {
+                                putInt(selectedTabPreferenceKey, 1)
+                                apply()
+                            }
                         },
                         text = { Text(text = stringResource(id = R.string.all)) },
                     )
@@ -99,7 +113,10 @@ fun RegisterScreen(
                         selected = selectedTabIndex == 2,
                         onClick = {
                             selectedTabIndex = 2
-
+                            with(preferences.edit()) {
+                                putInt(selectedTabPreferenceKey, 2)
+                                apply()
+                            }
                         },
                         text = { Text(text = stringResource(id = R.string.expenses)) },
                     )

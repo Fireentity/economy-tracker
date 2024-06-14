@@ -26,7 +26,6 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,12 +53,10 @@ fun MovementDateInput(
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
 
-    val formattedDate: String by remember {
-        derivedStateOf {
-            initialDate?.let {
-                DateHelper.convertFromMillisecondsToDateTime(it)
-            } ?: ""
-        }
+    var formattedDate: String by remember {
+        mutableStateOf(initialDate?.let {
+            DateHelper.convertFromMillisecondsToDateTime(it)
+        } ?: "")
     }
 
     OutlinedTextField(
@@ -146,10 +143,13 @@ fun MovementDateInput(
                             onClick = {
                                 showTimePicker = false
                                 datePickerState.selectedDateMillis?.let {
+                                    val date = it + timePickerState.hour * MILLISECONDS_PER_HOUR +
+                                            timePickerState.minute * MILLISECONDS_PER_MINUTE
                                     onDateChange(
-                                        it + timePickerState.hour * MILLISECONDS_PER_HOUR +
-                                                timePickerState.minute * MILLISECONDS_PER_MINUTE
+                                        date
                                     )
+
+                                    formattedDate = DateHelper.convertFromMillisecondsToDateTime(date)
                                 }
                             }
                         ) { Text(stringResource(id = R.string.confirm)) }

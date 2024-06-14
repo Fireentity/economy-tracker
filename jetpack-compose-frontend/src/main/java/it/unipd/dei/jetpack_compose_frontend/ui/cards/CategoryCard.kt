@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowCategoryBottomSheetButton
 
@@ -25,7 +26,9 @@ import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowCategoryBottomSheetB
 fun CategoryCard(
     category: Category,
     categoryViewModel: CategoryViewModel,
-    movementWithCategoryViewModel: MovementWithCategoryViewModel
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
+    clickableButton: Boolean = true
 ) {
     val icon = ImageVector.vectorResource(id = R.drawable.baseline_folder_open_24)
     val background: Color = colorResource(id = R.color.blue_100)
@@ -47,11 +50,14 @@ fun CategoryCard(
             )
         },
         trailingContent = {
-            ShowCategoryBottomSheetButton(
-                category,
-                categoryViewModel,
-                movementWithCategoryViewModel
-            )
+            if(clickableButton) {
+                ShowCategoryBottomSheetButton(
+                    category,
+                    categoryViewModel,
+                    movementWithCategoryViewModel,
+                    summaryViewModel
+                )
+            }
         }
     )
 }

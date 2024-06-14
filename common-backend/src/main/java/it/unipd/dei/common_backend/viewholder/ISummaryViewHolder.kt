@@ -42,32 +42,33 @@ interface ISummaryViewHolder {
         val monthlyAll = summary.monthlyAll
         val monthlyPositive = summary.monthlyPositive
         val monthlyNegative = summary.monthlyNegative
+        val currencySymbol = Constants.CURRENCY.getSymbol(context.resources)
 
         val positivePhrases = listOf(
             context.getString(
                 R.string.great_job_this_month_you_earned,
                 monthlyPositive,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.fantastic_your_monthly_earnings_are,
                 monthlyPositive,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.congratulations_you_have_accumulated,
                 monthlyPositive,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.excellent_you_have_taken_home,
                 monthlyPositive,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.super_your_earnings_this_month_have_been,
                 monthlyAll,
-                Constants.CURRENCY
+                currencySymbol
             )
         )
 
@@ -75,27 +76,27 @@ interface ISummaryViewHolder {
             context.getString(
                 R.string.watch_out_for_expenses_this_month_you_spent,
                 monthlyNegative,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.your_monthly_costs_have_been,
                 monthlyNegative,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.remember_to_watch_your_expenses_they_amount_to,
                 monthlyNegative,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.your_expenses_this_month_have_been,
                 monthlyNegative,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.control_your_expenses_you_spent,
                 monthlyNegative,
-                Constants.CURRENCY
+                currencySymbol
             )
         )
 
@@ -103,27 +104,27 @@ interface ISummaryViewHolder {
             context.getString(
                 R.string.the_net_total_for_the_month_is,
                 monthlyAll,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.the_overall_monthly_balance_is,
                 monthlyAll,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.the_final_result_for_this_month_is,
                 monthlyAll,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.the_balance_for_this_month_is,
                 monthlyAll,
-                Constants.CURRENCY
+                currencySymbol
             ),
             context.getString(
                 R.string.the_total_for_your_finances_this_month_is,
                 monthlyAll,
-                Constants.CURRENCY
+                currencySymbol
             )
         )
 

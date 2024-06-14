@@ -43,7 +43,8 @@ fun ExpensesTab(
             MovementCard(
                 movements[index],
                 categoryViewModel,
-                movementWithCategoryViewModel
+                movementWithCategoryViewModel,
+                summaryViewModel
             )
         }
     }

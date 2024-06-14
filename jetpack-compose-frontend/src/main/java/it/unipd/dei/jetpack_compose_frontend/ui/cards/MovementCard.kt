@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -24,6 +25,7 @@ import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowMovementBottomSheetButton
 
@@ -31,7 +33,9 @@ import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowMovementBottomSheetB
 fun MovementCard(
     movementWithCategory: MovementWithCategory,
     categoryViewModel: CategoryViewModel,
-    movementWithCategoryViewModel: MovementWithCategoryViewModel
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
+    clickableButton: Boolean = true
 ) {
     val colorFilter: ColorFilter
     val background: Color
@@ -72,16 +76,19 @@ fun MovementCard(
                     text = stringResource(
                         id = R.string.amount,
                         movementWithCategory.movement.amount,
-                        Constants.CURRENCY
+                        Constants.CURRENCY.getSymbol(LocalContext.current.resources)
                     ),
                     style = MaterialTheme.typography.headlineSmall,
                 )
 
-                ShowMovementBottomSheetButton(
-                    movement = movementWithCategory,
-                    categoryViewModel = categoryViewModel,
-                    movementWithCategoryViewModel = movementWithCategoryViewModel
-                )
+                if(clickableButton) {
+                    ShowMovementBottomSheetButton(
+                        movementWithCategory,
+                        categoryViewModel,
+                        movementWithCategoryViewModel,
+                        summaryViewModel
+                    )
+                }
             }
         }
     )

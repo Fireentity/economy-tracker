@@ -1,5 +1,6 @@
 package it.unipd.dei.jetpack_compose_frontend.ui
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
+import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowSettingsDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(summaryViewModel: SummaryViewModel) {
+fun HomeScreen(summaryViewModel: SummaryViewModel, sharedPreferences: SharedPreferences) {
     Surface {
         Scaffold(
             topBar = {
@@ -40,6 +42,9 @@ fun HomeScreen(summaryViewModel: SummaryViewModel) {
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
+                    },
+                    actions = {
+                        ShowSettingsDialogButton(sharedPreferences = sharedPreferences)
                     }
                 )
             },

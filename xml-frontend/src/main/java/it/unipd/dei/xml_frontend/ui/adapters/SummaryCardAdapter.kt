@@ -10,10 +10,10 @@ import it.unipd.dei.xml_frontend.ui.view.holder.SummaryViewHolder
 
 class SummaryCardAdapter(private var summaries: List<Summary>, private val context: Context) :
     RecyclerView.Adapter<SummaryCardAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SummaryCardAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_summary_card, parent, false)
-        return SummaryCardAdapter.ViewHolder(SummaryViewHolder(view, context))
+        return ViewHolder(SummaryViewHolder(view, context))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -23,6 +23,7 @@ class SummaryCardAdapter(private var summaries: List<Summary>, private val conte
 
     fun updateSummaryCards(summaries: List<Summary>){
         this.summaries = summaries
+        //TODO check here
         notifyDataSetChanged()
     }
 

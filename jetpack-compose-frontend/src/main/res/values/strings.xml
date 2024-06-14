@@ -53,5 +53,14 @@
     <string name="how_did_it_go">Com\'è andata?</string>
     <string name="confirm">Conferma</string>
 
+    <string name="saved_selected_tab">it.unipd.dei.economy-tracker.last-selected-tab</string>
+    <string name="saved_selected_currency">it.unipd.dei.economy-tracker.selected-currency</string>
+    <string name="saved_selected_theme">it.unipd.dei.economy-tracker.selected-theme</string>
+    <string name="settings">Impostazioni</string>
 
+    <string name="choose_the_currency_for_your_movements">Scegli la valuta per i tuoi movimenti</string>
+    <string name="euro">Euro: </string>
+    <string name="dollar">Dollar: </string>
+    <string name="pound">Pound: </string>
+    <string name="dark_mode">Dark mode:</string>
 </resources>

@@ -4,21 +4,38 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import it.unipd.dei.common_backend.models.Summary
-import java.time.Month
 
 @Dao
 interface SummaryDao {
     @Transaction
-    @Query("""
+    @Query(
+        """
         SELECT 
             SUM(amount) AS monthlyAll,
             SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS monthlyPositive,
             SUM(CASE WHEN amount < 0 THEN amount ELSE 0 END) AS monthlyNegative,
-            :month AS month,
-            :year AS year
+            CAST(STRFTIME('%m', datetime(date/1000, 'unixepoch')) AS INTEGER) AS month,
+            CAST(STRFTIME('%Y', datetime(date/1000, 'unixepoch')) AS INTEGER) AS year
         FROM movements
-        WHERE date BETWEEN :startDate AND :endDate
-    """)
-    suspend fun getSummary(startDate: Long, endDate: Long, month: Month, year: Int): Summary
+        GROUP BY month, year
+    """
+    )
+    suspend fun getSummary(): List<Summary>
+
+    @Transaction
+    @Query(
+        """
+        SELECT 
+            SUM(amount) AS monthlyAll,
+            SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS monthlyPositive,
+            SUM(CASE WHEN amount < 0 THEN amount ELSE 0 END) AS monthlyNegative,
+            CAST(STRFTIME('%M', datetime(date/1000, 'unixepoch')) AS INTEGER) AS month,
+            CAST(STRFTIME('%Y', datetime(date/1000, 'unixepoch')) AS INTEGER) AS year
+        FROM movements
+        WHERE month = :month AND year = :year
+        GROUP BY month, year
+    """
+    )
+    suspend fun getSummaryByMonthAndYear(month: Int, year: Int): Summary
 
 }

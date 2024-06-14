@@ -17,7 +17,11 @@ import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
 
 @Composable
-fun AllTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categoryViewModel: CategoryViewModel, summaryViewModel: SummaryViewModel) {
+fun AllTab(
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    categoryViewModel: CategoryViewModel,
+    summaryViewModel: SummaryViewModel
+) {
     movementWithCategoryViewModel.loadInitialMovementsByCategory()
     val movements by movementWithCategoryViewModel.getMovements()
         .observeAsState(initial = emptyList())
@@ -42,7 +46,8 @@ fun AllTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categor
             MovementCard(
                 movements[index],
                 categoryViewModel,
-                movementWithCategoryViewModel
+                movementWithCategoryViewModel,
+                summaryViewModel
             )
         }
     }

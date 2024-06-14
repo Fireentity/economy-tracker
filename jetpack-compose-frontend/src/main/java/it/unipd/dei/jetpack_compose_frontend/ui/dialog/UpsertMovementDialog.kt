@@ -31,6 +31,7 @@ import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.AddMovementButton
 import it.unipd.dei.jetpack_compose_frontend.ui.input.MovementCategoryInput
@@ -41,6 +42,7 @@ import it.unipd.dei.jetpack_compose_frontend.ui.input.MovementDateInput
 fun UpsertMovementDialog(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     movement: MovementWithCategory? = null,
     onDismiss: () -> Unit = {},
 ) {
@@ -108,7 +110,8 @@ fun UpsertMovementDialog(
                         movementBuilder,
                         movementWithCategoryViewModel,
                         categoryViewModel,
-                        onDismiss,
+                        summaryViewModel,
+                        onDismiss
                     )
                 }
             }

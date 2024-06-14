@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowDeleteCategoryDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowEditCategoryDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
@@ -23,6 +24,7 @@ fun CategoryBottomSheet(
     category: Category,
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     onDismissRequest: () -> Unit
 ) {
     ModalBottomSheet(onDismissRequest = { onDismissRequest() }) {
@@ -30,19 +32,28 @@ fun CategoryBottomSheet(
             modifier = Modifier.fillMaxWidth()
         ) {
 
-            CategoryCard(category, categoryViewModel, movementWithCategoryViewModel)
+            CategoryCard(
+                category,
+                categoryViewModel,
+                movementWithCategoryViewModel,
+                summaryViewModel,
+                false
+            )
 
             ShowDeleteCategoryDialogButton(
                 categoryViewModel,
                 movementWithCategoryViewModel,
-                category
+                category,
+                summaryViewModel
             )
 
-            ShowEditCategoryDialogButton(categoryViewModel, category)
+            ShowEditCategoryDialogButton(categoryViewModel, movementWithCategoryViewModel, category)
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(30.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(30.dp)
+            )
         }
     }
 }
