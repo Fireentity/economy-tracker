@@ -12,11 +12,6 @@ data class Category(
     val createdAt: Long,
     val updatedAt: Long
 ) {
-
-    fun withUpdatedAt(updatedAt: Long): Category {
-        return Category(uuid, identifier, createdAt, updatedAt);
-    }
-
     fun withCategoryIdentifier(identifier: String): Category {
         return Category(uuid, identifier, createdAt, updatedAt);
     }

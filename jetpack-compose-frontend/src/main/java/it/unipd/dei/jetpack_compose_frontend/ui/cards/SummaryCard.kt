@@ -72,6 +72,9 @@ fun SummaryCard(summary: Summary) {
                         )
                     },
                     colors = AssistChipDefaults.assistChipColors().copy(
+                        labelColor = colorResource(
+                            id = R.color.green_700
+                        ),
                         containerColor = colorResource(
                             id = R.color.green_100
                         )
@@ -97,6 +100,9 @@ fun SummaryCard(summary: Summary) {
                         )
                     },
                     colors = AssistChipDefaults.assistChipColors().copy(
+                        labelColor = colorResource(
+                            id = R.color.red_700
+                        ),
                         containerColor = colorResource(
                             id = R.color.red_100
                         )
@@ -123,6 +129,9 @@ fun SummaryCard(summary: Summary) {
                         )
                     },
                     colors = AssistChipDefaults.assistChipColors().copy(
+                        labelColor = colorResource(
+                            id = R.color.green_700
+                        ),
                         containerColor = colorResource(
                             id = R.color.green_100
                         )
