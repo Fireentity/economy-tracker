@@ -47,6 +47,19 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/menu_icon_button"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/show_setting_button"
+                android:padding="12dp"
+                app:icon="@drawable/baseline_menu_24"
+                app:iconSize="30dp" />
+
         </LinearLayout>
 
         <!-- TabLayout -->
