@@ -12,7 +12,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,12 +31,12 @@ fun CurrencySettingsButton(
 ) {
     val currencySharedPreferenceKey = stringResource(id = R.string.saved_selected_currency)
     val radioOptions = Currency.entries
-    var selectedOption: String by remember {
-        mutableStateOf(
-            sharedPreferences.getString(
+    var selectedOption: Int by remember {
+        mutableIntStateOf(
+            sharedPreferences.getInt(
                 currencySharedPreferenceKey,
-                radioOptions[0].name
-            ) ?: ""
+                radioOptions[0].value
+            )
         )
     }
 
@@ -45,38 +45,38 @@ fun CurrencySettingsButton(
         RadioButtonEntry(
             selectedOption,
             sharedPreferences,
-            Currency.EURO.name,
+            Currency.EURO.value,
             ImageVector.vectorResource(R.drawable.baseline_euro_24),
             stringResource(id = R.string.euro)
         ) {
-            selectedOption = Currency.EURO.name
+            selectedOption = Currency.EURO.value
         }
         RadioButtonEntry(
             selectedOption,
             sharedPreferences,
-            Currency.DOLLAR.name,
+            Currency.DOLLAR.value,
             ImageVector.vectorResource(R.drawable.baseline_dollar_24),
             stringResource(id = R.string.dollar)
         ) {
-            selectedOption = Currency.DOLLAR.name
+            selectedOption = Currency.DOLLAR.value
         }
         RadioButtonEntry(
             selectedOption,
             sharedPreferences,
-            Currency.POUND.name,
+            Currency.POUND.value,
             ImageVector.vectorResource(R.drawable.baseline_pound_24),
             stringResource(id = R.string.pound)
         ) {
-            selectedOption = Currency.POUND.name
+            selectedOption = Currency.POUND.value
         }
     }
 }
 
 @Composable
 fun RadioButtonEntry(
-    selectedCurrency: String,
+    selectedCurrency: Int,
     sharedPreferences: SharedPreferences,
-    currency: String,
+    currency: Int,
     imageVector: ImageVector,
     text: String,
     onSelect: () -> Unit
@@ -93,7 +93,7 @@ fun RadioButtonEntry(
                     onSelect()
                     sharedPreferences
                         .edit()
-                        .putString(currencySharedPreferenceKey, currency)
+                        .putInt(currencySharedPreferenceKey, currency)
                         .apply()
                 },
                 role = Role.RadioButton

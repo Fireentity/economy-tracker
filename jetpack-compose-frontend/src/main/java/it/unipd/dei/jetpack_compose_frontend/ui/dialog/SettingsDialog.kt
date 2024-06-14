@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -65,7 +64,7 @@ fun SettingsDialog(sharedPreferences: SharedPreferences, onDismiss: () -> Unit) 
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        Button(onClick = {
+                        TextButton(onClick = {
                             onDismiss()
                         }) {
                             Text(text = stringResource(id = R.string.confirm))

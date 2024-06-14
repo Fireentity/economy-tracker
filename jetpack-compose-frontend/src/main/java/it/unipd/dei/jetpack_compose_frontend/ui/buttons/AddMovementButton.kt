@@ -1,7 +1,7 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.buttons
 
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,7 +23,7 @@ fun AddMovementButton(
     val context = LocalContext.current
     val movementSuccessfullyAdded = stringResource(R.string.movement_operation_successfully_executed)
     val movementCreationFailed = stringResource(R.string.movement_operation_failed)
-    Button(onClick = {
+    TextButton(onClick = {
         movementBuilder.toMovement(categoryViewModel)?.let {
             movementWithCategoryViewModel.upsertMovement(
                 it,

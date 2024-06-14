@@ -22,7 +22,7 @@ fun ThemeModeSettingsButton(sharedPreferences: SharedPreferences) {
     val themeSharedPreferenceKey = stringResource(id = R.string.saved_selected_theme)
     var isThemeSwitchOn: Boolean by remember {
         mutableStateOf(
-            sharedPreferences.getBoolean("isThemeSwitchOn", false)
+            sharedPreferences.getBoolean(themeSharedPreferenceKey, false)
         )
     }
 
@@ -38,9 +38,9 @@ fun ThemeModeSettingsButton(sharedPreferences: SharedPreferences) {
         Switch(
             checked = isThemeSwitchOn,
             onCheckedChange = {
-                isThemeSwitchOn = !isThemeSwitchOn
+                isThemeSwitchOn = it
                 sharedPreferences.edit()
-                    .putBoolean(themeSharedPreferenceKey, isThemeSwitchOn)
+                    .putBoolean(themeSharedPreferenceKey, it)
                     .apply()
             }
         )

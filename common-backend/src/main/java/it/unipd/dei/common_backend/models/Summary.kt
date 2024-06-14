@@ -1,5 +1,6 @@
 package it.unipd.dei.common_backend.models
 
+import it.unipd.dei.common_backend.utils.DateHelper
 import java.time.Month
 
 data class Summary(
@@ -11,7 +12,11 @@ data class Summary(
 ) {
     companion object {
         val DEFAULT = Summary(
-            0.0, 0.0, 0.0, Month.JANUARY, 1970
+            0.0,
+            0.0,
+            0.0,
+            DateHelper.getCurrentMonth(),
+            DateHelper.getCurrentYear()
         )
     }
 }
