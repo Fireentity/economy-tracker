@@ -41,7 +41,6 @@ Economy Tracker è un'applicazione progettata per monitorare e gestire le spese 
 - Marco Pavanetto
 - Lorenzo Croce
 - Alberto Bottari
-- 
 ---
 
 Esame di **Programmazione di Sistemi Embedded**.
