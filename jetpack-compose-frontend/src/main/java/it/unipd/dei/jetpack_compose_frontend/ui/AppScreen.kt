@@ -34,7 +34,6 @@ import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
-import it.unipd.dei.common_backend.viewModels.TestViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.navigation.NavigationDrawer
 
@@ -42,13 +41,11 @@ import it.unipd.dei.jetpack_compose_frontend.ui.navigation.NavigationDrawer
 @Composable
 fun AppScreen(
     navController: NavHostController = rememberNavController(),
-    testViewModel: TestViewModel = hiltViewModel(),
     categoryViewModel: CategoryViewModel = hiltViewModel(),
     movementWithCategoryViewModel: MovementWithCategoryViewModel = hiltViewModel(),
     summaryViewModel: SummaryViewModel = hiltViewModel(),
     preferences: SharedPreferences
 ) {
-    testViewModel.createDummyDataIfNoMovement()
     categoryViewModel.loadAllCategories()
     summaryViewModel.loadSummaryForCurrentMonth()
     summaryViewModel.loadAllSummaries()

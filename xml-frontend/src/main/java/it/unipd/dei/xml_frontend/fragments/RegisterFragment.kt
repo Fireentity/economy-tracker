@@ -13,7 +13,6 @@ import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.common_backend.viewModels.SummaryViewModel
-import it.unipd.dei.common_backend.viewModels.TestViewModel
 import it.unipd.dei.xml_frontend.MainActivity
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.MovementWithSummaryHeaderCardAdapter
@@ -32,7 +31,6 @@ class RegisterFragment : Fragment() {
         const val DEFAULT_TAB_SELECTED = 1;
     }
 
-    private val testViewModel: TestViewModel by activityViewModels()
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
     private val summaryViewModel: SummaryViewModel by activityViewModels()
@@ -154,7 +152,6 @@ class RegisterFragment : Fragment() {
             }
         })
 
-        testViewModel.createDummyDataIfNoMovement()
         categoryViewModel.loadAllCategories()
         summaryViewModel.loadSummaryForCurrentMonth()
     }
