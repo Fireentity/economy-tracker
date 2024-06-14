@@ -107,7 +107,7 @@ fun RadioButtonEntry(
         Icon(
             modifier = Modifier.padding(horizontal = 5.dp),
             imageVector = imageVector,
-            contentDescription = ""
+            contentDescription = stringResource(id = R.string.currency_icon)
         )
         Text(text = text)
     }

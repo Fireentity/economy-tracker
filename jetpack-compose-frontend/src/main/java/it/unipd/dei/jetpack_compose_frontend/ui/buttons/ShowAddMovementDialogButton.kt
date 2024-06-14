@@ -26,7 +26,7 @@ fun ShowAddMovementDialogButton(
     FloatingActionButton(onClick = {
         showDialog = true
     }) {
-        Icon(imageVector = Icons.Filled.Add, contentDescription = "")
+        Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(id = R.string.create_movement))
     }
     if (showDialog) {
         UpsertMovementDialog(

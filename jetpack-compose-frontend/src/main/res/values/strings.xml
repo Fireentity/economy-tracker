@@ -66,4 +66,10 @@
     <string name="home_route">home</string>
     <string name="register_route">register</string>
     <string name="categories_route">categories</string>
+    <string name="currency_icon">Icona della valuta</string>
+    <string name="movement">Movimento</string>
+    <string name="category_card">Card di una categoria</string>
+    <string name="movement_card_icon">Icona della card del movimento</string>
+    <string name="back">Indietro</string>
+    <string name="categories_filter">Filtro per categorie</string>
 </resources>

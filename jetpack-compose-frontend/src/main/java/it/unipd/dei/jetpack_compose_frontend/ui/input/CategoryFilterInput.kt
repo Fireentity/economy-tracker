@@ -48,7 +48,7 @@ fun CategoryFilterInput(
     IconButton(onClick = { expanded = true }) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.baseline_filter_alt_off_24),
-            contentDescription = "Localized description"
+            contentDescription = stringResource(id = R.string.categories_filter)
         )
     }
 }

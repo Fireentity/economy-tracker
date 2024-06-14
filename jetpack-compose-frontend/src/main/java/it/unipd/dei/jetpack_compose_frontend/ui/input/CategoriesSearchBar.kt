@@ -58,10 +58,10 @@ fun CategoriesSearchBar(
                     if (expanded) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.back)
                         )
                     } else {
-                        Icon(imageVector = Icons.Filled.Search, contentDescription = null)
+                        Icon(imageVector = Icons.Filled.Search, contentDescription = stringResource(id = R.string.search_category_placeholder))
                     }
                 }
             },

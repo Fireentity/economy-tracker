@@ -69,7 +69,7 @@ fun SummaryCard(summary: Summary) {
                         leadingIcon = {
                             Icon(
                                 imageVector = arrowUpward,
-                                contentDescription = "Monthly revenues",
+                                contentDescription = stringResource(id = R.string.monthly_revenues),
                                 tint = colorResource(id = R.color.green_700)
                             )
                         },
@@ -102,7 +102,7 @@ fun SummaryCard(summary: Summary) {
                         leadingIcon = {
                             Icon(
                                 imageVector = stackedBarChart,
-                                contentDescription = "Monthly all",
+                                contentDescription = stringResource(id = R.string.monthly_total),
                                 tint = colorResource(id = R.color.gray_700)
                             )
                         },
@@ -133,7 +133,7 @@ fun SummaryCard(summary: Summary) {
                         }, leadingIcon = {
                             Icon(
                                 imageVector = arrowDownward,
-                                contentDescription = "Monthly expenses",
+                                contentDescription = stringResource(id = R.string.monthly_expenses),
                                 tint = colorResource(id = R.color.red_700)
                             )
                         },

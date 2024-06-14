@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/circle"
             android:backgroundTint="@color/blue_100"
-            android:contentDescription="General category image"
+            android:contentDescription="@string/category_icon"
             android:padding="10dp"
             android:layout_marginStart="24dp"
             android:src="@drawable/baseline_folder_open_24"
