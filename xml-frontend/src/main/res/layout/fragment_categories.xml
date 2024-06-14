@@ -11,7 +11,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/all_categories_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="25dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/searchbar_scrolling_view_behavior"
             app:layout_constraintTop_toBottomOf="@id/app_bar" />
@@ -22,30 +23,33 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
-
-
-            <LinearLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:minHeight="?attr/actionBarSize"
+                app:title="@string/categories"
+                app:titleCentered="false">
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
+            </com.google.android.material.appbar.MaterialToolbar>
+
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/search_bar_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:menu="@menu/top_app_bar"
+                app:title="@string/categories">
+
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="?attr/actionBarSize"
-                    app:menu="@menu/top_app_bar"
-                    app:title="@string/categories">
+                    android:hint="@string/search_category_placeholder"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.google.android.material.appbar.MaterialToolbar>
 
-                    <com.google.android.material.search.SearchBar
-                        android:id="@+id/search_bar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/search_category_placeholder"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </com.google.android.material.appbar.MaterialToolbar>
-
-            </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -64,14 +68,13 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@id/search_bar"
-        android:hint="@string/search_category_placeholder">
+        android:hint="@string/search_category_placeholder"
+        app:layout_anchor="@id/search_bar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_results_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </com.google.android.material.search.SearchView>
 

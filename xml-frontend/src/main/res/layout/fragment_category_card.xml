@@ -12,17 +12,17 @@
             android:id="@+id/category_card_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:background="@drawable/circle"
             android:backgroundTint="@color/blue_100"
             android:contentDescription="@string/category_icon"
             android:padding="10dp"
-            android:layout_marginStart="24dp"
             android:src="@drawable/baseline_folder_open_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            />
+            app:tint="@color/blue_700" />
 
         <TextView
             android:id="@+id/category_card_identifier"
