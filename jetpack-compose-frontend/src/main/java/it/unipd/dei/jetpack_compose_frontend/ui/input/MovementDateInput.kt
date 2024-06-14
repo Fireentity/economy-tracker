@@ -102,6 +102,7 @@ fun MovementDateInput(
 
 
     if (showTimePicker) {
+        //TODO dismiss button text
         Dialog(
             onDismissRequest = { showTimePicker = false },
             properties = DialogProperties(
@@ -126,6 +127,7 @@ fun MovementDateInput(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 20.dp),
+                        //TODO fix that
                         text = "Select time",
                         style = MaterialTheme.typography.labelMedium
                     )

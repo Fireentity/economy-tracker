@@ -12,8 +12,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        layout="@layout/fragment_movement_card"
         android:id="@+id/movement_card"
+        layout="@layout/fragment_movement_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,18 +32,19 @@
         android:id="@+id/show_edit_movement_dialog_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="15dp"
-        android:paddingTop="30dp"
         android:orientation="horizontal"
+        android:paddingTop="30dp"
+        android:paddingBottom="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dividerTop">
 
         <ImageView
-            android:id="@+id/icon1"
+            android:id="@+id/edit_movement_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
+            android:contentDescription="@string/edit_icon"
             android:src="@drawable/baseline_modify_24" />
 
         <TextView
@@ -51,24 +52,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:text="Modifica" />
+            android:text="@string/edit_movement" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/show_delete_movement_dialog_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="15dp"
         android:orientation="horizontal"
+        android:paddingVertical="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/show_edit_movement_dialog_button">
 
         <ImageView
-            android:id="@+id/icon2"
+            android:id="@+id/delete_movement_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
+            android:contentDescription="@string/delete_icon"
             android:minWidth="24dp"
             android:src="@drawable/baseline_delete_24" />
 
@@ -77,6 +79,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:text="Elimina" />
+            android:text="@string/delete_movement" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

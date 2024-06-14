@@ -1,9 +1,13 @@
 package it.unipd.dei.xml_frontend.ui.bottomsheets
 
+import android.content.Context.MODE_PRIVATE
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,6 +71,17 @@ class MovementBottomSheetFragment(
                 movement
             ).show()
             dismiss()
+        }
+
+
+        val sharedPref = requireActivity().getPreferences(MODE_PRIVATE)
+
+        val isDarkModeEnable = sharedPref.getBoolean(requireContext().getString(R.string.is_dark_mode_enable), false)
+        if(isDarkModeEnable){
+            val editIcon: ImageView = view.findViewById(R.id.edit_movement_icon)
+            val deleteIcon: ImageView = view.findViewById(R.id.delete_movement_icon)
+            editIcon.imageTintList = ColorStateList.valueOf(requireContext().getColor(R.color.gray_100))
+            deleteIcon.imageTintList = ColorStateList.valueOf(requireContext().getColor(R.color.gray_100))
         }
 
         return view

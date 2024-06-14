@@ -64,4 +64,7 @@
     <string name="pound">Pound</string>
 
     <string name="dark_mode">Dark mode:</string>
+    <string name="show_setting_button">Mostra le impostazioni</string>
+    <string name="delete_icon">icona cestino</string>
+    <string name="edit_icon">Icona modifica</string>
 </resources>
