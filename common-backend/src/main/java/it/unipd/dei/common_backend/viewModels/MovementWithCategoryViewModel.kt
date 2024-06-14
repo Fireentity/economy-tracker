@@ -204,6 +204,7 @@ class MovementWithCategoryViewModel @Inject constructor(
 
     fun upsertMovement(
         movement: MovementWithCategory,
+        summaryViewModel: SummaryViewModel,
         onSuccess: () -> Unit,
         onFailure: (e: SQLException) -> Unit
     ) {
@@ -212,6 +213,8 @@ class MovementWithCategoryViewModel @Inject constructor(
                 withContext(Dispatchers.IO) {
                     movementDao.upsertMovement(movement.movement)
                     withContext(Dispatchers.Main) {
+                        summaryViewModel.loadAllSummaries()
+                        summaryViewModel.loadSummaryForCurrentMonth()
                         invalidateMovementsAndReload()
                         onSuccess()
                     }
@@ -226,6 +229,7 @@ class MovementWithCategoryViewModel @Inject constructor(
 
     fun deleteMovement(
         movement: MovementWithCategory,
+        summaryViewModel: SummaryViewModel,
         onSuccess: () -> Unit,
         onFailure: (e: SQLException) -> Unit
     ) {
@@ -235,6 +239,8 @@ class MovementWithCategoryViewModel @Inject constructor(
                 withContext(Dispatchers.IO) {
                     movementDao.deleteMovement(movement.movement)
                     withContext(Dispatchers.Main) {
+                        summaryViewModel.loadAllSummaries()
+                        summaryViewModel.loadSummaryForCurrentMonth()
                         invalidateMovementsAndReload()
                         onSuccess()
                     }

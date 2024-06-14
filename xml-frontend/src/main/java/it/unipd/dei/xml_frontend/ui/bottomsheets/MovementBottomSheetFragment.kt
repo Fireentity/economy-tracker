@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.dialog.DeleteMovementDialog
 import it.unipd.dei.xml_frontend.ui.dialog.UpsertMovementDialog
@@ -22,6 +23,7 @@ class MovementBottomSheetFragment(
 
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
+    private val summaryViewModel: SummaryViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -46,6 +48,7 @@ class MovementBottomSheetFragment(
             UpsertMovementDialog(
                 categoryViewModel,
                 movementWithCategoryViewModel,
+                summaryViewModel,
                 editMovementDialogView,
                 requireContext(),
                 viewLifecycleOwner,
@@ -58,7 +61,10 @@ class MovementBottomSheetFragment(
 
         showDeleteMovementDialogButtonView.setOnClickListener {
             DeleteMovementDialog(
-                movementWithCategoryViewModel, requireContext(), movement
+                movementWithCategoryViewModel,
+                summaryViewModel,
+                requireContext(),
+                movement
             ).show()
             dismiss()
         }

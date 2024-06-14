@@ -125,7 +125,7 @@ fun SummaryCard(summary: Summary) {
                 )
             }
             Text(
-                text = if (DateHelper.isMonthCurrent(summary.month, summary.year)
+                text = if (DateHelper.isMonthNotFinishedYet(summary.month, summary.year)
                 ) {
                     LocalContext.current.getString(R.string.how_is_it_going)
                 } else {

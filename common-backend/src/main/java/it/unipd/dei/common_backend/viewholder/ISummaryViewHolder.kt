@@ -10,7 +10,7 @@ import java.time.Month
 interface ISummaryViewHolder {
 
     fun headline(summary: Summary, context: Context): String {
-        return if (DateHelper.isMonthCurrent(summary.month, summary.year)
+        return if (DateHelper.isMonthNotFinishedYet(summary.month, summary.year)
         ) {
             context.getString(R.string.how_is_it_going)
         } else {

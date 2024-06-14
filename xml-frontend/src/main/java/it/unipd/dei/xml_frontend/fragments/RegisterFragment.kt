@@ -37,13 +37,18 @@ class RegisterFragment : Fragment() {
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
     private val summaryViewModel: SummaryViewModel by activityViewModels()
-    private var selectedTab = DEFAULT_TAB_SELECTED
+    private var selectedTab : Int = DEFAULT_TAB_SELECTED
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+
+        val sharedPref = activity?.getPreferences(MODE_PRIVATE)
+        sharedPref?.let {
+            selectedTab = sharedPref.getInt(getString(R.string.saved_selected_tab), DEFAULT_TAB_SELECTED)
+        }
 
         // Inflate the layout
         val view = inflater.inflate(R.layout.fragment_register, container, false)
@@ -59,6 +64,7 @@ class RegisterFragment : Fragment() {
             dialogView,
             categoryViewModel,
             movementWithCategoryViewModel,
+            summaryViewModel,
             requireContext(),
             viewLifecycleOwner,
             parentFragmentManager
@@ -122,7 +128,7 @@ class RegisterFragment : Fragment() {
 
         val tabLayout: TabLayout = view.findViewById(R.id.register_tab_layout)
 
-        tabLayout.getTabAt(DEFAULT_TAB_SELECTED)?.select()
+        tabLayout.getTabAt(selectedTab)?.select()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 selectedTab = tab?.position ?: DEFAULT_TAB_SELECTED
@@ -134,32 +140,20 @@ class RegisterFragment : Fragment() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                tabs[tab?.position ?: DEFAULT_TAB_SELECTED].show()
+                tabs[tab?.position ?: DEFAULT_TAB_SELECTED].scrollToStart()
             }
         })
 
-
-        // Create dummy data if no movement exists
         testViewModel.createDummyDataIfNoMovement()
         categoryViewModel.loadAllCategories()
         summaryViewModel.loadSummaryForCurrentMonth()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        DisplayToast.displayGeneric(requireContext(),"DISTRUTTOOOOOOOOO")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        DisplayToast.displayGeneric(requireContext(),"RESUMEEEEEEEEEE")
-    }
-
     override fun onPause() {
         super.onPause()
         val sharedPref = activity?.getPreferences(MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putInt(getString(R.string.saved_selected_category), selectedTab)
+        with(sharedPref.edit()) {
+            putInt(getString(R.string.saved_selected_tab), selectedTab)
             apply()
         }
     }

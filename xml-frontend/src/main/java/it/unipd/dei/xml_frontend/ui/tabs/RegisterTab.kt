@@ -48,8 +48,11 @@ abstract class RegisterTab(
     }
 
 
-    open fun observeViewModel(lifecycleOwner: LifecycleOwner){
-        summaryViewModel.currentMonthSummary.observe(lifecycleOwner){
+    open fun observeViewModel(lifecycleOwner: LifecycleOwner) {
+        summaryViewModel.currentMonthSummary.value?.let {
+            movementWithSummaryHeaderCardAdapter.updateSummary(it)
+        }
+        summaryViewModel.currentMonthSummary.observe(lifecycleOwner) {
             movementWithSummaryHeaderCardAdapter.updateSummary(it)
         }
     }
@@ -57,10 +60,13 @@ abstract class RegisterTab(
     abstract fun loadSomeMovementsByCategory(function: () -> Unit)
 
     fun show() {
+        recyclerView.visibility = View.VISIBLE;
+    }
+
+    fun scrollToStart() {
         if (movementWithSummaryHeaderCardAdapter.itemCount > 0) {
             recyclerView.scrollToPosition(0)
         }
-        recyclerView.visibility = View.VISIBLE;
     }
 
     fun hide() {

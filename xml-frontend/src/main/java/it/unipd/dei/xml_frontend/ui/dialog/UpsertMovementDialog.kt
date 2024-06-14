@@ -12,6 +12,7 @@ import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.buttons.UpsertMovementButton
 import it.unipd.dei.xml_frontend.ui.input.MovementAmountInput
@@ -21,6 +22,7 @@ import it.unipd.dei.xml_frontend.ui.input.MovementDateInput
 class UpsertMovementDialog(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     view: View,
     private val fragmentContext: Context,
     lifecycleOwner: LifecycleOwner,
@@ -47,6 +49,7 @@ class UpsertMovementDialog(
             movementBuilder,
             categoryViewModel,
             movementWithCategoryViewModel,
+            summaryViewModel,
             fragmentContext,
             this::dismiss
         )
