@@ -1,12 +1,12 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.buttons
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -42,10 +42,11 @@ fun ShowEditCategoryDialogButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Image(
+            Icon(
                 imageVector = Icons.Outlined.Edit,
-                contentDescription = null,
+                contentDescription = null
             )
+
             Text(
                 text = stringResource(id = R.string.edit_category),
                 modifier = Modifier.padding(start = 12.dp)

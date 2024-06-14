@@ -79,7 +79,7 @@ fun CategoriesSearchBar(
                 .align(Alignment.TopCenter)
         ) {
             LazyColumn {
-                items(categories.size) {
+                items(filteredCategories.size) {
                     CategoryCard(
                         category = filteredCategories[it],
                         categoryViewModel = categoryViewModel,
