@@ -86,6 +86,7 @@ fun SummaryCard(summary: Summary) {
 
                 item {
                     ElevatedAssistChip(
+                        modifier = Modifier.padding(horizontal = 8.dp),
                         onClick = { /* Do nothing, as chip is not clickable */ },
                         label = {
                             Text(
@@ -118,7 +119,6 @@ fun SummaryCard(summary: Summary) {
 
                 item {
                     ElevatedAssistChip(
-                        modifier = Modifier.padding(horizontal = 8.dp),
                         onClick = { /* Do nothing, as chip is not clickable */ },
                         label = {
                             Text(
