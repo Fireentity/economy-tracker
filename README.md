@@ -2,6 +2,8 @@
 
 ## Descrizione
 
+Consegna: Building-UIs
+
 Economy Tracker è un'applicazione progettata per monitorare e gestire le spese personali. Fornisce un'interfaccia intuitiva per registrare transazioni, visualizzare resoconti delle spese.
 
 ## Funzionalità
@@ -16,6 +18,11 @@ Economy Tracker è un'applicazione progettata per monitorare e gestire le spese 
 - Android SDK
 
 ## Installazione
+
+Il progetto si basa su tre moduli:
+- common-backend per il codice in comune tra le due applicazioni
+- xml-frontend per il codice xml
+- jetpack-compose-backend per il codice jetpack
 
 1. Clona il repository:
 
