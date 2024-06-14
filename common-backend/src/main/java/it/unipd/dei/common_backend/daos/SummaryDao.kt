@@ -37,6 +37,6 @@ interface SummaryDao {
         GROUP BY month, year
     """
     )
-    suspend fun getSummaryByMonthAndYear(month: Int, year: Int): Summary
+    suspend fun getSummaryByMonthAndYear(month: Int, year: Int): Summary?
 
 }

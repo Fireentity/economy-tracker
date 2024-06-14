@@ -1,7 +1,7 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.buttons
 
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,10 +23,10 @@ fun AddCategoryButton(
     val categorySuccessfullyAdded =
         stringResource(R.string.category_operation_successfully_executed)
     val categoryCreationFailed = stringResource(R.string.category_operation_failed)
-    Button(onClick = {
+    TextButton(onClick = {
 
         if(category.identifier.isEmpty()) {
-            return@Button
+            return@TextButton
         }
 
         categoryViewMode.upsertCategory(

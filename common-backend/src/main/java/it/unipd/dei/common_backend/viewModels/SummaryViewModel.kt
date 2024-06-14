@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.unipd.dei.common_backend.daos.MovementDao
 import it.unipd.dei.common_backend.daos.SummaryDao
 import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.utils.DateHelper
@@ -17,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
     private val summaryDao: SummaryDao,
-    private val movementDao: MovementDao
 ) : ViewModel() {
     private val _allSummaryCards = MutableLiveData<List<Summary>>(emptyList())
     val allSummary: LiveData<List<Summary>> = _allSummaryCards
@@ -28,7 +26,9 @@ class SummaryViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val summaries: List<Summary> = summaryDao.getSummary()
-                _allSummaryCards.postValue(summaries)
+                withContext(Dispatchers.Main) {
+                    _allSummaryCards.postValue(summaries)
+                }
             }
         }
     }
@@ -39,8 +39,8 @@ class SummaryViewModel @Inject constructor(
                 val month = DateHelper.getCurrentMonth()
                 val year = DateHelper.getCurrentYear()
                 val loadedData = summaryDao.getSummaryByMonthAndYear(month.value, year)
-                if (loadedData != null) {
-                    _currentMonthSummary.postValue(loadedData)
+                withContext(Dispatchers.Main) {
+                    _currentMonthSummary.postValue(loadedData ?: Summary.DEFAULT)
                 }
             }
         }
