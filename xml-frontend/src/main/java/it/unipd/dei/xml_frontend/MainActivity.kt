@@ -1,21 +1,19 @@
 package it.unipd.dei.xml_frontend
 
 
+import android.content.res.Configuration
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.database.BalanceDatabase
 import it.unipd.dei.common_backend.utils.Constants
-import it.unipd.dei.common_backend.viewModels.CategoryViewModel
-import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
-import it.unipd.dei.common_backend.viewModels.TestViewModel
-import it.unipd.dei.xml_frontend.fragments.RegisterFragment.Companion.DEFAULT_TAB_SELECTED
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,12 +33,17 @@ class MainActivity : AppCompatActivity() {
         Constants.setCurrency(sharedPref, resources.getString(R.string.saved_selected_currency))
 
 
-        setContentView(R.layout.activity_main)
-        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController: NavController = navHostFragment.findNavController();
-        bottomNavigationView.setupWithNavController(navController)
+        setContentView(R.layout.activity_main)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+            bottomNavigationView.setupWithNavController(navController)
+        } else {
+            val navigationView: NavigationView = findViewById(R.id.navigation_view)
+            navigationView.setupWithNavController(navController)
+        }
 
     }
 }
