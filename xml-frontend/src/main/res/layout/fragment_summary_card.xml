@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-            <androidx.core.widget.NestedScrollView
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -81,7 +81,7 @@
                         app:chipIconTint="@color/red_700" />
 
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </HorizontalScrollView>
 
             <TextView
                 android:id="@+id/sub_title_summary_card"
