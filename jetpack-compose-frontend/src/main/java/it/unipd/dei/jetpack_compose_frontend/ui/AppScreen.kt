@@ -116,7 +116,11 @@ fun AppScreen(
                 }
 
                 composable(route = bottomNavigationIcons[2].route) {
-                    CategoriesScreen(categoryViewModel, movementWithCategoryViewModel)
+                    CategoriesScreen(
+                        categoryViewModel,
+                        movementWithCategoryViewModel,
+                        summaryViewModel
+                    )
                 }
             }
 

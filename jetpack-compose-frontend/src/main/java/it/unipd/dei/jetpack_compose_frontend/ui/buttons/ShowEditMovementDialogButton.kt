@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.dialog.UpsertMovementDialog
 
@@ -28,6 +29,7 @@ import it.unipd.dei.jetpack_compose_frontend.ui.dialog.UpsertMovementDialog
 fun ShowEditMovementDialogButton(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     movement: MovementWithCategory
 ) {
     var showEditMovementDialog by remember { mutableStateOf(false) }
@@ -57,6 +59,7 @@ fun ShowEditMovementDialogButton(
         UpsertMovementDialog(
             categoryViewModel,
             movementWithCategoryViewModel,
+            summaryViewModel,
             movement,
         ) { showEditMovementDialog = false }
     }

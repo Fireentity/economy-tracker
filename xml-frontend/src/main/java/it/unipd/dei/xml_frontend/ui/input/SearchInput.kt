@@ -1,6 +1,5 @@
 package it.unipd.dei.xml_frontend.ui.input
 
-import android.graphics.Color
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.search.SearchBar
@@ -10,6 +9,7 @@ import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
 
 class SearchInput(
     searchView: SearchView,
+    //TODO check here
     searchBar: SearchBar,
     adapter: CategoryCardAdapter,
     categoryViewModel: CategoryViewModel,
@@ -28,7 +28,6 @@ class SearchInput(
                 searchView.layoutParams.height = 0
             }
         }
-
 
         searchView.editText.addTextChangedListener { text ->
             val allCategories = categoryViewModel.allCategories.value?.values?.toList()

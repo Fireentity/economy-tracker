@@ -26,7 +26,10 @@ fun CategoryFilterInput(
     categoryViewModel: CategoryViewModel
 ) {
     var expanded by remember { mutableStateOf(false) }
-    DropdownMenu(modifier= Modifier.heightIn(max = 300.dp, min = 0.dp), expanded = expanded, onDismissRequest = { expanded = false }) {
+    DropdownMenu(
+        modifier = Modifier.heightIn(max = 300.dp, min = 0.dp),
+        expanded = expanded,
+        onDismissRequest = { expanded = false }) {
         DropdownMenuItem(
             text = {
                 Text(stringResource(id = R.string.all))

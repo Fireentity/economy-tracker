@@ -44,7 +44,8 @@ fun RevenuesTab(
             MovementCard(
                 movements[index],
                 categoryViewModel,
-                movementWithCategoryViewModel
+                movementWithCategoryViewModel,
+                summaryViewModel
             )
         }
     }

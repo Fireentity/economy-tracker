@@ -63,7 +63,11 @@ fun RegisterScreen(
                 )
             },
             floatingActionButton = {
-                ShowAddMovementDialogButton(categoryViewModel, movementWithCategoryViewModel)
+                ShowAddMovementDialogButton(
+                    categoryViewModel,
+                    movementWithCategoryViewModel,
+                    summaryViewModel
+                )
             }
         ) { paddingValues ->
             Column(

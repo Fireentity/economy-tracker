@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddCategoryDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
@@ -32,7 +33,8 @@ import it.unipd.dei.jetpack_compose_frontend.ui.input.CategoriesSearchBar
 @Composable
 fun CategoriesScreen(
     categoryViewModel: CategoryViewModel,
-    movementWithCategoryViewModel: MovementWithCategoryViewModel
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel
 ) {
     Surface {
         Scaffold(
@@ -53,7 +55,8 @@ fun CategoriesScreen(
             },
             floatingActionButton = {
                 ShowAddCategoryDialogButton(
-                    categoryViewModel = categoryViewModel
+                    categoryViewModel = categoryViewModel,
+                    movementWithCategoryViewModel
                 )
             }) { paddingValues ->
 
@@ -72,14 +75,23 @@ fun CategoriesScreen(
                     }
                 }
 
-                CategoriesSearchBar(categoryViewModel, movementWithCategoryViewModel)
+                CategoriesSearchBar(
+                    categoryViewModel,
+                    movementWithCategoryViewModel,
+                    summaryViewModel
+                )
 
                 LazyColumn {
                     items(categories.size) { index ->
                         val category =
                             categoryViewModel.getCategoryByIdentifier(categoriesList[index])
                         category?.let {
-                            CategoryCard(it, categoryViewModel, movementWithCategoryViewModel)
+                            CategoryCard(
+                                it,
+                                categoryViewModel,
+                                movementWithCategoryViewModel,
+                                summaryViewModel
+                            )
                         }
                     }
                 }

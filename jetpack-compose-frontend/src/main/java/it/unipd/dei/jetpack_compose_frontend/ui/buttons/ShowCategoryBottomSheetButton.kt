@@ -15,13 +15,15 @@ import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.bottomsheets.CategoryBottomSheet
 
 @Composable
 fun ShowCategoryBottomSheetButton(
     category: Category,
     categoryViewModel: CategoryViewModel,
-    movementWithCategoryViewModel: MovementWithCategoryViewModel
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel
 ) {
 
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -34,6 +36,7 @@ fun ShowCategoryBottomSheetButton(
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            //TODO check here
             contentDescription = "View category"
         )
     }
@@ -42,7 +45,8 @@ fun ShowCategoryBottomSheetButton(
         CategoryBottomSheet(
             category = category,
             categoryViewModel = categoryViewModel,
-            movementWithCategoryViewModel
+            movementWithCategoryViewModel,
+            summaryViewModel
         ) {
             showBottomSheet = false
         }

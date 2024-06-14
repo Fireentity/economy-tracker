@@ -68,7 +68,7 @@ class UpsertCategoryDialog(
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             if (identifierInputField.isIdentifierValid()) {
                 upsertCategoryButton.onClick()
-                alertDialog.dismiss() // Dismiss the dialog if the input is valid
+                alertDialog.dismiss()
             }
         }
     }

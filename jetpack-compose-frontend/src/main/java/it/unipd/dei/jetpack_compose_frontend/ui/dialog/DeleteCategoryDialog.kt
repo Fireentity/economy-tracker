@@ -10,6 +10,7 @@ import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 
 @Composable
@@ -17,6 +18,7 @@ fun DeleteCategoryDialog(
     category: Category,
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -32,6 +34,7 @@ fun DeleteCategoryDialog(
                 categoryViewModel.deleteCategory(
                     category,
                     movementWithCategoryViewModel,
+                    summaryViewModel,
                     {
                         DisplayToast.displayGeneric(context, categorySuccessfullyRemoved)
                         onConfirm()

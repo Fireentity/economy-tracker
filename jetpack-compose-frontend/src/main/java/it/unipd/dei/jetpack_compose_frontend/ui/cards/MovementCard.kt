@@ -24,6 +24,7 @@ import it.unipd.dei.common_backend.utils.Constants
 import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowMovementBottomSheetButton
 
@@ -31,7 +32,9 @@ import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowMovementBottomSheetB
 fun MovementCard(
     movementWithCategory: MovementWithCategory,
     categoryViewModel: CategoryViewModel,
-    movementWithCategoryViewModel: MovementWithCategoryViewModel
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
+    clickableButton: Boolean = true
 ) {
     val colorFilter: ColorFilter
     val background: Color
@@ -77,11 +80,14 @@ fun MovementCard(
                     style = MaterialTheme.typography.headlineSmall,
                 )
 
-                ShowMovementBottomSheetButton(
-                    movement = movementWithCategory,
-                    categoryViewModel = categoryViewModel,
-                    movementWithCategoryViewModel = movementWithCategoryViewModel
-                )
+                if(clickableButton) {
+                    ShowMovementBottomSheetButton(
+                        movementWithCategory,
+                        categoryViewModel,
+                        movementWithCategoryViewModel,
+                        summaryViewModel
+                    )
+                }
             }
         }
     )

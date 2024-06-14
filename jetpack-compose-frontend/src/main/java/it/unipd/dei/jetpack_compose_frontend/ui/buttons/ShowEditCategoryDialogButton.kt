@@ -20,11 +20,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.dialog.UpsertCategoryDialog
 
 @Composable
-fun ShowEditCategoryDialogButton(categoryViewModel: CategoryViewModel, category: Category) {
+fun ShowEditCategoryDialogButton(
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    category: Category
+) {
     var showEditCategoryDialog by remember { mutableStateOf(false) }
 
     TextButton(
@@ -49,6 +54,11 @@ fun ShowEditCategoryDialogButton(categoryViewModel: CategoryViewModel, category:
     }
 
     if (showEditCategoryDialog) {
-        UpsertCategoryDialog(categoryViewModel, { showEditCategoryDialog = false }, category)
+        UpsertCategoryDialog(
+            categoryViewModel,
+            movementWithCategoryViewModel,
+            { showEditCategoryDialog = false },
+            category
+        )
     }
 }

@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
 
@@ -32,7 +33,8 @@ import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
 @Composable
 fun CategoriesSearchBar(
     categoryViewModel: CategoryViewModel,
-    movementWithCategoryViewModel: MovementWithCategoryViewModel
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -81,7 +83,8 @@ fun CategoriesSearchBar(
                     CategoryCard(
                         category = filteredCategories[it],
                         categoryViewModel = categoryViewModel,
-                        movementWithCategoryViewModel
+                        movementWithCategoryViewModel,
+                        summaryViewModel
                     )
                 }
             }

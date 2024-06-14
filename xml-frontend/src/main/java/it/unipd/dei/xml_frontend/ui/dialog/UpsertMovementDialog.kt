@@ -72,8 +72,6 @@ class UpsertMovementDialog(
             movementWithCategory
         )
 
-
-
         this.alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setTitle(title)
             .setView(view)

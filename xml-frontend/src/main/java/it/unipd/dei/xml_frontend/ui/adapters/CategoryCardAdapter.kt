@@ -34,6 +34,7 @@ class CategoryCardAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateCategories(categories: List<Category>) {
         this.categories = categories
+        //TODO check here
         notifyDataSetChanged()
     }
 

@@ -48,6 +48,7 @@ class MovementDateInput(
         onDismiss: () -> Unit = {}
     ) {
         val datePicker = MaterialDatePicker.Builder.datePicker()
+            //TODO check here
             .setTitleText("Select Date")
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
@@ -62,7 +63,11 @@ class MovementDateInput(
             onDismiss()
         }
 
-        datePicker.show(fragmentManager, "MATERIAL_DATE_PICKER")
+        datePicker.show(
+            fragmentManager,
+            //TODO check here
+            "MATERIAL_DATE_PICKER"
+        )
     }
 
     private fun showTimePickerDialog(
@@ -70,6 +75,7 @@ class MovementDateInput(
         callback: (Long) -> Unit
     ) {
         val timePicker = MaterialTimePicker.Builder()
+            //TODO check here
             .setTitleText("Select Time")
             .build()
 
@@ -77,6 +83,8 @@ class MovementDateInput(
             callback((timePicker.hour * MILLISECONDS_PER_HOUR + timePicker.minute * MILLISECONDS_PER_MINUTE).toLong())
         }
 
-        timePicker.show(fragmentManager, "MATERIAL_TIME_PICKER")
+        timePicker.show(fragmentManager,
+            //TODO check here
+            "MATERIAL_TIME_PICKER")
     }
 }

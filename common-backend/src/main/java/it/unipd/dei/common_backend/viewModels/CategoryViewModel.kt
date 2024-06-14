@@ -35,6 +35,7 @@ class CategoryViewModel @Inject constructor(
 
     fun upsertCategory(
         category: Category,
+        movementWithCategoryViewModel: MovementWithCategoryViewModel,
         onSuccess: () -> Unit,
         onThrow: (e: SQLException) -> Unit
     ) {
@@ -45,6 +46,7 @@ class CategoryViewModel @Inject constructor(
                     viewModelScope.launch {
                         withContext(Dispatchers.Main) {
                             invalidateCategoriesAndReload()
+                            movementWithCategoryViewModel.invalidateMovementsAndReload()
                             onSuccess()
                         }
                     }
@@ -63,6 +65,7 @@ class CategoryViewModel @Inject constructor(
     fun deleteCategory(
         category: Category,
         movementWithCategoryViewModel: MovementWithCategoryViewModel,
+        summaryViewModel: SummaryViewModel,
         onSuccess: () -> Unit,
         onThrow: (e: SQLException) -> Unit
     ) {
@@ -76,6 +79,7 @@ class CategoryViewModel @Inject constructor(
                         if(filteredCategory == null || filteredCategory == category){
                             movementWithCategoryViewModel.removeCategoryFilter()
                             movementWithCategoryViewModel.invalidateMovementsAndReload()
+                            summaryViewModel.invalidateSummariesAndReload()
                         }
                         onSuccess()
                     }
@@ -90,7 +94,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    fun invalidateCategories() {
+    private fun invalidateCategories() {
         _allCategories.value = emptyMap()
     }
 

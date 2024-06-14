@@ -38,7 +38,8 @@ class DeleteMovementDialog(
                         DisplayToast.displayGeneric(
                             fragmentContext,
                             fragmentContext.getString(R.string.category_deleted_successfully)
-                        )                    }
+                        )
+                    }
                 )
             }
             .create()

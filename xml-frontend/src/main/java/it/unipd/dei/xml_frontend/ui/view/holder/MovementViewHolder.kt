@@ -8,8 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.viewModels.CategoryViewModel
-import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.bottomsheets.MovementBottomSheetFragment
 
@@ -35,6 +33,7 @@ class MovementViewHolder(
         val amount = movementWithCategory.movement.amount
         amountTextView.text = amount.toString()
         categoryTextView.text = movementWithCategory.category.identifier
+        //TODO check here
         dateTextView.text =
             DateFormat.format("dd/MM/yyyy hh:mm", movementWithCategory.movement.date)
                 .toString()

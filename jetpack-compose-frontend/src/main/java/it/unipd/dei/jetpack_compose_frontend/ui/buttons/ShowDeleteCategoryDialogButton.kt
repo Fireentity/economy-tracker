@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.dialog.DeleteCategoryDialog
 
@@ -28,7 +29,8 @@ import it.unipd.dei.jetpack_compose_frontend.ui.dialog.DeleteCategoryDialog
 fun ShowDeleteCategoryDialogButton(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    category: Category
+    category: Category,
+    summaryViewModel: SummaryViewModel
 ) {
     var showDeleteCategoryDialog by remember { mutableStateOf(false) }
 
@@ -58,6 +60,7 @@ fun ShowDeleteCategoryDialogButton(
             category,
             categoryViewModel,
             movementWithCategoryViewModel,
+            summaryViewModel,
             {
                 showDeleteCategoryDialog = false
             }
