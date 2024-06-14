@@ -51,6 +51,11 @@ fun UpsertCategoryDialog(
             )
         }
     }
+    val error: Boolean by remember {
+        derivedStateOf {
+            categoryViewModel.getCategoryByIdentifier(categoryIdentifier) != null
+        }
+    }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -75,7 +80,8 @@ fun UpsertCategoryDialog(
                         label = { Text(text = stringResource(R.string.category)) },
                         value = categoryIdentifier,
                         onValueChange = { categoryIdentifier = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = error
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
