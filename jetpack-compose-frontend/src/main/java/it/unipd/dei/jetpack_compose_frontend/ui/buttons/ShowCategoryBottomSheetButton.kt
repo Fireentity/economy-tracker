@@ -14,10 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.bottomsheets.CategoryBottomSheet
 
 @Composable
-fun ShowCategoryBottomSheetButton(category: Category, categoryViewModel: CategoryViewModel) {
+fun ShowCategoryBottomSheetButton(
+    category: Category,
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel
+) {
 
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -36,7 +41,8 @@ fun ShowCategoryBottomSheetButton(category: Category, categoryViewModel: Categor
     if (showBottomSheet) {
         CategoryBottomSheet(
             category = category,
-            categoryViewModel = categoryViewModel
+            categoryViewModel = categoryViewModel,
+            movementWithCategoryViewModel
         ) {
             showBottomSheet = false
         }

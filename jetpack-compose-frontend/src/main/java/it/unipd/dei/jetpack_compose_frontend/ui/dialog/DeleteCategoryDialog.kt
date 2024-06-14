@@ -16,6 +16,7 @@ import it.unipd.dei.jetpack_compose_frontend.R
 fun DeleteCategoryDialog(
     category: Category,
     categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -30,7 +31,7 @@ fun DeleteCategoryDialog(
             TextButton(onClick = {
                 categoryViewModel.deleteCategory(
                     category,
-                    movementWithCategoryViewModel
+                    movementWithCategoryViewModel,
                     {
                         DisplayToast.displayGeneric(context, categorySuccessfullyRemoved)
                         onConfirm()

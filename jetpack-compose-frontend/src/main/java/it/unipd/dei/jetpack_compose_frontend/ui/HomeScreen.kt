@@ -52,9 +52,7 @@ fun HomeScreen(summaryViewModel: SummaryViewModel) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                summaryViewModel.loadAllSummaries()
                 val summaries by summaryViewModel.allSummary.observeAsState(initial = listOf())
-                summaryViewModel.loadAllSummaries()
 
                 LazyColumn {
                     items(summaries.size) { index ->

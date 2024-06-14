@@ -19,10 +19,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
+import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddMovementDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.input.CategoryFilterInput
 import it.unipd.dei.jetpack_compose_frontend.ui.tabs.AllTab
@@ -35,7 +37,7 @@ import it.unipd.dei.jetpack_compose_frontend.ui.tabs.RevenuesTab
 fun RegisterScreen(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
-    summary: Summary
+    summaryViewModel: SummaryViewModel
 ) {
     Surface {
         Scaffold(
@@ -47,7 +49,7 @@ fun RegisterScreen(
                     ),
                     title = {
                         Text(
-                            "Registro",
+                            stringResource(id = R.string.register),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -83,7 +85,7 @@ fun RegisterScreen(
                             selectedTabIndex = 0
 
                         },
-                        text = { Text(text = "Entrate") },
+                        text = { Text(text = stringResource(id = R.string.revenues)) },
                     )
                     Tab(
                         selected = selectedTabIndex == 1,
@@ -91,7 +93,7 @@ fun RegisterScreen(
                             selectedTabIndex = 1
 
                         },
-                        text = { Text(text = "Tutti") },
+                        text = { Text(text = stringResource(id = R.string.all)) },
                     )
                     Tab(
                         selected = selectedTabIndex == 2,
@@ -99,7 +101,7 @@ fun RegisterScreen(
                             selectedTabIndex = 2
 
                         },
-                        text = { Text(text = "Uscite") },
+                        text = { Text(text = stringResource(id = R.string.expenses)) },
                     )
                 }
 
@@ -107,21 +109,20 @@ fun RegisterScreen(
                     0 -> RevenuesTab(
                         movementWithCategoryViewModel = movementWithCategoryViewModel,
                         categoryViewModel = categoryViewModel,
-                        summary
+                        summaryViewModel = summaryViewModel
                     )
 
                     1 -> AllTab(
                         movementWithCategoryViewModel = movementWithCategoryViewModel,
                         categoryViewModel = categoryViewModel,
-                        summary
+                        summaryViewModel = summaryViewModel
 
                     )
 
                     2 -> ExpensesTab(
                         movementWithCategoryViewModel = movementWithCategoryViewModel,
                         categoryViewModel = categoryViewModel,
-                        summary
-
+                        summaryViewModel = summaryViewModel
                     )
                 }
             }

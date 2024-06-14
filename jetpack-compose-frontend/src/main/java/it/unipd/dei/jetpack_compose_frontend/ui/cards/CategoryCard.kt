@@ -17,11 +17,16 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowCategoryBottomSheetButton
 
 @Composable
-fun CategoryCard(category: Category, categoryViewModel: CategoryViewModel) {
+fun CategoryCard(
+    category: Category,
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel
+) {
     val icon = ImageVector.vectorResource(id = R.drawable.baseline_folder_open_24)
     val background: Color = colorResource(id = R.color.blue_100)
     val colorFilter = ColorFilter.tint(colorResource(id = R.color.blue_700))
@@ -33,17 +38,20 @@ fun CategoryCard(category: Category, categoryViewModel: CategoryViewModel) {
                 painter = rememberVectorPainter(icon),
                 contentDescription = "Category card icon",
                 colorFilter = colorFilter,
-                modifier =  Modifier
+                modifier = Modifier
                     .background(
                         background,
                         CircleShape
-                    ).padding(10.dp)
+                    )
+                    .padding(10.dp)
             )
         },
         trailingContent = {
             ShowCategoryBottomSheetButton(
                 category,
-                categoryViewModel)
+                categoryViewModel,
+                movementWithCategoryViewModel
+            )
         }
     )
 }

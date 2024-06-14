@@ -13,9 +13,9 @@ import it.unipd.dei.common_backend.models.MovementWithCategory
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
-import it.unipd.dei.xml_frontend.ui.input.MovementCategoryInput
 import it.unipd.dei.xml_frontend.ui.buttons.UpsertMovementButton
 import it.unipd.dei.xml_frontend.ui.input.MovementAmountInput
+import it.unipd.dei.xml_frontend.ui.input.MovementCategoryInput
 import it.unipd.dei.xml_frontend.ui.input.MovementDateInput
 
 class UpsertMovementDialog(
@@ -51,7 +51,6 @@ class UpsertMovementDialog(
             this::dismiss
         )
         this.dateInputField = MovementDateInput(
-            fragmentContext,
             view.findViewById(R.id.input_movement_date),
             fragmentManager,
             movementWithCategory?.movement
@@ -94,7 +93,7 @@ class UpsertMovementDialog(
 
     private fun getMovementAmount(): String = amountInputField.getAmount()
     private fun getMovementCategory(): String = categoryInputField.getCategory()
-    private fun getMovementDate(): String = dateInputField.getDate()
+    private fun getMovementDate(): Long? = dateInputField.getDate()
     override fun getFragmentContext() = fragmentContext
 
     override fun getResources(): Resources = fragmentContext.resources

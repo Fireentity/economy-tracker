@@ -24,13 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesSearchBar(
-    categoryViewModel: CategoryViewModel
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -78,7 +80,8 @@ fun CategoriesSearchBar(
                 items(categories.size) {
                     CategoryCard(
                         category = filteredCategories[it],
-                        categoryViewModel = categoryViewModel
+                        categoryViewModel = categoryViewModel,
+                        movementWithCategoryViewModel
                     )
                 }
             }

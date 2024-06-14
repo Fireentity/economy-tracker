@@ -42,6 +42,8 @@ fun AppScreen(
 ) {
     testViewModel.createDummyDataIfNoMovement()
     categoryViewModel.loadAllCategories()
+    summaryViewModel.loadSummaryForCurrentMonth()
+    summaryViewModel.loadAllSummaries()
 
     val bottomNavigationIcons = listOf(
         BottomNavigationItem(
@@ -109,12 +111,12 @@ fun AppScreen(
                     RegisterScreen(
                         categoryViewModel,
                         movementWithCategoryViewModel,
-                        summaryViewModel.allSummary.value!![0]
+                        summaryViewModel
                     )
                 }
 
                 composable(route = bottomNavigationIcons[2].route) {
-                    CategoriesScreen(categoryViewModel)
+                    CategoriesScreen(categoryViewModel, movementWithCategoryViewModel)
                 }
             }
 

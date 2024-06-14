@@ -11,15 +11,18 @@ import androidx.compose.runtime.remember
 import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
 
 @Composable
-fun AllTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categoryViewModel: CategoryViewModel, summary: Summary) {
+fun AllTab(movementWithCategoryViewModel: MovementWithCategoryViewModel, categoryViewModel: CategoryViewModel, summaryViewModel: SummaryViewModel) {
     movementWithCategoryViewModel.loadInitialMovementsByCategory()
     val movements by movementWithCategoryViewModel.getMovements()
         .observeAsState(initial = emptyList())
+
+    val summary by summaryViewModel.currentMonthSummary.observeAsState(initial = Summary.DEFAULT)
 
     val listState = rememberLazyListState()
     val reachedBottom: Boolean by remember {

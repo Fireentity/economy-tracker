@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import it.unipd.dei.common_backend.models.Summary
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 
@@ -18,12 +19,12 @@ import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
 fun ExpensesTab(
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
     categoryViewModel: CategoryViewModel,
-    summary: Summary
+    summaryViewModel: SummaryViewModel
 ) {
     movementWithCategoryViewModel.loadInitialMovementsByCategory()
     val movements by movementWithCategoryViewModel.getNegativeMovements()
         .observeAsState(initial = emptyList())
-
+    val summary by summaryViewModel.currentMonthSummary.observeAsState(Summary.DEFAULT)
     val listState = rememberLazyListState()
     val reachedBottom: Boolean by remember {
         derivedStateOf {

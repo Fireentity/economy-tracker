@@ -24,7 +24,6 @@ class SummaryViewModel @Inject constructor(
     private val _currentMonthSummary = MutableLiveData<Summary>()
     val currentMonthSummary: LiveData<Summary> = _currentMonthSummary
 
-
     fun loadAllSummaries() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

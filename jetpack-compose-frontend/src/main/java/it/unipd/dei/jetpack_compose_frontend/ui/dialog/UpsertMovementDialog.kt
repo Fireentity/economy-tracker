@@ -29,7 +29,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.MovementBuilder
 import it.unipd.dei.common_backend.models.MovementWithCategory
-import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
@@ -48,23 +47,13 @@ fun UpsertMovementDialog(
 
     var amount by remember { mutableStateOf(movement?.movement?.amount?.toString() ?: "") }
     var category by remember { mutableStateOf(movement?.category?.identifier ?: "") }
-    var date by remember {
-        mutableStateOf(movement?.movement?.date?.let {
-            DateHelper.convertFromMillisecondsToDateTime(
-                it
-            )
-        } ?: "")
-    }
-    val movementBuilder by remember {
-        mutableStateOf(
-            MovementBuilder(
-                { amount },
-                { category },
-                { date },
-                movement?.movement
-            )
-        )
-    }
+    var date by remember { mutableStateOf(movement?.movement?.date) }
+    val movementBuilder = MovementBuilder(
+        { amount },
+        { category },
+        { date },
+        movement?.movement
+    )
     val regex = Regex("^(-)?\\d{0,6}(\\.\\d{0,2})?$");
 
     BasicAlertDialog(
@@ -116,7 +105,7 @@ fun UpsertMovementDialog(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     AddMovementButton(
-                        movementBuilder = movementBuilder,
+                        movementBuilder,
                         movementWithCategoryViewModel,
                         categoryViewModel,
                         onDismiss,

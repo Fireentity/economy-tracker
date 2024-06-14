@@ -1,6 +1,6 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.input
 
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -26,7 +26,7 @@ fun CategoryFilterInput(
     categoryViewModel: CategoryViewModel
 ) {
     var expanded by remember { mutableStateOf(false) }
-    DropdownMenu(modifier= Modifier.height(300.dp), expanded = expanded, onDismissRequest = { expanded = false }) {
+    DropdownMenu(modifier= Modifier.heightIn(max = 300.dp, min = 0.dp), expanded = expanded, onDismissRequest = { expanded = false }) {
         DropdownMenuItem(
             text = {
                 Text(stringResource(id = R.string.all))

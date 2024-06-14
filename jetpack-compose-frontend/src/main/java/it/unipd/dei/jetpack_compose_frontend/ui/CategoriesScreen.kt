@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.buttons.ShowAddCategoryDialogButton
 import it.unipd.dei.jetpack_compose_frontend.ui.cards.CategoryCard
@@ -31,6 +32,7 @@ import it.unipd.dei.jetpack_compose_frontend.ui.input.CategoriesSearchBar
 @Composable
 fun CategoriesScreen(
     categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel
 ) {
     Surface {
         Scaffold(
@@ -50,10 +52,10 @@ fun CategoriesScreen(
                 )
             },
             floatingActionButton = {
-            ShowAddCategoryDialogButton(
-                categoryViewModel = categoryViewModel
-            )
-        }) { paddingValues ->
+                ShowAddCategoryDialogButton(
+                    categoryViewModel = categoryViewModel
+                )
+            }) { paddingValues ->
 
             Column(
                 Modifier
@@ -70,13 +72,14 @@ fun CategoriesScreen(
                     }
                 }
 
-                CategoriesSearchBar(categoryViewModel)
+                CategoriesSearchBar(categoryViewModel, movementWithCategoryViewModel)
 
                 LazyColumn {
                     items(categories.size) { index ->
-                        val category = categoryViewModel.getCategoryByIdentifier(categoriesList[index])
+                        val category =
+                            categoryViewModel.getCategoryByIdentifier(categoriesList[index])
                         category?.let {
-                            CategoryCard(it, categoryViewModel)
+                            CategoryCard(it, categoryViewModel, movementWithCategoryViewModel)
                         }
                     }
                 }

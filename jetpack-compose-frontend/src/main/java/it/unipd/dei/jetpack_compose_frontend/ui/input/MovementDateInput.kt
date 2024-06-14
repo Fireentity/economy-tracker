@@ -40,33 +40,32 @@ import androidx.compose.ui.window.DialogProperties
 import it.unipd.dei.common_backend.utils.DateHelper
 import it.unipd.dei.jetpack_compose_frontend.R
 
+private const val MILLISECONDS_PER_HOUR = 60 * 60 * 1000;
+private const val MILLISECONDS_PER_MINUTE = 60 * 1000;
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovementDateInput(
-    date: String,
-    onDateChange: (String) -> Unit
+    initialDate: Long?,
+    onDateChange: (Long?) -> Unit
 ) {
     val datePickerState = rememberDatePickerState()
     val timePickerState = rememberTimePickerState()
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
-    val date by remember {
-        derivedStateOf {
-            val computedDate = datePickerState.selectedDateMillis?.let {
-                DateHelper.convertFromMillisecondsToDateTime(
-                    it
-                )
-            } ?: date
 
-            onDateChange(computedDate)
-            computedDate
+    val formattedDate: String by remember {
+        derivedStateOf {
+            initialDate?.let {
+                DateHelper.convertFromMillisecondsToDateTime(it)
+            } ?: ""
         }
     }
 
     OutlinedTextField(
         readOnly = true,
-        value = date,
-        onValueChange = onDateChange,
+        value = formattedDate,
+        onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
             .clickable { showDatePicker = true },
@@ -144,8 +143,16 @@ fun MovementDateInput(
                             onClick = { showTimePicker = false }
                         ) { Text("Cancel") }
                         TextButton(
-                            onClick = { showTimePicker = false }
-                        ) { Text("OK") }
+                            onClick = {
+                                showTimePicker = false
+                                datePickerState.selectedDateMillis?.let {
+                                    onDateChange(
+                                        it + timePickerState.hour * MILLISECONDS_PER_HOUR +
+                                                timePickerState.minute * MILLISECONDS_PER_MINUTE
+                                    )
+                                }
+                            }
+                        ) { Text(stringResource(id = R.string.confirm)) }
                     }
                 }
             }

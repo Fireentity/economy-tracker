@@ -35,6 +35,25 @@ object DateHelper {
     }
 
     fun getMonthlyIntervals(startMillis: Long, endMillis: Long): List<MonthInfo> {
+
+        Calendar.getInstance().getMaximum(Calendar.JULY);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         val startCalendar = GregorianCalendar().apply { timeInMillis = startMillis }
         val endCalendar = GregorianCalendar().apply { timeInMillis = endMillis }
 

@@ -20,11 +20,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.jetpack_compose_frontend.R
 import it.unipd.dei.jetpack_compose_frontend.ui.dialog.DeleteCategoryDialog
 
 @Composable
-fun ShowDeleteCategoryDialogButton(categoryViewModel: CategoryViewModel, category: Category) {
+fun ShowDeleteCategoryDialogButton(
+    categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    category: Category
+) {
     var showDeleteCategoryDialog by remember { mutableStateOf(false) }
 
     TextButton(
@@ -49,9 +54,14 @@ fun ShowDeleteCategoryDialogButton(categoryViewModel: CategoryViewModel, categor
     }
 
     if (showDeleteCategoryDialog) {
-        DeleteCategoryDialog(category, categoryViewModel, {
-            showDeleteCategoryDialog = false
-        }) {
+        DeleteCategoryDialog(
+            category,
+            categoryViewModel,
+            movementWithCategoryViewModel,
+            {
+                showDeleteCategoryDialog = false
+            }
+        ) {
             showDeleteCategoryDialog = false
         }
     }
