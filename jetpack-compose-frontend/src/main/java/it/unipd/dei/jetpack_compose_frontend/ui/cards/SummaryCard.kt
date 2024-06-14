@@ -131,12 +131,7 @@ fun SummaryCard(summary: Summary) {
                 )
             }
             Text(
-                text = if (DateHelper.isMonthNotFinishedYet(summary.month, summary.year)
-                ) {
-                    LocalContext.current.getString(R.string.how_is_it_going)
-                } else {
-                    LocalContext.current.getString(R.string.how_did_it_go)
-                },
+                text = summaryViewHolder.headline(summary, LocalContext.current),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 8.dp)
