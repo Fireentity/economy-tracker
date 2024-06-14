@@ -6,64 +6,77 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import it.unipd.dei.music_application.R
-import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.xml_frontend.ui.CategoryCardAdapter
-import it.unipd.dei.xml_frontend.ui.models.ShowAddCategoryDialogButton
-import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.xml_frontend.R
+import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
+import it.unipd.dei.xml_frontend.ui.buttons.ShowAddCategoryDialogButton
+import it.unipd.dei.xml_frontend.ui.input.SearchInput
+import androidx.fragment.app.activityViewModels
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+
 
 @AndroidEntryPoint
 class CategoriesFragment : Fragment() {
 
-    private val categoryViewModel: CategoryViewModel by viewModels()
-
-    private lateinit var categoriesRecyclerView: RecyclerView
-    private var categoriesRecyclerViewAdapter: CategoryCardAdapter =
-        CategoryCardAdapter(emptyList())
-    private lateinit var floatingActionButton: FloatingActionButton
-
-    private val textToSearch = "y";
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
+    //TODO essendo diversi questo e quello del register bisogna trovare un modo per reloaddare i movimenti quando uno è stato eliminato con l'eliminazione della categoria
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_categories, container, false)
-        val floatingActionButton: View = view.findViewById(R.id.floating_action_button)
-        val showAddCategoryDialogButton = ShowAddCategoryDialogButton(null,categoryViewModel,requireContext())
+
+        val view = inflater.inflate(
+            R.layout.fragment_categories,
+            container,
+            false
+        )
+        val dialogView = inflater.inflate(
+            R.layout.fragment_category_dialog,
+            container,
+            false
+        )
+        val categoriesRecyclerView: RecyclerView =
+            view.findViewById(R.id.all_categories_recyclerview)
+
+        val floatingActionButton: View = view.findViewById(R.id.show_add_category_dialog_button)
+        val showAddCategoryDialogButton = ShowAddCategoryDialogButton(
+            dialogView,
+            categoryViewModel,
+            requireContext()
+        )
         floatingActionButton.setOnClickListener {
             showAddCategoryDialogButton.onClick()
         }
 
-        initializeViews(view)
+        val categoryCardAdapter =
+            CategoryCardAdapter(emptyList(), parentFragmentManager, categoryViewModel)
+        categoriesRecyclerView.adapter = categoryCardAdapter
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) {
+            categoryCardAdapter.updateCategories(it.values.toList())
+        }
 
-        observeViewModel()
+        val searchRecyclerView: RecyclerView = view.findViewById(R.id.search_results_recyclerview)
+
+        val searchRecyclerViewAdapter = CategoryCardAdapter(
+            emptyList(),
+            parentFragmentManager,
+            categoryViewModel
+        )
+        searchRecyclerView.adapter = searchRecyclerViewAdapter
+
+        SearchInput(
+            view.findViewById(R.id.search_view),
+            view.findViewById(R.id.search_bar),
+            searchRecyclerViewAdapter,
+            categoryViewModel,
+            viewLifecycleOwner
+        )
         categoryViewModel.loadAllCategories()
         return view
     }
 
-    private fun observeViewModel() {
-        categoryViewModel.loadAllCategories.observe(viewLifecycleOwner) {
-            if (it != null) {
-                updateAdapter(it)
-            }
-        }
-    }
-
-    private fun updateAdapter(categories: List<Category>) {
-        categoriesRecyclerViewAdapter.updateCategories(categories)
-    }
-
-    private fun initializeViews(view: View) {
-        categoriesRecyclerView = view.findViewById(R.id.all_categories_recycler_view)
-        categoriesRecyclerView.apply {
-            adapter = categoriesRecyclerViewAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-    }
 }

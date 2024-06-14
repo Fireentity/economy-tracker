@@ -1,0 +1,52 @@
+package it.unipd.dei.jetpack_compose_frontend.ui.tabs
+
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import it.unipd.dei.common_backend.models.Summary
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
+import it.unipd.dei.jetpack_compose_frontend.ui.cards.MovementCard
+import it.unipd.dei.jetpack_compose_frontend.ui.cards.SummaryCard
+
+@Composable
+fun RevenuesTab(
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    categoryViewModel: CategoryViewModel,
+    summaryViewModel: SummaryViewModel,
+) {
+    movementWithCategoryViewModel.loadInitialMovementsByCategory()
+    val movements by movementWithCategoryViewModel.getPositiveMovements()
+        .observeAsState(initial = emptyList())
+    val summary by summaryViewModel.currentMonthSummary.observeAsState(initial = Summary.DEFAULT)
+
+    val listState = rememberLazyListState()
+    val reachedBottom: Boolean by remember {
+        derivedStateOf {
+            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            lastVisibleItem?.index != 0 && lastVisibleItem?.index == listState.layoutInfo.totalItemsCount - 1
+        }
+    }
+    LaunchedEffect(reachedBottom) {
+        if (reachedBottom) movementWithCategoryViewModel.loadSomePositiveMovementsByCategory { }
+    }
+    LazyColumn(state = listState) {
+        item {
+            SummaryCard(summary = summary)
+        }
+        items(movements.size) { index ->
+            MovementCard(
+                movements[index],
+                categoryViewModel,
+                movementWithCategoryViewModel,
+                summaryViewModel
+            )
+        }
+    }
+}

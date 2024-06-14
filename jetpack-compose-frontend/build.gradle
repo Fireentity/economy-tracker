@@ -1,17 +1,16 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
     id "com.google.devtools.ksp"
     id 'com.google.dagger.hilt.android' apply true
 }
 
 android {
-    namespace 'it.unipd.dei.music_application'
+    namespace 'it.unipd.dei.jetpack_compose_frontend'
     compileSdk 34
 
-
     defaultConfig {
-        applicationId "it.unipd.dei.music_application"
+        applicationId "it.unipd.dei.jetpack_compose_frontend"
         minSdk 26
         targetSdk 34
         versionCode 1
@@ -42,44 +41,52 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.11'
     }
-
 }
 
 dependencies {
+    implementation project(":common-backend")
 
-    implementation project(':common-backend')
+    implementation libs.androidx.activity.compose
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.ui
+    implementation libs.androidx.ui.graphics
+    implementation libs.androidx.ui.tooling.preview
 
-    implementation 'androidx.core:core-ktx:1.13.1'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
-    implementation 'androidx.compose.runtime:runtime-livedata:1.6.7'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'androidx.room:room-runtime:2.6.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3' //Coroutines
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0' //ViewModel ktx
-    implementation 'com.google.dagger:dagger:2.49'
-    ksp "com.google.dagger:dagger-compiler:2.49" // Dagger compiler
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
 
-    implementation 'androidx.room:room-ktx:2.6.1'
-    annotationProcessor 'androidx.room:room-compiler:2.6.1'
-    ksp 'androidx.room:room-compiler:2.6.1'
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.constraintlayout.compose
 
-    implementation "com.google.dagger:hilt-android:2.49"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
-    ksp "com.google.dagger:hilt-compiler:2.49"
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
+    implementation libs.androidx.material3.android
 
-    implementation "androidx.compose.ui:ui:1.6.7"
-    implementation "androidx.navigation:navigation-compose:2.7.7"
-    implementation "androidx.compose.ui:ui-tooling:1.6.7"
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
 
-    implementation "androidx.compose.material3:material3:1.2.1"
-    implementation "androidx.compose.material3:material3-window-size-class:1.2.1"
-    implementation "androidx.compose.material3:material3-adaptive-navigation-suite:1.3.0-beta02"
+    implementation libs.kotlinx.coroutines.android //Coroutines
+
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.runtime.livedata
+    implementation libs.androidx.lifecycle.livedata.ktx.v280
+    implementation libs.androidx.lifecycle.viewmodel.ktx.v280 //ViewModel ktx
+
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    annotationProcessor libs.androidx.room.compiler
+    ksp libs.androidx.room.compiler
+
+    implementation libs.dagger
+    ksp libs.dagger.compiler // Dagger compiler
+    implementation libs.hilt.android
+    ksp libs.hilt.compiler
+
+    implementation libs.androidx.hilt.navigation.compose
+
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.ui.test.junit4
+    debugImplementation libs.androidx.ui.tooling
+    debugImplementation libs.androidx.ui.test.manifest
 }

@@ -2,6 +2,7 @@ package it.unipd.dei.xml_frontend
 
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -10,10 +11,18 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.database.BalanceDatabase
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.TestViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private val testViewModel: TestViewModel by viewModels()
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by viewModels()
+
 
     @Inject
     lateinit var database: BalanceDatabase

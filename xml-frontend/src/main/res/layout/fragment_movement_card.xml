@@ -5,96 +5,52 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/movement_card_image"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:background="@drawable/circle"
+            android:contentDescription="Stonks or Not stonks"
+            android:padding="10dp"
+            android:src="@drawable/baseline_trending_up_24"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movement_card_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintLeft_toRightOf="@id/movement_card_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movement_card_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintLeft_toRightOf="@id/movement_card_image"
+            app:layout_constraintTop_toBottomOf="@id/movement_card_date" />
+
+        <TextView
+            android:id="@+id/movement_card_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/movement_card_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/circle"
-                        android:padding="10dp"
-                        android:src="@drawable/baseline_trending_up_24"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:contentDescription="Stonks or Not stonks" />
-
-                    <TextView
-                        android:id="@+id/movement_card_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/default_movement_date"
-                        android:textAppearance="?attr/textAppearanceTitleSmall"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintLeft_toRightOf="@id/movement_card_image"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/movement_card_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/default_movement_category"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintLeft_toRightOf="@id/movement_card_image"
-                        app:layout_constraintTop_toBottomOf="@id/movement_card_date" />
-
-                    <TextView
-                        android:id="@+id/movement_card_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="@string/default_movement_amount"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/euro_symbol"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/euro_symbol"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/euro"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="15sp"
-                        app:layout_constraintBottom_toBottomOf="@id/movement_card_amount"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/movement_card_amount" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/movement_card_divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp" />
-        </LinearLayout>
-
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

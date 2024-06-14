@@ -4,46 +4,70 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.xml_frontend.ui.dialog.category.EditCategoryDialog
-import it.unipd.dei.xml_frontend.ui.view.holder.MovementViewHolder
-import it.unipd.dei.common_backend.view.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
+import it.unipd.dei.xml_frontend.ui.dialog.DeleteCategoryDialog
+import it.unipd.dei.xml_frontend.ui.dialog.UpsertCategoryDialog
+import it.unipd.dei.xml_frontend.ui.view.holder.CategoryViewHolder
 
 @AndroidEntryPoint
 class CategoryBottomSheetFragment(
-    private val category: Category
+    private val category: Category,
 ) : BottomSheetDialogFragment() {
 
-    private val categoryViewModel: CategoryViewModel by viewModels()
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view: View = inflater.inflate(R.layout.fragment_option_category, container, false)
-        MovementViewHolder(view.findViewById(R.id.fragment_category_card), parentFragmentManager)
+        val view: View = inflater.inflate(
+            R.layout.fragment_category_bottom_sheet,
+            container,
+            false
+        )
+        val editCategoryDialogView = inflater.inflate(
+            R.layout.fragment_category_dialog,
+            container,
+            false
+        )
+        val categoryViewHolder = CategoryViewHolder(
+            view.findViewById(R.id.category_card),
+            parentFragmentManager
+        )
+        val showEditCategoryDialogButtonView: View =
+            view.findViewById(R.id.show_edit_category_dialog_button)
+        val deleteLayout: View = view.findViewById(R.id.show_delete_category_dialog_button)
 
-        val editLayout: View = view.findViewById(R.id.edit_layout)
-        val deleteLayout: View = view.findViewById(R.id.delete_layout)
+        categoryViewHolder.bindWithoutButton(category)
 
-        editLayout.setOnClickListener {
-            EditCategoryDialog(category,categoryViewModel,,requireContext()).show( )
+        val upsertCategoryDialog = UpsertCategoryDialog(
+            categoryViewModel,
+            editCategoryDialogView,
+            requireContext(),
+            getString(R.string.edit_category),
+            category,
+        )
+        showEditCategoryDialogButtonView.setOnClickListener {
+            upsertCategoryDialog.show()
             dismiss()
         }
-
+        val deleteCategoryDialog = DeleteCategoryDialog(
+            categoryViewModel,
+            movementWithCategoryViewModel,
+            requireContext(),
+            category
+        )
         deleteLayout.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(resources.getString(R.string.delete_category_title))
-                .setMessage(resources.getString(R.string.delete_category_message))
-                .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
-                .setPositiveButton(resources.getString(R.string.si)) { _, _ -> categoryViewModel.deleteCategory(category) }
-                .show()
+            deleteCategoryDialog.show()
+            dismiss()
         }
 
         return view

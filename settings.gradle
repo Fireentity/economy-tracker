@@ -1,12 +1,12 @@
 pluginManagement {
     repositories {
-        google()
+        google ()
         mavenCentral()
         gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set RepositoriesMode.FAIL_ON_PROJECT_REPOS
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
@@ -14,9 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
-
-rootProject.name = "music-app"
-
-include "jetpack-compose-frontend"
-include "xml-frontend"
-include "common-backend"
+rootProject.name = "Economy Tracker"
+include ':jetpack-compose-frontend'
+include ':xml-frontend'
+include ':common-backend'

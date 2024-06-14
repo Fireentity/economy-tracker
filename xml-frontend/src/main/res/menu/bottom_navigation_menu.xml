@@ -4,15 +4,15 @@
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="@string/home_nav_button" />
+        android:title="@string/home" />
     <item
         android:id="@+id/registerFragment"
         android:enabled="true"
-        android:icon="@drawable/baseline_music_note_24"
-        android:title="@string/register_nav_button" />
+        android:icon="@drawable/baseline_bar_chart_24"
+        android:title="@string/register" />
     <item
         android:id="@+id/recurrencesFragment"
         android:enabled="true"
-        android:icon="@drawable/baseline_search_24"
-        android:title="@string/recurrences_nav_bottom" />
+        android:icon="@drawable/baseline_folder_open_24"
+        android:title="@string/categories" />
 </menu>

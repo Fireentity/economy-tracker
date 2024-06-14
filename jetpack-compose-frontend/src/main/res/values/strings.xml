@@ -1,7 +1,57 @@
 <resources>
-    <string name="app_name">music_application</string>
-    <string name="default_movement_date">1/1/1900</string>
-    <string name="default_movement_category">Category</string>
-    <string name="default_movement_amount">0.0</string>
-    <string name="euro">€</string>
+    <string name="app_name">Economy-Tracker</string>
+
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="home">Home</string>
+    <string name="register">Registro</string>
+    <string name="categories">Categorie</string>
+
+    <string name="are_you_sure_you_want_to_delete_this_movement">Sei sicuro di voler eliminare questo movimento?</string>
+    <string name="are_you_sure_you_want_to_delete_this_category">Sei sicuro di voler eliminare questa categoria? I movimenti associati saranno eliminati</string>
+
+    <string name="create_movement">Crea movimento:</string>
+    <string name="create_category">Crea categoria:</string>
+    <string name="edit_movement">Modifica movimento</string>
+    <string name="edit_category">Modifica categoria</string>
+    <string name="delete_category">Elimina categoria</string>
+    <string name="delete_movement">Elimina movimento</string>
+
+    <string name="search_category_placeholder">Cerca una categoria…</string>
+    <string name="category_already_exists">Questa categoria esiste già</string>
+
+    <string name="insert_category_identifier">Nome della categoria</string>
+    <string name="insert_movement_amount">Importo del movimento</string>
+    <string name="insert_movement_date">Seleziona la data</string>
+
+    <string name="category_operation_successfully_executed">Operazione sulla categoria avvenuta con successo</string>
+    <string name="movement_operation_successfully_executed">Operazione sul movimento avvenuta con successo</string>
+    <string name="category_operation_failed">L\'operazione sulla categoria è fallita</string>
+    <string name="movement_operation_failed">L\'operazione sul movimento è fallita</string>
+
+    <string name="movement_deleted_successfully">Movimento eliminato con successo</string>
+    <string name="movement_deletion_failed">L\'eliminazione del movimento è fallita</string>
+    <string name="category_deleted_successfully">Categoria eliminata con successo</string>
+    <string name="category_deletion_failed">Errore nell\'eliminazione della categoria</string>
+
+    <string name="expenses">Uscite</string>
+    <string name="revenues">Entrate</string>
+    <string name="cancel">Annulla</string>
+    <string name="save">Salva</string>
+    <string name="delete">Elimina</string>
+    <string name="date">Data</string>
+    <string name="all">Tutto</string>
+    <string name="category">Categoria</string>
+
+    <string name="monthly_total">%1$.2f %2$s</string>
+    <string name="monthly_revenues">%1$.2f %2$s</string>
+    <string name="monthly_expenses">%1$.2f %2$s</string>
+    <string name="amount">%1$.2f %2$s</string>
+
+    <string name="how_is_it_going">Come sta andando?</string>
+    <string name="how_did_it_go">Com\'è andata?</string>
+    <string name="confirm">Conferma</string>
+
+
 </resources>

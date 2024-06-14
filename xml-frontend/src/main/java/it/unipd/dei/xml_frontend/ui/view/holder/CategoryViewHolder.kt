@@ -1,32 +1,44 @@
-package it.unipd.dei.music_application.ui.view.holder
+package it.unipd.dei.xml_frontend.ui.view.holder
 
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import it.unipd.dei.common_backend.models.Category
+import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.bottomsheets.CategoryBottomSheetFragment
 
 class CategoryViewHolder(
     private val itemView: View,
-    private val parentFragmentManager: FragmentManager
+    private val parentFragmentManager: FragmentManager,
 ) {
     private val categoryIdentifier: TextView = itemView.findViewById(R.id.category_card_identifier)
-    private val categoryImageButton: ImageButton = itemView.findViewById(R.id.view_category_button)
 
     fun getItemView(): View {
         return itemView;
     }
 
-    fun bind(category: Category) {
+    fun bindWithButton(
+        category: Category,
+        //TODO check here
+        categoryViewModel: CategoryViewModel,
+    ) {
+        val categoryImageButton: ImageButton = itemView.findViewById(R.id.view_category_button)
         categoryIdentifier.text = category.identifier
         categoryImageButton.setOnClickListener {
-            CategoryBottomSheetFragment(category).show(
+            CategoryBottomSheetFragment(
+                category
+            ).show(
                 parentFragmentManager,
+                //TODO check here
                 "OptionCategoryModalBottomSheetFragment"
             )
         }
+    }
+
+    fun bindWithoutButton(category: Category) {
+        categoryIdentifier.text = category.identifier
     }
 
 }

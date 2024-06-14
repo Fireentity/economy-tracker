@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="slate_50">#f8fafc</color>
     <color name="slate_100">#f1f5f9</color>
     <color name="slate_200">#e2e8f0</color>
@@ -242,5 +244,4 @@
     <color name="rose_800">#9f1239</color>
     <color name="rose_900">#881337</color>
     <color name="rose_950">#4c0519</color>
-
 </resources>
