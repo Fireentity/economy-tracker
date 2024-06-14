@@ -8,11 +8,13 @@ import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.utils.DisplayToast
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 
 class DeleteCategoryDialog(
     categoryViewModel: CategoryViewModel,
     movementWithCategoryViewModel: MovementWithCategoryViewModel,
+    summaryViewModel: SummaryViewModel,
     private val fragmentContext: Context,
     category: Category
 ) : IDialog {

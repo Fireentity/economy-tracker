@@ -44,7 +44,7 @@
                     android:singleLine="true"
                     android:textColor="@color/green_700"
                     app:chipBackgroundColor="@color/green_100"
-                    app:chipIcon="@drawable/baseline_arrow_upward_24"
+                    app:chipIcon="@drawable/baseline_trending_up_24"
                     app:chipIconEnabled="true"
                     app:chipIconTint="@color/green_700" />
 
@@ -59,7 +59,7 @@
                     android:singleLine="true"
                     android:textColor="@color/red_700"
                     app:chipBackgroundColor="@color/red_100"
-                    app:chipIcon="@drawable/baseline_arrow_downward_24"
+                    app:chipIcon="@drawable/baseline_trending_down_24"
                     app:chipIconEnabled="true"
                     app:chipIconTint="@color/red_700" />
 

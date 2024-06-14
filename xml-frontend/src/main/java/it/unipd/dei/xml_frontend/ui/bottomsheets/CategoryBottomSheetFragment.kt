@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
+import it.unipd.dei.common_backend.viewModels.SummaryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.dialog.DeleteCategoryDialog
 import it.unipd.dei.xml_frontend.ui.dialog.UpsertCategoryDialog
@@ -22,6 +23,7 @@ class CategoryBottomSheetFragment(
 
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
+    private val summaryViewModel: SummaryViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +52,7 @@ class CategoryBottomSheetFragment(
 
         val upsertCategoryDialog = UpsertCategoryDialog(
             categoryViewModel,
+            movementWithCategoryViewModel,
             editCategoryDialogView,
             requireContext(),
             getString(R.string.edit_category),
@@ -62,6 +65,7 @@ class CategoryBottomSheetFragment(
         val deleteCategoryDialog = DeleteCategoryDialog(
             categoryViewModel,
             movementWithCategoryViewModel,
+            summaryViewModel,
             requireContext(),
             category
         )

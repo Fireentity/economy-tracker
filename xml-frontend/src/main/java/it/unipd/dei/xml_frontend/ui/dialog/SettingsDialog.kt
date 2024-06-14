@@ -35,7 +35,6 @@ class SettingsDialog(
         alertDialog = MaterialAlertDialogBuilder(fragmentContext)
             .setTitle(fragmentContext.getString(R.string.settings))
             .setView(dialogView)
-            .setMessage(fragmentContext.getString(R.string.changes_will_be_valid_at_next_opening))
             .setOnDismissListener {
                 saveSharedPreferences()
             }

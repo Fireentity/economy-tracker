@@ -9,12 +9,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.common_backend.models.Category
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.buttons.UpsertCategoryButton
 import it.unipd.dei.xml_frontend.ui.input.CategoryIdentifierInput
 
 class UpsertCategoryDialog(
     categoryViewModel: CategoryViewModel,
+    movementWithCategoryViewModel: MovementWithCategoryViewModel,
     view: View,
     private val fragmentContext: Context,
     title: String,
@@ -29,6 +31,7 @@ class UpsertCategoryDialog(
         val inputFieldView: TextInputEditText = view.findViewById(R.id.input_category_identifier)
         upsertCategoryButton = UpsertCategoryButton(
             categoryViewModel,
+            movementWithCategoryViewModel,
             fragmentContext,
             this::dismiss,
             { getText() },

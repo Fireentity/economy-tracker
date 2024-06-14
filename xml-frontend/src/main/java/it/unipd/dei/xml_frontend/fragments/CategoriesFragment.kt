@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
+import it.unipd.dei.common_backend.viewModels.MovementWithCategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
 import it.unipd.dei.xml_frontend.ui.buttons.ShowAddCategoryDialogButton
@@ -19,6 +20,7 @@ import it.unipd.dei.xml_frontend.ui.input.SearchInput
 class CategoriesFragment : Fragment() {
 
     private val categoryViewModel: CategoryViewModel by activityViewModels()
+    private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +45,7 @@ class CategoriesFragment : Fragment() {
         val showAddCategoryDialogButton = ShowAddCategoryDialogButton(
             dialogView,
             categoryViewModel,
+            movementWithCategoryViewModel,
             requireContext()
         )
         floatingActionButton.setOnClickListener {

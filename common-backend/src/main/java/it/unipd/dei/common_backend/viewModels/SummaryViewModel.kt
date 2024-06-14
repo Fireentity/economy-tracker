@@ -21,7 +21,7 @@ class SummaryViewModel @Inject constructor(
 ) : ViewModel() {
     private val _allSummaryCards = MutableLiveData<List<Summary>>(emptyList())
     val allSummary: LiveData<List<Summary>> = _allSummaryCards
-    private val _currentMonthSummary = MutableLiveData<Summary>()
+    private val _currentMonthSummary = MutableLiveData(Summary.DEFAULT)
     val currentMonthSummary: LiveData<Summary> = _currentMonthSummary
 
     fun loadAllSummaries() {
@@ -35,11 +35,13 @@ class SummaryViewModel @Inject constructor(
 
     fun loadSummaryForCurrentMonth() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 val month = DateHelper.getCurrentMonth()
                 val year = DateHelper.getCurrentYear()
                 val loadedData = summaryDao.getSummaryByMonthAndYear(month.value, year)
-                _currentMonthSummary.postValue(loadedData)
+                if (loadedData != null) {
+                    _currentMonthSummary.postValue(loadedData)
+                }
             }
         }
     }
