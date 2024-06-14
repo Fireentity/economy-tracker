@@ -3,6 +3,7 @@ package it.unipd.dei.xml_frontend.fragments
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +38,7 @@ class RegisterFragment : Fragment() {
     private val movementWithCategoryViewModel: MovementWithCategoryViewModel by activityViewModels()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
     private val summaryViewModel: SummaryViewModel by activityViewModels()
-    private var selectedTab : Int = DEFAULT_TAB_SELECTED
+    private var selectedTab: Int = DEFAULT_TAB_SELECTED
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +46,11 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
 
-        val sharedPref = activity?.getPreferences(MODE_PRIVATE)
-        sharedPref?.let {
-            selectedTab = sharedPref.getInt(getString(R.string.saved_selected_tab), DEFAULT_TAB_SELECTED)
+        val sharedPref = requireActivity().getPreferences(MODE_PRIVATE)
+        try {
+            selectedTab =
+                sharedPref.getInt(getString(R.string.saved_selected_tab), DEFAULT_TAB_SELECTED)
+        } catch (_: ClassCastException) {
         }
 
         // Inflate the layout
@@ -129,6 +132,7 @@ class RegisterFragment : Fragment() {
         val tabLayout: TabLayout = view.findViewById(R.id.register_tab_layout)
 
         tabLayout.getTabAt(selectedTab)?.select()
+        tabs[selectedTab].show()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 selectedTab = tab?.position ?: DEFAULT_TAB_SELECTED
@@ -151,7 +155,7 @@ class RegisterFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        val sharedPref = activity?.getPreferences(MODE_PRIVATE) ?: return
+        val sharedPref = requireActivity().getPreferences(MODE_PRIVATE) ?: return
         with(sharedPref.edit()) {
             putInt(getString(R.string.saved_selected_tab), selectedTab)
             apply()

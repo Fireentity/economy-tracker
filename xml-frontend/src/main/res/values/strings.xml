@@ -56,11 +56,12 @@
     <string name="how_did_it_go">Com\'è andata?</string>
     <string name="confirm">Conferma</string>
 
-    <string name="settings_title">Impostazioni:</string>
+    <string name="settings">Impostazioni:</string>
     <string name="dark_mode">Dark mode:</string>
 
 
     <string name="saved_selected_tab">it.unipd.dei.economy-tracker.last-selected-tab</string>
     <string name="saved_selected_currency">it.unipd.dei.economy-tracker.selected-currency</string>
     <string name="saved_selected_theme">it.unipd.dei.economy-tracker.selected-theme</string>
+    <string name="changes_will_be_valid_at_next_opening">Le modifiche apportate saranno valide alla prossima apertura</string>
 </resources>
