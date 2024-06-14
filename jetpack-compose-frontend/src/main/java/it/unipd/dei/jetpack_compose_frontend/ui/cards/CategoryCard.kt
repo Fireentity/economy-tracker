@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import it.unipd.dei.common_backend.models.Category
@@ -39,7 +40,7 @@ fun CategoryCard(
         leadingContent = {
             Image(
                 painter = rememberVectorPainter(icon),
-                contentDescription = "Category card icon",
+                contentDescription = stringResource(id = R.string.category_card),
                 colorFilter = colorFilter,
                 modifier = Modifier
                     .background(

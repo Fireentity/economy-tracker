@@ -73,7 +73,7 @@ fun MovementDateInput(
             IconButton(onClick = { showDatePicker = true }) {
                 Icon(
                     imageVector = Icons.Filled.DateRange,
-                    contentDescription = "Movement date"
+                    contentDescription = stringResource(id = R.string.insert_movement_date)
                 )
             }
         }

@@ -46,7 +46,7 @@ fun ShowEditMovementDialogButton(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Edit,
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.edit_movement)
             )
             Text(
                 text = stringResource(id = R.string.edit_movement),

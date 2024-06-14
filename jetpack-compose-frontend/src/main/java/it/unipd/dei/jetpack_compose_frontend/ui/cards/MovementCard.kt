@@ -61,7 +61,7 @@ fun MovementCard(
             Image(
                 painter = rememberVectorPainter(icon),
                 colorFilter = colorFilter,
-                contentDescription = "Stonks or Not stonks",
+                contentDescription = stringResource(id = R.string.movement_card_icon),
                 modifier = Modifier
                     .background(
                         background,

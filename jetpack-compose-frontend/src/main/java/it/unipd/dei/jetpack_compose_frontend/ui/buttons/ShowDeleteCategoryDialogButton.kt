@@ -46,7 +46,7 @@ fun ShowDeleteCategoryDialogButton(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Delete,
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.delete_category)
             )
             Text(
                 text = stringResource(id = R.string.delete_category),

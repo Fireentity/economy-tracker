@@ -24,7 +24,7 @@ fun ShowAddCategoryDialogButton(
     FloatingActionButton(onClick = {
         showDialog = true
     }) {
-        Icon(imageVector = Icons.Filled.Add, contentDescription = "")
+        Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(id = R.string.create_category))
     }
     if (showDialog) {
         UpsertCategoryDialog(
