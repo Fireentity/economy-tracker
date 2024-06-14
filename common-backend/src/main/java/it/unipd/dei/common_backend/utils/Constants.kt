@@ -7,7 +7,9 @@ object Constants {
     var CURRENCY: Currency = Currency.EURO
 
     fun setCurrency(preferences: SharedPreferences, currencySharedPreferenceKey: String) {
-        val enumKey = preferences.getString(currencySharedPreferenceKey, Currency.EURO.name)?: ""
-        CURRENCY = Currency.valueOf(enumKey)
+        val enumKey = preferences.getInt(currencySharedPreferenceKey, Currency.EURO.value)
+        Currency.fromInt(enumKey)?.let {
+            CURRENCY = it
+        }
     }
 }

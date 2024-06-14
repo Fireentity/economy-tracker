@@ -28,18 +28,15 @@
     <string name="category_operation_successfully_executed">Operazione sulla categoria avvenuta con successo</string>
     <string name="movement_operation_successfully_executed">Operazione sul movimento avvenuta con successo</string>
     <string name="category_operation_failed">L\'operazione sulla categoria è fallita</string>
-    <string name="movement_operation_failed">L\'operazione sulla categoria è fallita</string>
+    <string name="movement_operation_failed">L\'operazione sul movimento è fallita</string>
 
     <string name="movement_deleted_successfully">Movimento eliminato con successo</string>
     <string name="movement_deletion_failed">L\'eliminazione del movimento è fallita</string>
     <string name="category_deleted_successfully">Categoria eliminata con successo</string>
     <string name="category_deletion_failed">Errore nell\'eliminazione della categoria</string>
 
-    <string name="uscite">Uscite</string>
-    <string name="entrate">Entrate</string>
-    <string name="bilancio">Bilancio</string>
-    <string name="categoria">Categoria</string>
-    <string name="movimento">Movimento</string>
+    <string name="expenses">Uscite</string>
+    <string name="revenues">Entrate</string>
     <string name="cancel">Annulla</string>
     <string name="save">Salva</string>
     <string name="delete">Elimina</string>
@@ -56,12 +53,17 @@
     <string name="how_did_it_go">Com\'è andata?</string>
     <string name="confirm">Conferma</string>
 
-    <string name="settings">Impostazioni:</string>
-    <string name="dark_mode">Dark mode:</string>
-
-
     <string name="saved_selected_tab">it.unipd.dei.economy-tracker.last-selected-tab</string>
     <string name="saved_selected_currency">it.unipd.dei.economy-tracker.selected-currency</string>
-    <string name="saved_selected_theme">it.unipd.dei.economy-tracker.selected-theme</string>
-    <string name="changes_will_be_valid_at_next_opening">Le modifiche apportate saranno valide alla prossima apertura</string>
+    <string name="is_dark_mode_enable">it.unipd.dei.economy-tracker.dark-mode-enable</string>
+    <string name="settings">Impostazioni</string>
+
+    <string name="choose_the_currency_for_your_movements">Scegli la valuta per i tuoi movimenti</string>
+    <string name="euro">Euro: </string>
+    <string name="dollar">Dollar: </string>
+    <string name="pound">Pound: </string>
+
+    <string name="dark_mode">Dark mode:</string>
+    <string name="settings_update_successful">Impostazioni aggiornate con successo</string>
+    <string name="settings_update_failed">Aggiornamento delle impostazione fallito</string>
 </resources>

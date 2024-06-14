@@ -24,29 +24,21 @@ class SummaryViewHolder(
 
     fun bind(summary: Summary) {
 
-        allChip.apply {
-            if (summary.monthlyAll > 0) {
-                setTextColor(context.getColor(R.color.green_700))
-                chipBackgroundColor = ColorStateList.valueOf(context.getColor(R.color.green_100))
-            } else if (summary.monthlyAll < 0) {
-                setTextColor(context.getColor(R.color.red_700))
-                chipBackgroundColor = ColorStateList.valueOf(context.getColor(R.color.red_100))
-            }
-            text = context.getString(
-                R.string.monthly_total,
-                summary.monthlyAll,
-                Constants.CURRENCY
-            )
-        }
+        allChip.text = context.getString(
+            R.string.monthly_total,
+            summary.monthlyAll,
+            Constants.CURRENCY.getSymbol(context.resources)
+        )
+
         revenueChip.text = context.getString(
             R.string.monthly_revenues,
             summary.monthlyPositive,
-            Constants.CURRENCY
+            Constants.CURRENCY.getSymbol(context.resources)
         )
         expensesChip.text = context.getString(
             R.string.monthly_expenses,
             summary.monthlyNegative,
-            Constants.CURRENCY
+            Constants.CURRENCY.getSymbol(context.resources)
         )
 
         val monthOfYear = this.readableDate(summary, context)
