@@ -9,7 +9,7 @@ import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
 
 class SearchInput(
     searchView: SearchView,
-    //TODO check here
+    //TODO check here fixa la pagina delle categorie
     searchBar: SearchBar,
     adapter: CategoryCardAdapter,
     categoryViewModel: CategoryViewModel,

@@ -1,15 +1,18 @@
 package it.unipd.dei.xml_frontend.ui.input
 
+import android.content.Context
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
 import it.unipd.dei.common_backend.models.Movement
 import it.unipd.dei.common_backend.utils.DateHelper
+import it.unipd.dei.xml_frontend.R
 
 class MovementDateInput(
     view: TextInputEditText,
     fragmentManager: FragmentManager,
+    private val context: Context,
     movement: Movement? = null
 ) {
     companion object {
@@ -48,8 +51,6 @@ class MovementDateInput(
         onDismiss: () -> Unit = {}
     ) {
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            //TODO check here
-            .setTitleText("Select Date")
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
 
@@ -65,7 +66,6 @@ class MovementDateInput(
 
         datePicker.show(
             fragmentManager,
-            //TODO check here
             "MATERIAL_DATE_PICKER"
         )
     }
@@ -75,16 +75,16 @@ class MovementDateInput(
         callback: (Long) -> Unit
     ) {
         val timePicker = MaterialTimePicker.Builder()
-            //TODO check here
-            .setTitleText("Select Time")
+            .setTitleText(context.getString(R.string.insert_movement_date))
             .build()
 
         timePicker.addOnPositiveButtonClickListener {
             callback((timePicker.hour * MILLISECONDS_PER_HOUR + timePicker.minute * MILLISECONDS_PER_MINUTE).toLong())
         }
 
-        timePicker.show(fragmentManager,
-            //TODO check here
-            "MATERIAL_TIME_PICKER")
+        timePicker.show(
+            fragmentManager,
+            "MATERIAL_TIME_PICKER"
+        )
     }
 }

@@ -56,6 +56,7 @@ class UpsertMovementDialog(
         this.dateInputField = MovementDateInput(
             view.findViewById(R.id.input_movement_date),
             fragmentManager,
+            fragmentContext,
             movementWithCategory?.movement
         )
 
