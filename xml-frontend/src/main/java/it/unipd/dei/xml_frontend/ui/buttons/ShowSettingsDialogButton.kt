@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import it.unipd.dei.xml_frontend.ui.dialog.SettingsDialog
 
-class ShowSettingsIconButton(
+class ShowSettingsDialogButton(
     activity: Activity,
     fragmentContext: Context,
     dialogView: View
