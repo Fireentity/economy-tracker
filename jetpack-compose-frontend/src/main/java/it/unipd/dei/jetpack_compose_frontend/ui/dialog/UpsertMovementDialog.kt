@@ -82,7 +82,7 @@ fun UpsertMovementDialog(
                     },
                     label = { Text(stringResource(R.string.insert_movement_amount)) },
                     modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))

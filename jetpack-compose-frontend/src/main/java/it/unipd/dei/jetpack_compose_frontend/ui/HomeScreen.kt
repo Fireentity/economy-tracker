@@ -65,7 +65,7 @@ fun HomeScreen(
                 Modifier
                     .padding(paddingValues)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val summaries by summaryViewModel.allSummary.observeAsState(initial = listOf())
