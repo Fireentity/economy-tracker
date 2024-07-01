@@ -73,4 +73,5 @@
     <string name="back">Indietro</string>
     <string name="categories_filter">Filtro per categorie</string>
     <string name="drawer_button">Bottone per drawer</string>
+    <string name="select_time">Seleziona l\'orario</string>
 </resources>

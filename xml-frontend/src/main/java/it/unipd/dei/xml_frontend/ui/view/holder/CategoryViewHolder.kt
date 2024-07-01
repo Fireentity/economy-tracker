@@ -5,7 +5,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import it.unipd.dei.common_backend.models.Category
-import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.R
 import it.unipd.dei.xml_frontend.ui.bottomsheets.CategoryBottomSheetFragment
 
@@ -21,8 +20,6 @@ class CategoryViewHolder(
 
     fun bindWithButton(
         category: Category,
-        //TODO check here
-        categoryViewModel: CategoryViewModel,
     ) {
         val categoryImageButton: ImageButton = itemView.findViewById(R.id.view_category_button)
         categoryIdentifier.text = category.identifier
@@ -31,7 +28,6 @@ class CategoryViewHolder(
                 category
             ).show(
                 parentFragmentManager,
-                //TODO check here
                 "OptionCategoryModalBottomSheetFragment"
             )
         }

@@ -1,5 +1,6 @@
 package it.unipd.dei.jetpack_compose_frontend.ui.input
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -10,10 +11,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +29,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -32,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -96,13 +104,19 @@ fun MovementDateInput(
                 }
             }
         ) {
-            DatePicker(state = datePickerState)
+
+            if(LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                datePickerState.displayMode = DisplayMode.Input
+                DatePicker(state = datePickerState, showModeToggle = false)
+            } else {
+                DatePicker(state = datePickerState)
+            }
         }
+
     }
 
 
     if (showTimePicker) {
-        //TODO dismiss button text
         Dialog(
             onDismissRequest = { showTimePicker = false },
             properties = DialogProperties(
@@ -123,35 +137,43 @@ fun MovementDateInput(
                     modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 20.dp),
-                        //TODO fix that
-                        text = "Select time",
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                    TimePicker(state = timePickerState)
+                    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT){
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 20.dp),
+                            text = stringResource(id = R.string.select_time),
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+
+                    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        TimePicker(
+                            state = timePickerState,
+                            layoutType = TimePickerLayoutType.Horizontal
+                        )
+                    } else {
+                        TimePicker(state = timePickerState)
+                    }
                     Row(
-                        modifier = Modifier
-                            .height(40.dp)
-                            .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Spacer(modifier = Modifier.weight(1f))
                         TextButton(
                             onClick = { showTimePicker = false }
-                        ) { Text("Cancel") }
+                        ) { Text(stringResource(id = R.string.cancel)) }
                         TextButton(
                             onClick = {
                                 showTimePicker = false
                                 datePickerState.selectedDateMillis?.let {
-                                    val date = it + timePickerState.hour * MILLISECONDS_PER_HOUR +
-                                            timePickerState.minute * MILLISECONDS_PER_MINUTE
+                                    val date =
+                                        it + timePickerState.hour * MILLISECONDS_PER_HOUR +
+                                                timePickerState.minute * MILLISECONDS_PER_MINUTE
                                     onDateChange(
                                         date
                                     )
 
-                                    formattedDate = DateHelper.convertFromMillisecondsToDateTime(date)
+                                    formattedDate =
+                                        DateHelper.convertFromMillisecondsToDateTime(date)
                                 }
                             }
                         ) { Text(stringResource(id = R.string.confirm)) }

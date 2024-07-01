@@ -2,15 +2,12 @@ package it.unipd.dei.xml_frontend.ui.input
 
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.LifecycleOwner
-import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import it.unipd.dei.common_backend.viewModels.CategoryViewModel
 import it.unipd.dei.xml_frontend.ui.adapters.CategoryCardAdapter
 
 class SearchInput(
     searchView: SearchView,
-    //TODO check here fixa la pagina delle categorie
-    searchBar: SearchBar,
     adapter: CategoryCardAdapter,
     categoryViewModel: CategoryViewModel,
     lifecycleOwner: LifecycleOwner
